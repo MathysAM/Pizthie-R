@@ -1,10 +1,5 @@
 name: Deploy Avalonia WASM to GitHub Pages
 
-# 1) Donne les permissions nécessaires au GITHUB_TOKEN
-permissions:
-  contents: write    # pour pouvoir créer/la mise à jour de la branche gh-pages
-  pages: write       # pour interagir avec l’API GitHub Pages (optionnel)
-
 on:
   push:
     branches: [ main ]
@@ -14,30 +9,38 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 2) Clone le repo
-      - uses: actions/checkout@v3
+      # 1) Checkout du code
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-      # 3) Installe .NET 8
-      - uses: actions/setup-dotnet@v3
+      # 2) Debug de l’arborescence pour vérifier les chemins
+      - name: Debug folder structure
+        run: |
+          echo "===== ROOT ====="
+          ls -R .
+
+      # 3) Installation de .NET 8
+      - name: Setup .NET 8
+        uses: actions/setup-dotnet@v3
         with:
           dotnet-version: '8.0.x'
 
-      # 4) Installe le workload WebAssembly
+      # 4) Installation du workload WebAssembly
       - name: Install WASM workload
         run: dotnet workload install wasm-tools
 
-      # 5) Restore & Publish le projet Browser
+      # 5) Restore et Publication du projet Browser
       - name: Restore & Publish Avalonia.Browser
         run: |
           dotnet restore PizthieR.Browser/PizthieR.Browser.csproj
           dotnet publish PizthieR.Browser/PizthieR.Browser.csproj \
             -c Release -o output --framework net8.0-browser
 
-      # 6) Déploie sur la branche gh-pages
+      # 6) Déploiement sur GitHub Pages (branche gh-pages)
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_branch: gh-pages
-          publish_dir: PizthieR.Browser/publish/wwwroot
-          force_orphan: true  # recrée la branche à zéro à chaque fois
+          publish_dir: ./output/wwwroot
+          force_orphan: true
