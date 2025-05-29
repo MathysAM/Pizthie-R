@@ -9,34 +9,28 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 1) Checkout du code
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # 2) Debug de l’arborescence pour vérifier les chemins
       - name: Debug folder structure
         run: |
           echo "===== ROOT ====="
           ls -R .
 
-      # 3) Installation de .NET 8
       - name: Setup .NET 8
         uses: actions/setup-dotnet@v3
         with:
           dotnet-version: '8.0.x'
 
-      # 4) Installation du workload WebAssembly
       - name: Install WASM workload
         run: dotnet workload install wasm-tools
 
-      # 5) Restore et Publication du projet Browser
       - name: Restore & Publish Avalonia.Browser
         run: |
-          dotnet restore PizthieR.Browser/PizthieR.Browser.csproj
-          dotnet publish PizthieR.Browser/PizthieR.Browser.csproj \
+          dotnet restore PizthieR/PizthieR.Browser/PizthieR.Browser.csproj
+          dotnet publish  PizthieR/PizthieR.Browser/PizthieR.Browser.csproj \
             -c Release -o output --framework net8.0-browser
 
-      # 6) Déploiement sur GitHub Pages (branche gh-pages)
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
