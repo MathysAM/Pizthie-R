@@ -1,5 +1,10 @@
 name: Deploy Avalonia WASM to GitHub Pages
 
+# 1) Donne les permissions nécessaires au GITHUB_TOKEN
+permissions:
+  contents: write   # autorise l’écriture dans le dépôt
+  pages: write      # autorise l’utilisation de l’API Pages
+
 on:
   push:
     branches: [ main ]
@@ -9,28 +14,34 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # 2) Checkout du code
       - name: Checkout code
         uses: actions/checkout@v3
 
+      # 3) Debug de l’arborescence pour vérifier les chemins
       - name: Debug folder structure
         run: |
           echo "===== ROOT ====="
           ls -R .
 
+      # 4) Installation de .NET 8
       - name: Setup .NET 8
         uses: actions/setup-dotnet@v3
         with:
           dotnet-version: '8.0.x'
 
+      # 5) Installation du workload WebAssembly
       - name: Install WASM workload
         run: dotnet workload install wasm-tools
 
+      # 6) Restore et publication du projet Browser
       - name: Restore & Publish Avalonia.Browser
         run: |
           dotnet restore PizthieR/PizthieR.Browser/PizthieR.Browser.csproj
           dotnet publish  PizthieR/PizthieR.Browser/PizthieR.Browser.csproj \
             -c Release -o output --framework net8.0-browser
 
+      # 7) Déploiement sur la branche gh-pages
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
