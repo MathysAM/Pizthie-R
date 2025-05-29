@@ -1,6 +1,10 @@
-name: Build & Deploy WebAssembly
+name: Deploy Avalonia WASM to GitHub Pages
 
-# se déclenche à chaque push sur main
+# 1) Donne les permissions nécessaires au GITHUB_TOKEN
+permissions:
+  contents: write    # pour pouvoir créer/la mise à jour de la branche gh-pages
+  pages: write       # pour interagir avec l’API GitHub Pages (optionnel)
+
 on:
   push:
     branches: [ main ]
@@ -10,24 +14,30 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+      # 2) Clone le repo
+      - uses: actions/checkout@v3
 
-      - name: Setup .NET 8
-        uses: actions/setup-dotnet@v3
+      # 3) Installe .NET 8
+      - uses: actions/setup-dotnet@v3
         with:
           dotnet-version: '8.0.x'
 
+      # 4) Installe le workload WebAssembly
       - name: Install WASM workload
         run: dotnet workload install wasm-tools
 
-      - name: Publish Browser project
+      # 5) Restore & Publish le projet Browser
+      - name: Restore & Publish Avalonia.Browser
         working-directory: PizthieR.Browser
-        run: dotnet publish -c Release -o ../output --framework net8.0-browser
+        run: |
+          dotnet restore
+          dotnet publish -c Release -o publish --framework net8.0-browser
 
+      # 6) Déploie sur la branche gh-pages
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_branch: gh-pages
-          publish_dir: ./output/wwwroot
+          publish_dir: PizthieR.Browser/publish/wwwroot
+          force_orphan: true  # recrée la branche à zéro à chaque fois
