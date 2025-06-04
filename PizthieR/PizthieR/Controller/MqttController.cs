@@ -14,7 +14,7 @@ namespace PizthieR.Controller
 
         public async void Connection(string name,string mdp)
         {
-            await App.MqttController.ConnectAsync("wss://4d1f194df18748a393eeabb274d5e439.s1.eu.hivemq.cloud:8884/mqtt\"", name, mdp);
+            await App.MqttController.ConnectAsync("wss://4d1f194df18748a393eeabb274d5e439.s1.eu.hivemq.cloud:8884/mqtt", name, mdp);
         }
 
     }
