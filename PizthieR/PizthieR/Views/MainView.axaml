@@ -8,5 +8,6 @@
 
 	<StackPanel Orientation="Horizontal">
 		<TextBlock Text="Hello world" FontSize="18"/>
+		<Button Width="180" Height="40" Content="connection" FontSize="18"  Click="OnConnectClick"/>
 	</StackPanel>
 </UserControl>

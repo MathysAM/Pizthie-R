@@ -6,11 +6,13 @@ using System.Linq;
 using Avalonia.Markup.Xaml;
 
 using PizthieR.Views;
+using PizthieR.Controller;
 
 namespace PizthieR;
 
 public partial class App : Application
 {
+    public static IMqttController? MqttController { get; set; }
     public override void Initialize()
     {
         AvaloniaXamlLoader.Load(this);

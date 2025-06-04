@@ -1,16 +1,31 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.WebAssembly">
-  <PropertyGroup>
-    <TargetFramework>net8.0-browser</TargetFramework>
-    <OutputType>Exe</OutputType>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <Nullable>enable</Nullable>
-  </PropertyGroup>
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <ItemGroup>
-    <PackageReference Include="Avalonia.Browser" />
-  </ItemGroup>
+	<PropertyGroup>
+		<TargetFramework>net8.0-browser</TargetFramework>
+		<OutputType>Exe</OutputType>
+		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+		<Nullable>enable</Nullable>
+		<UseWasm>true</UseWasm>
+		<EnablePreviewFeatures>true</EnablePreviewFeatures>
+		<StaticWebAssetBasePath>wwwroot</StaticWebAssetBasePath>
+		<!-- ✅ CORRECTION ICI -->
+	</PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\PizthieR\PizthieR.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Avalonia.Browser" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\PizthieR\PizthieR.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Content Update="wwwroot\mqtt.js">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+		<Content Update="wwwroot\service-worker.js">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+	</ItemGroup>
+
 </Project>
