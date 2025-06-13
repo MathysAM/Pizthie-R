@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
 		<TargetFramework>net8.0-browser</TargetFramework>
@@ -8,7 +8,8 @@
 		<UseWasm>true</UseWasm>
 		<EnablePreviewFeatures>true</EnablePreviewFeatures>
 		<StaticWebAssetBasePath>wwwroot</StaticWebAssetBasePath>
-		<!-- ✅ CORRECTION ICI -->
+		<IsWebProject>true</IsWebProject>
+		<!-- ✅ Ajouté pour l'icône web dans Visual Studio -->
 	</PropertyGroup>
 
 	<ItemGroup>
