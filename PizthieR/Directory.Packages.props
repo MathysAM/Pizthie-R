@@ -1,25 +1,25 @@
-<Project>
-	<!-- https://learn.microsoft.com/en-us/nuget/consume-packages/central-package-management -->
-	<PropertyGroup>
-		<ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
-	</PropertyGroup>
-	<ItemGroup>
-		<!-- Avalonia packages -->
-		<!-- Important: keep version in sync! -->
-		<PackageVersion Include="Avalonia" Version="11.3.0" />
-		<PackageVersion Include="Avalonia.Themes.Fluent" Version="11.3.0" />
-		<PackageVersion Include="Avalonia.Fonts.Inter" Version="11.3.0" />
-		<PackageVersion Include="Avalonia.Diagnostics" Version="11.3.0" />
-		<PackageVersion Include="Avalonia.Desktop" Version="11.3.0" />
-		<PackageVersion Include="Avalonia.iOS" Version="11.3.0" />
-		<PackageVersion Include="Avalonia.Browser" Version="11.3.0" />
-		<PackageVersion Include="Avalonia.Android" Version="11.3.0" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <LangVersion>latest</LangVersion>
+    <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
+  </PropertyGroup>
+  
+  <ItemGroup>
+    <AvaloniaResource Include="Assets\**" />
+  </ItemGroup>
 
-		<PackageVersion Include="CommunityToolkit.Mvvm" Version="8.4.0" />
-
-		<!-- MQTT client library -->
-		<PackageVersion Include="MQTTnet" Version="5.0.1.1416" />
-
-		<PackageVersion Include="Xamarin.AndroidX.Core.SplashScreen" Version="1.0.1.15" />
-	</ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Avalonia" />
+    <PackageReference Include="Avalonia.Themes.Fluent" />
+    <PackageReference Include="Avalonia.Fonts.Inter" />
+    <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
+    <PackageReference Include="Avalonia.Diagnostics">
+      <IncludeAssets Condition="'$(Configuration)' != 'Debug'">None</IncludeAssets>
+      <PrivateAssets Condition="'$(Configuration)' != 'Debug'">All</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="CommunityToolkit.Mvvm" />
+    <PackageReference Include="MQTTnet" />
+  </ItemGroup>
 </Project>
