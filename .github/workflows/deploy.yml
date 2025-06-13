@@ -37,8 +37,8 @@ jobs:
       # 6) Restore et publication du projet Browser
       - name: Restore & Publish Avalonia.Browser
         run: |
-          dotnet restore PizthieR/PizthieR.Browser/PizthieR.Browser.csproj
-          dotnet publish  PizthieR/PizthieR.Browser/PizthieR.Browser.csproj \
+          dotnet restore PizthieR.Browser/PizthieR.Browser.csproj
+          dotnet publish  PizthieR.Browser/PizthieR.Browser.csproj …\
             -c Release -o output --framework net8.0-browser
 
       # 7) Déploiement sur la branche gh-pages
