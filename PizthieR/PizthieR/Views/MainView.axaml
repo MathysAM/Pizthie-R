@@ -33,9 +33,9 @@
 
 			</Grid.RowDefinitions>
 
-			<Button Content="Connection" Click="Connection_Click" FontSize="18" Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
-			<Button Content="Control" Click="Control_Click"  FontSize="18" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
-			<Button Content="Programmation" Click="Programmation_Click"  FontSize="18"  Grid.Row="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+			<Button Content="Connection"  Name="Bconnection" Click="ViewConnection_Click" FontSize="18" Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
+			<Button Content="Control"  Name="BControl" Click="ViewControl_Click"  FontSize="18" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+			<Button Content="Programmation" Name="BProgrammation"  Click="ViewProgrammation_Click"  FontSize="18"  Grid.Row="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
 		</Grid>
 		
 		<TextBlock Text="PIZZA THIERRY" FontSize="18" Grid.Row="0" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center" />

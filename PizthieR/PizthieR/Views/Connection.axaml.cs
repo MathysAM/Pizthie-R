@@ -2,16 +2,31 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 using PizthieR.Controller;
+using PizthieR.Views;
 
 namespace PizthieR;
 
 public partial class Connection : UserControl
 {
+    string IsConnected;
     MqttController mqttController;
-    public Connection(MqttController mqttController)
+    MainView mainView;
+    // Requis par le previewer Avalonia
+   
+    public Connection(MqttController mqttController, MainView mainView)
     {
-        this.mqttController = mqttController;
         InitializeComponent();
+        this.mqttController = mqttController;
+        this.mainView = mainView;
+        // branchements d'événements possibles ici si besoin
+        BtnConnect.Click += Connection_Click;
+        BtnDisconnect.Click += DeConnection_Click;
+        
+    }
+    public Connection()
+    {
+       
+
     }
 
     private void Connection_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
@@ -27,8 +42,17 @@ public partial class Connection : UserControl
     {
         if (ID.Text != null && MDP.Text != null)
         {
-            Status.Text = await mqttController.ConnectAsync(ID.Text, MDP.Text);
-
+            IsConnected  = await mqttController.ConnectAsync(ID.Text, MDP.Text);
+            Status.Text = IsConnected;
+            if (IsConnected == "Connecté")
+            {
+                
+                mainView.IsConnected(true);
+            }
+            else
+            {
+                mainView.IsConnected(false);
+            }
         }
         else
         {
@@ -38,9 +62,9 @@ public partial class Connection : UserControl
     private async void DeConnectionMqtt()
     {
        
-        await mqttController.DisposeAsync();
+        await mqttController.DisconnectAsync();
         Status.Text = "Deconnecter";
-
+        mainView.IsConnected(false);
 
     }
 }

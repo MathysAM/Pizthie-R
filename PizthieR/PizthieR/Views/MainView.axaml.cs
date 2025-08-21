@@ -25,8 +25,8 @@ namespace PizthieR.Views
         {
             InitializeComponent();
             _MqttController = new MqttController();
-            _Connection = new Connection(_MqttController);
-            _Control = new Control();
+            _Connection = new Connection(_MqttController,this);
+            _Control = new Control(_MqttController);
             _Programmation = new Programmation();
 
             _pages.Add(_Connection);
@@ -34,19 +34,35 @@ namespace PizthieR.Views
             _pages.Add(_Programmation);
 
             Frame.Content = _pages[0]; // page par défaut
+
+            BControl.IsVisible = false;
+            BProgrammation.IsVisible = false;
         }
 
-       
+        public void IsConnected(bool value)
+        {
+            if(value) 
+            {
+                BControl.IsVisible = true;
+                BProgrammation.IsVisible = true;
+            }
+            else
+            {
+                BControl.IsVisible = false;
+                BProgrammation.IsVisible = false;
+            }
 
-        private void Programmation_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+        }
+
+        private void ViewProgrammation_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
         {
             Frame.Content = _pages[2];
         }
-        private void Connection_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+        private void ViewConnection_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
         {
             Frame.Content = _pages[0];
         }
-        private void Control_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+        private void ViewControl_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
         {
             Frame.Content = _pages[1];
         }
