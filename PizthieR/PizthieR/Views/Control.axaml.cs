@@ -9,7 +9,11 @@ namespace PizthieR;
 
 public partial class Control : UserControl
 {
-    
+    public Control()
+    {
+        InitializeComponent();
+    }
+
     MqttController _MqttController;
   
     public Control(MqttController _MqttController)

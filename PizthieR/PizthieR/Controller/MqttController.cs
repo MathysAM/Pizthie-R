@@ -176,7 +176,13 @@ namespace PizthieR.Controller
 
             await _client.PublishAsync(msg);
         }
+        public async Task PublishActive( string topic, string value)
+        {
+            if (!IsConnected) return;
 
+            await PublishAsync(topic, value, retain: true, qos: MqttQualityOfServiceLevel.AtLeastOnce);
+
+        }
         public async Task PublishTemperatureMax(string value)
         {
             if (!IsConnected) return;

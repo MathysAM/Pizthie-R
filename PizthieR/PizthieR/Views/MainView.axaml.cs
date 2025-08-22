@@ -14,20 +14,24 @@ namespace PizthieR.Views
     public partial class MainView : UserControl
     {
 
+        
+
+        
+        
+
         List<UserControl> _pages = new();
         Connection _Connection;
         Control _Control;
         Programmation _Programmation;
         MqttController _MqttController;
-      
 
         public MainView()
         {
             InitializeComponent();
             _MqttController = new MqttController();
-            _Connection = new Connection(_MqttController,this);
+            _Connection = new Connection(_MqttController, this);
             _Control = new Control(_MqttController);
-            _Programmation = new Programmation();
+            _Programmation = new Programmation(_MqttController);
 
             _pages.Add(_Connection);
             _pages.Add(_Control);
@@ -35,23 +39,26 @@ namespace PizthieR.Views
 
             Frame.Content = _pages[0]; // page par défaut
 
-             BControl.IsVisible = false;
-             BProgrammation.IsVisible = false;
+            BControl.IsVisible = false;
+            BProgrammation.IsVisible = false;
+
         }
 
-        public void IsConnected(bool value)
+        public async void IsConnected(bool value)
         {
             if(value) 
             {
                 BControl.IsVisible = true;
                 BProgrammation.IsVisible = true;
                 _Control.Abonnement();
+                await _Programmation.SubscribeAllAsync();
             }
             else
             {
                 BControl.IsVisible = false;
                 BProgrammation.IsVisible = false;
                 _Control.DesAbonnement();
+                await _Programmation.UnsubscribeAllAsync();
             }
 
         }
