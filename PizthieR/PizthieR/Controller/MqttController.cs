@@ -21,14 +21,30 @@ namespace PizthieR.Controller
 
         private Timer _pingTimer;
         private volatile bool _shouldReconnect;
-        private volatile bool _pingHealthy;
+       
+
+        private bool _pingHealthy;
+        public bool pingHealthy
+        {
+            get { return _pingHealthy; }
+            set
+            {
+                if (_pingHealthy != value)
+                {
+                    _pingHealthy = value;
+                    pingHealthyChanged?.Invoke(null, _pingHealthy); // Déclenche l'événement de changement
+                }
+            }
+        }
+        public event EventHandler<bool> pingHealthyChanged;
+
         private readonly TimeSpan _pingPeriod = TimeSpan.FromSeconds(10);
 
         private const string WssUrl =
             "wss://4d1f194df18748a393eeabb274d5e439.s1.eu.hivemq.cloud:8884/mqtt"; // WebSocket obligatoire en WASM
 
         public bool IsConnected => _client?.IsConnected == true;
-        public bool IsPingHealthy => _pingHealthy;
+       
 
         // Événements (facultatifs) pour remonter à l’UI
         public event Action Connected;
@@ -156,7 +172,7 @@ namespace PizthieR.Controller
                 _client?.Dispose();
                 _client = null;
                 _subscriptions.Clear();
-                _pingHealthy = false;
+                pingHealthy = false;
             }
         }
 
@@ -236,7 +252,7 @@ namespace PizthieR.Controller
         /// </summary>
         public void StartPingLoop()
         {
-            _pingHealthy = true;
+            pingHealthy = true;
             _pingTimer?.Dispose();
 
             _pingTimer = new Timer(async _ =>
@@ -256,11 +272,11 @@ namespace PizthieR.Controller
                         .Build();
 
                     await _client!.PublishAsync(msg);
-                    _pingHealthy = true;
+                    pingHealthy = true;
                 }
                 catch
                 {
-                    _pingHealthy = false;
+                    pingHealthy = false;
                 }
             }, null, TimeSpan.Zero, _pingPeriod);
         }
@@ -269,7 +285,7 @@ namespace PizthieR.Controller
         {
             _pingTimer?.Dispose();
             _pingTimer = null;
-            _pingHealthy = false;
+            pingHealthy = false;
         }
 
         public async ValueTask DisposeAsync()

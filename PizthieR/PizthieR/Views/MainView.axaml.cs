@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Data.Common;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using Avalonia;
@@ -42,8 +43,19 @@ namespace PizthieR.Views
             BControl.IsVisible = false;
             BProgrammation.IsVisible = false;
 
-        }
+            _MqttController.pingHealthyChanged += pingHealthyChanged;
 
+        }
+        private void pingHealthyChanged(object sender, bool newValue)
+        {
+            if (!newValue) 
+            {
+                _Connection.DeConnectionMqtt();
+                Frame.Content = _pages[0]; // page par défaut
+            }
+
+            
+        }
         public async void IsConnected(bool value)
         {
             if(value) 

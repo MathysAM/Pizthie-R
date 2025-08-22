@@ -66,7 +66,7 @@ public partial class Connection : UserControl
             Status.Text = "Erreur de connexion";
         }
     }
-    private async void DeConnectionMqtt()
+    public async void DeConnectionMqtt()
     {
        
         await mqttController.DisconnectAsync();
