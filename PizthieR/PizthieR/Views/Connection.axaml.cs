@@ -9,11 +9,7 @@ namespace PizthieR;
 public partial class Connection : UserControl
 {
     string IsConnected;
-    public Connection()
-    {
-        InitializeComponent();
-
-    }
+   
     MqttController mqttController;
     MainView mainView;
     // Requis par le previewer Avalonia
