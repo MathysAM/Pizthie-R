@@ -42,9 +42,9 @@ public partial class Control : UserControl
     }
     private async void PublierTemperatureMax_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
     {
-        if (TempératureMax.Text != null)
+        if (TemperatureMax.Text != null)
         {
-            await _MqttController.PublishTemperatureMax(TempératureMax.Text);
+            await _MqttController.PublishTemperatureMax(TemperatureMax.Text);
         }
 
     }
@@ -95,7 +95,7 @@ public partial class Control : UserControl
     private void CallBackTemperatureMax(string payload, int index)
     {
 
-        TempératureMax.Text = payload;
+        TemperatureMax.Text = payload;
 
     }
     private void CallBackEtatRegule(string payload, int index)
@@ -104,11 +104,11 @@ public partial class Control : UserControl
        
         if (payload == "true")
         {
-            EtatRégule.Text = "Regule en marche";
+            EtatRegule.Text = "Regule en marche";
         }
         else if (payload == "false")
         {
-            EtatRégule.Text = "Regule arreter";
+            EtatRegule.Text = "Regule arreter";
         }
 
     }

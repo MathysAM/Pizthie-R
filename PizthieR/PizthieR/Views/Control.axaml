@@ -43,7 +43,7 @@
 		<TextBox Text="Consigne température" Name="ConsigneTemperature" Grid.Row="2" Grid.Column="0"/>
 		<Button Content="Publier température" Name="PublierTemperature"  Grid.Row="3" Grid.Column="0"/>
 		
-		<TextBox Text="Température max" Name="TempératureMax"  Grid.Row="5" Grid.Column="0"/>
+		<TextBox Text="Température max" Name="TemperatureMax"  Grid.Row="5" Grid.Column="0"/>
 		<Button Content="Publier température max" Name="PublierTemperatureMax" Grid.Row="6" Grid.Column="0"/>
 		<Grid Grid.Row="8" Grid.Column="0">
 			<Grid.ColumnDefinitions>
@@ -73,7 +73,7 @@
 			</Grid.ColumnDefinitions>
 
 			<TextBlock Text="Etat régule :" Grid.Column="0" />
-			<TextBlock Text="Etat" Name="EtatRégule" Grid.Column="1" />
+			<TextBlock Text="Etat" Name="EtatRegule" Grid.Column="1" />
 
 		</Grid>
 		<Grid Grid.Row="14" Grid.Column="0">
