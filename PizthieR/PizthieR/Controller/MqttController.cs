@@ -41,28 +41,26 @@ namespace PizthieR.Controller
         public MqttController() 
         {
         }
-        public async Task<string> ConnectAsync(string user, string pass)
+        public async Task<bool> ConnectAsync(string user, string pass)
         {
             try
             {
                 if (_client?.IsConnected == true)
-                    return "Déjà connecté";
+                    return true; // déjà connecté → on considère que c'est OK
 
                 var builder = new MqttClientOptionsBuilder()
                     .WithClientId($"wasm_{Guid.NewGuid():N}".Substring(0, 16))
                     .WithCleanSession()
                     .WithKeepAlivePeriod(TimeSpan.FromSeconds(30))
-                    // nouvelle API (évite l’avertissement d’obsolescence)
                     .WithWebSocketServer(o => o.WithUri(WssUrl));
 
                 if (!string.IsNullOrWhiteSpace(user))
                     builder = builder.WithCredentials(user, pass);
 
                 _opts = builder.Build();
-
                 _client = new MqttFactory().CreateMqttClient();
 
-                // Messages entrants
+                // Handlers (inchangés)
                 _client.ApplicationMessageReceivedAsync += e =>
                 {
                     var topic = e.ApplicationMessage.Topic ?? string.Empty;
@@ -101,14 +99,17 @@ namespace PizthieR.Controller
                 };
 
                 var result = await _client.ConnectAsync(_opts);
-                return result.ResultCode == MqttClientConnectResultCode.Success
-                    ? "Connecté"
-                    : $"Échec: {result.ResultCode}";
+
+                if (result.ResultCode == MqttClientConnectResultCode.Success)
+                    return true;
+
+                Error?.Invoke($"Échec de connexion: {result.ResultCode}");
+                return false;
             }
             catch (Exception ex)
             {
-                Error?.Invoke(ex.Message);
-                return $"Erreur: {ex.Message}";
+                Error?.Invoke($"Erreur: {ex.Message}");
+                return false;
             }
         }
 

@@ -8,7 +8,7 @@ namespace PizthieR;
 
 public partial class Connection : UserControl
 {
-    string IsConnected;
+    bool IsConnected;
    
     MqttController mqttController;
     MainView mainView;
@@ -40,15 +40,18 @@ public partial class Connection : UserControl
         if (ID.Text != null && MDP.Text != null)
         {
             IsConnected  = await mqttController.ConnectAsync(ID.Text, MDP.Text);
-            Status.Text = IsConnected;
-            if (IsConnected == "Connecté")
+         
+            if (IsConnected)
             {
                 
                 mainView.IsConnected(true);
+                Status.Text = "Connecté";
             }
             else
             {
-                //mainView.IsConnected(false);
+                mainView.IsConnected(false);
+
+                Status.Text = "Erreur de connexion";
             }
         }
         else
