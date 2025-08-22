@@ -9,6 +9,11 @@ namespace PizthieR;
 public partial class Connection : UserControl
 {
     string IsConnected;
+    public Connection()
+    {
+        InitializeComponent();
+
+    }
     MqttController mqttController;
     MainView mainView;
     // Requis par le previewer Avalonia
@@ -23,11 +28,7 @@ public partial class Connection : UserControl
         BtnDisconnect.Click += DeConnection_Click;
         
     }
-    public Connection()
-    {
-       
-
-    }
+   
 
     private void Connection_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
     {

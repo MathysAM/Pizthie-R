@@ -45,11 +45,13 @@ namespace PizthieR.Views
             {
                 BControl.IsVisible = true;
                 BProgrammation.IsVisible = true;
+                _Control.Abonnement();
             }
             else
             {
                 BControl.IsVisible = false;
                 BProgrammation.IsVisible = false;
+                _Control.DesAbonnement();
             }
 
         }
