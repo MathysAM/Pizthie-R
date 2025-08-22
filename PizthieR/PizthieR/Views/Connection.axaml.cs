@@ -45,7 +45,7 @@ public partial class Connection : UserControl
             {
                 
                 mainView.IsConnected(true);
-                Status.Text = "Connecté";
+                Status.Text = "Connecter";
             }
             else
             {

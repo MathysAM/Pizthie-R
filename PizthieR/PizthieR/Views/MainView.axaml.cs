@@ -35,8 +35,8 @@ namespace PizthieR.Views
 
             Frame.Content = _pages[0]; // page par défaut
 
-            //  BControl.IsVisible = false;
-            //  BProgrammation.IsVisible = false;
+             BControl.IsVisible = false;
+             BProgrammation.IsVisible = false;
         }
 
         public void IsConnected(bool value)
