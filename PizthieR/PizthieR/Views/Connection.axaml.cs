@@ -48,7 +48,7 @@ public partial class Connection : UserControl
             }
             else
             {
-                mainView.IsConnected(false);
+                //mainView.IsConnected(false);
             }
         }
         else
