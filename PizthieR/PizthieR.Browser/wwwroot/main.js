@@ -10,4 +10,11 @@ const dotnetRuntime = await dotnet
 
 const config = dotnetRuntime.getConfig();
 
+// Lance l'app Avalonia
 await dotnetRuntime.runMain(config.mainAssemblyName, [globalThis.location.href]);
+
+// Quand Avalonia est montée, on supprime le splash custom
+const splash = document.getElementById("splash");
+if (splash) {
+    splash.remove();
+}
