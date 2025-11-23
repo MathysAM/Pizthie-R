@@ -1,71 +1,32 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
-    <Nullable>enable</Nullable>
-    <LangVersion>latest</LangVersion>
-	  <AvaloniaUseCompiledBindingsByDefault>false</AvaloniaUseCompiledBindingsByDefault>
+	<PropertyGroup>
+		<TargetFramework>net8.0</TargetFramework>
+		<Nullable>enable</Nullable>
+		<LangVersion>latest</LangVersion>
+		<AvaloniaUseCompiledBindingsByDefault>false</AvaloniaUseCompiledBindingsByDefault>
+	</PropertyGroup>
 
-  </PropertyGroup>
-  
-  <ItemGroup>
-    <AvaloniaResource Include="Assets\**" />
-	<AvaloniaResource Include="Font\**\*.ttf" />
-  </ItemGroup>
-  
-  <ItemGroup>
-    <None Remove="Font\Montserrat Black 900.ttf" />
-    <None Remove="Font\Montserrat Black Italic 900.ttf" />
-    <None Remove="Font\Montserrat Bold 700.ttf" />
-    <None Remove="Font\Montserrat Bold Italic 700.ttf" />
-    <None Remove="Font\Montserrat ExtraBold 800.ttf" />
-    <None Remove="Font\Montserrat ExtraBold Italic 800.ttf" />
-    <None Remove="Font\Montserrat ExtraLight 275.ttf" />
-    <None Remove="Font\Montserrat ExtraLight Italic 275.ttf" />
-    <None Remove="Font\Montserrat Italic 400.ttf" />
-    <None Remove="Font\Montserrat Light 300.ttf" />
-    <None Remove="Font\Montserrat Light Italic 300.ttf" />
-    <None Remove="Font\Montserrat Medium 500.ttf" />
-    <None Remove="Font\Montserrat Medium Italic 500.ttf" />
-    <None Remove="Font\Montserrat Regular 400.ttf" />
-    <None Remove="Font\Montserrat SemiBold 600.ttf" />
-    <None Remove="Font\Montserrat SemiBold Italic 600.ttf" />
-    <None Remove="Font\Montserrat Thin 250.ttf" />
-    <None Remove="Font\Montserrat Thin Italic 250.ttf" />
-  </ItemGroup>
+	<!-- RESSOURCES AVALONIA -->
+	<ItemGroup>
+		<AvaloniaResource Include="Assets\**" />
+		<AvaloniaResource Include="Font\**\*.ttf" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Avalonia" />
-    <PackageReference Include="Avalonia.Themes.Fluent" />
-    <PackageReference Include="Avalonia.Fonts.Inter" />
-    <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
-    <PackageReference Include="Avalonia.Diagnostics">
-      <IncludeAssets Condition="'$(Configuration)' != 'Debug'">None</IncludeAssets>
-      <PrivateAssets Condition="'$(Configuration)' != 'Debug'">All</PrivateAssets>
-    </PackageReference>
-    <PackageReference Include="CommunityToolkit.Mvvm" />
-    <PackageReference Include="Material.Icons.Avalonia" />
-    <PackageReference Include="MessageBox.Avalonia" />
-    <PackageReference Include="MQTTnet" />
-  </ItemGroup>
+	<!-- PACKAGES -->
+	<ItemGroup>
+		<PackageReference Include="Avalonia" />
+		<PackageReference Include="Avalonia.Themes.Fluent" />
+		<PackageReference Include="Avalonia.Fonts.Inter" />
 
-  <ItemGroup>
-    <Resource Include="Font\Montserrat Black 900.ttf" />
-    <Resource Include="Font\Montserrat Black Italic 900.ttf" />
-    <Resource Include="Font\Montserrat Bold 700.ttf" />
-    <Resource Include="Font\Montserrat Bold Italic 700.ttf" />
-    <Resource Include="Font\Montserrat ExtraBold 800.ttf" />
-    <Resource Include="Font\Montserrat ExtraBold Italic 800.ttf" />
-    <Resource Include="Font\Montserrat ExtraLight 275.ttf" />
-    <Resource Include="Font\Montserrat ExtraLight Italic 275.ttf" />
-    <Resource Include="Font\Montserrat Italic 400.ttf" />
-    <Resource Include="Font\Montserrat Light 300.ttf" />
-    <Resource Include="Font\Montserrat Light Italic 300.ttf" />
-    <Resource Include="Font\Montserrat Medium 500.ttf" />
-    <Resource Include="Font\Montserrat Medium Italic 500.ttf" />
-    <Resource Include="Font\Montserrat Regular 400.ttf" />
-    <Resource Include="Font\Montserrat SemiBold 600.ttf" />
-    <Resource Include="Font\Montserrat SemiBold Italic 600.ttf" />
-    <Resource Include="Font\Montserrat Thin 250.ttf" />
-    <Resource Include="Font\Montserrat Thin Italic 250.ttf" />
-  </ItemGroup>
+		<PackageReference Include="Avalonia.Diagnostics">
+			<IncludeAssets Condition="'$(Configuration)' != 'Debug'">None</IncludeAssets>
+			<PrivateAssets Condition="'$(Configuration)' != 'Debug'">All</PrivateAssets>
+		</PackageReference>
+
+		<PackageReference Include="CommunityToolkit.Mvvm" />
+		<PackageReference Include="Material.Icons.Avalonia" />
+		<PackageReference Include="MessageBox.Avalonia" />
+		<PackageReference Include="MQTTnet" />
+	</ItemGroup>
+
 </Project>
