@@ -10,7 +10,7 @@
 			<RowDefinition Height="1*"/>
 			<RowDefinition Height="1*"/>
 			<RowDefinition Height="1*"/>
-			<RowDefinition Height="1*"/>
+			<RowDefinition Height="1.5*"/>
 			<RowDefinition Height="5*"/>
 		</Grid.RowDefinitions>
 
@@ -19,10 +19,10 @@
 		
 		</Grid.ColumnDefinitions>
 
-		<TextBlock x:Name="Status" Text="Connexion" FontSize="18"  VerticalAlignment="Top" Grid.Row="0" Grid.Column="0"/>
+		<TextBlock x:Name="Status" Classes="header" Text="Connexion" FontSize="25"  VerticalAlignment="Top" Grid.Row="0" Grid.Column="0"/>
 
-		<TextBox   x:Name="ID"  Watermark="ID"  Grid.Row="1" Grid.Column="0" FontSize="18" />
-		<TextBox   x:Name="MDP" PasswordChar="*" Watermark="Mot de passe..." FontSize="18"  Grid.Row="2" Grid.Column="0"/>
+		<TextBox   x:Name="ID"  Watermark="ID"  Grid.Row="1" Grid.Column="0" FontSize="25" />
+		<TextBox   x:Name="MDP" PasswordChar="*" Watermark="Mot de passe..." FontSize="25"  Grid.Row="2" Grid.Column="0"/>
 
 		<!-- Grille interne : colonnes déclarées, puis les boutons (hors ColumnDefinitions) -->
 		<Grid Grid.Row="3" Grid.Column="0">
@@ -31,8 +31,8 @@
 				<ColumnDefinition Width="1*"/>
 			</Grid.ColumnDefinitions>
 
-			<Button Grid.Column="0" Content="Connexion"  FontSize="18"   x:Name="BtnConnect" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
-			<Button Grid.Column="1" Content="Déconnexion" FontSize="18"  x:Name="BtnDisconnect" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+			<Button Grid.Column="0" Content="Connexion" Classes="raised" FontSize="25"   x:Name="BtnConnect" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" VerticalContentAlignment="Center"/>
+			<Button Grid.Column="1" Content="Déconnexion" Classes="raised" FontSize="25"  x:Name="BtnDisconnect" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" VerticalContentAlignment="Center"/>
 		</Grid>
 	</Grid>
 	

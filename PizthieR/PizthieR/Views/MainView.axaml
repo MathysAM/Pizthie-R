@@ -24,7 +24,7 @@
 				<TextBlock Grid.Column="1"
 						   Text="PIZZA THIERRY"
 						   FontSize="18"
-						   VerticalAlignment="Center"/>
+						   VerticalAlignment="Center" Classes="header"/>
 			</Grid>
 		</Border>
 
@@ -44,17 +44,17 @@
 								Name="Bconnection"
 								FontSize="16"
 								HorizontalAlignment="Stretch"
-								Click="ViewConnection_Click"/>
+								Click="ViewConnection_Click" Classes="raised"/>
 						<Button Content="Control"
 								Name="BControl"
 								FontSize="16"
 								HorizontalAlignment="Stretch"
-								Click="ViewControl_Click"/>
+								Click="ViewControl_Click" Classes="raised"/>
 						<Button Content="Programmation"
 								Name="BProgrammation"
 								FontSize="16"
 								HorizontalAlignment="Stretch"
-								Click="ViewProgrammation_Click"/>
+								Click="ViewProgrammation_Click" Classes="raised"/>
 					</StackPanel>
 				</Border>
 			</SplitView.Pane>

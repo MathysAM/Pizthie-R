@@ -6,7 +6,7 @@
              x:Class="PizthieR.Control">
 	<Grid>
 		<Grid.RowDefinitions> 
-			<RowDefinition Height="1*"/>
+			<RowDefinition Height="0.5*"/>
 			<RowDefinition Height="1*"/>
 			<RowDefinition Height="1*"/>
 			<RowDefinition Height="1*"/>
@@ -27,12 +27,12 @@
 				<ColumnDefinition Width="1*"/>
 			</Grid.ColumnDefinitions>
 			
-			<Button Content="Start" Name="StartFour" Grid.Column="0" FontSize="18"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
-			<Button Content="Stop" Name="StopFour" Grid.Column="3" FontSize="18"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+			<Button Content="Start" VerticalContentAlignment="Center" Classes="raised" Name="StartFour" Grid.Column="0" FontSize="25"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+			<Button Content="Stop" VerticalContentAlignment="Center" Classes="raised" Name="StopFour" Grid.Column="2" FontSize="25"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
 			
 		</Grid>
 		
-		<TextBox Text="Consigne température" Name="ConsigneTemperature" Grid.Row="2" Grid.Column="0" FontSize="18" IsVisible="False" />
+		<TextBox Text="Consigne température"  Name="ConsigneTemperature" Grid.Row="2" Grid.Column="0" FontSize="18" IsVisible="False" />
 		<Button Content="Publier température" FontSize="18"  Name="PublierTemperature"  Grid.Row="3" Grid.Column="0" IsVisible="False" />
 		
 		<TextBox Text="Température max" Name="TemperatureMax"  FontSize="18"  Grid.Row="5" Grid.Column="0" IsVisible="False" />
@@ -54,8 +54,8 @@
 				<ColumnDefinition Width="1*"/>
 			</Grid.ColumnDefinitions>
 
-			<TextBlock Text="Etat Four :" FontSize="18"   Grid.Column="0" />
-			<TextBlock Text="Etat" FontSize="18"  Name="Etatfour" Grid.Column="1" />
+			<TextBlock Text="Etat Four :" Classes="header" FontSize="25"   Grid.Column="0" />
+			<TextBlock  Classes="header" FontSize="25"  Name="Etatfour" Grid.Column="1" />
 
 		</Grid>
 		<Grid Grid.Row="6" Grid.Column="0" IsVisible="False">
@@ -74,8 +74,8 @@
 				<ColumnDefinition Width="1*"/>
 			</Grid.ColumnDefinitions>
 
-			<TextBlock Text="Mode fonctionnement:" FontSize="18"  TextWrapping="Wrap" Grid.Column="0" />
-			<TextBlock Text="Etat" FontSize="18"  Name="ModeFonctionnement" Grid.Column="1" />
+			<TextBlock Text="Mode fonctionnement:" Classes="header" FontSize="25"  TextWrapping="Wrap" Grid.Column="0" />
+			<TextBlock  Classes="header" FontSize="25"  Name="ModeFonctionnement" Grid.Column="1" />
 
 		</Grid>
 	</Grid>
