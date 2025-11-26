@@ -43,7 +43,7 @@
 
 		<!-- Bouton personnalisé -->
 		<Style Selector="Button.raised">
-			<Setter Property="FontFamily" Value="avares://PizthieR/Font/Montserrat Light 300.ttf#Montserrat Light" />
+			<!--<Setter Property="FontFamily" Value="avares://PizthieR/Font/Montserrat Light 300.ttf#Montserrat Light" /> -->
 			<Setter Property="Padding" Value="10,4" />
 			<Setter Property="CornerRadius" Value="8" />
 			<Setter Property="Background" Value="#4F5758" />
@@ -58,7 +58,7 @@
 		</Style>
 
 		<Style Selector="TextBlock.header">
-			<Setter Property="FontFamily"  Value="avares://PizthieR/Font/Montserrat Light 300.ttf#Montserrat Light" />
+			<!--<Setter Property="FontFamily" Value="avares://PizthieR/Font/Montserrat Light 300.ttf#Montserrat Light" /> -->
 		</Style>
 	</Application.Styles>
 

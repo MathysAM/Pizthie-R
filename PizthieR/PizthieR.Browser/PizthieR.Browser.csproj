@@ -1,18 +1,17 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.WebAssembly">
-  <PropertyGroup>
-    <TargetFramework>net8.0-browser</TargetFramework>
-    <OutputType>Exe</OutputType>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <Nullable>enable</Nullable>
-    <PublishTrimmed>false</PublishTrimmed>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net8.0-browser</TargetFramework>
+		<OutputType>Exe</OutputType>
+		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+		<Nullable>enable</Nullable>
+		<PublishTrimmed>false</PublishTrimmed>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Avalonia.Browser" />
-  
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Avalonia.Browser" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\PizthieR\PizthieR.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\PizthieR\PizthieR.csproj" />
+	</ItemGroup>
 </Project>
