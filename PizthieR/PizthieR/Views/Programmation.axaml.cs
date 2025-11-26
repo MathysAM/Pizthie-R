@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Threading;
 using MsBox.Avalonia.Enums;
-using MsBox.Avalonia;
 using PizthieR.Controller;
 
 namespace PizthieR;
@@ -163,15 +162,7 @@ public partial class Programmation : UserControl
             await _mqtt.PublishActive($"/Prog/{i}/StopMinute", em.ToString());
         }
 
-        // UNE SEULE FOIS, après la boucle
-        var box = MessageBoxManager.GetMessageBoxStandard(
-            "Programmation",
-            "Horaires enregistrés !",
-            ButtonEnum.Ok,
-            Icon.Success
-        );
-
-        await box.ShowAsync();
+       
     }
 
     // === Validation : durée ≥ 60 min, roulage minuit ===
