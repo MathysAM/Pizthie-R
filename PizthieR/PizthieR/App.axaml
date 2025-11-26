@@ -1,16 +1,12 @@
 <Application xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-			 xmlns:materialIcons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
              xmlns:local="using:PizthieR"
              x:Class="PizthieR.App"
              RequestedThemeVariant="Default">
-             <!-- "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options. -->
-
-
 
 	<Application.Styles>
 		<FluentTheme />
-		<materialIcons:MaterialIconStyles />
+
 		<!-- Template de base pour la CheckBox animée -->
 		<Style Selector="CheckBox.animated">
 			<Setter Property="Template">
@@ -40,17 +36,14 @@
 			<Setter Property="ContentTemplate" Value="{DynamicResource CrossIconTemplate}" />
 		</Style>
 
+		<!-- État coché : check -->
 		<Style Selector="CheckBox.animated:checked /template/ ContentControl#Icon">
 			<Setter Property="ContentTemplate" Value="{DynamicResource CheckIconTemplate}" />
 		</Style>
 
-
-
-
-
+		<!-- Bouton personnalisé -->
 		<Style Selector="Button.raised">
 			<Setter Property="FontFamily" Value="avares://PizthieR/Font/Montserrat Light 300.ttf#Montserrat Light" />
-                    
 			<Setter Property="Padding" Value="10,4" />
 			<Setter Property="CornerRadius" Value="8" />
 			<Setter Property="Background" Value="#4F5758" />
@@ -63,27 +56,40 @@
 		<Style Selector="Button.raised:pressed">
 			<Setter Property="Background" Value="#2FBB77" />
 		</Style>
+
 		<Style Selector="TextBlock.header">
 			<Setter Property="FontFamily"  Value="avares://PizthieR/Font/Montserrat Light 300.ttf#Montserrat Light" />
 		</Style>
 	</Application.Styles>
+
 	<Application.Resources>
-		<!-- Templates d’icônes -->
+		<!-- Icône check en vectoriel -->
 		<DataTemplate x:Key="CheckIconTemplate">
-			<materialIcons:MaterialIcon
-                Kind="CheckboxOutline"
-                Width="40" Height="40"
-                Foreground="#2FBB77" />
+			<Grid Width="40" Height="40">
+				<Border CornerRadius="4"
+						BorderBrush="#2FBB77"
+						BorderThickness="2"
+						Background="Transparent" />
+				<Path Stroke="#2FBB77"
+					  StrokeThickness="3"
+					  StrokeJoin="Round"
+					  StrokeLineCap="Round"
+					  Data="M 8 20 L 18 30 L 32 10" />
+			</Grid>
 		</DataTemplate>
 
-		<!-- Icône croix -->
 		<DataTemplate x:Key="CrossIconTemplate">
-			<materialIcons:MaterialIcon
-                Kind="CloseBoxOutline"
-                Width="40" Height="40"
-                Foreground="#4F5758" />
+			<Grid Width="40" Height="40">
+				<Border CornerRadius="4"
+						BorderBrush="#4F5758"
+						BorderThickness="2"
+						Background="Transparent" />
+				<Path Stroke="#4F5758"
+					  StrokeThickness="3"
+					  StrokeJoin="Round"
+					  StrokeLineCap="Round"
+					  Data="M 10 10 L 30 30 M 30 10 L 10 30" />
+			</Grid>
 		</DataTemplate>
-
-		
 	</Application.Resources>
 </Application>
