@@ -20,7 +20,7 @@
       <PrivateAssets Condition="'$(Configuration)' != 'Debug'">All</PrivateAssets>
     </PackageReference>
     <PackageReference Include="Material.Icons.Avalonia" />
-    <PackageReference Include="MessageBox.Avalonia" />
+   
   </ItemGroup>
 
   <ItemGroup>
