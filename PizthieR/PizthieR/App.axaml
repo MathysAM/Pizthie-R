@@ -3,93 +3,11 @@
              xmlns:local="using:PizthieR"
              x:Class="PizthieR.App"
              RequestedThemeVariant="Default">
+	<!-- "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options. -->
+
+
 
 	<Application.Styles>
 		<FluentTheme />
-
-		<!-- Template de base pour la CheckBox animée -->
-		<Style Selector="CheckBox.animated">
-			<Setter Property="Template">
-				<ControlTemplate TargetType="CheckBox">
-					<Grid Background="Transparent">
-						<ContentControl x:Name="Icon"
-										HorizontalAlignment="Center"
-										VerticalAlignment="Center" />
-					</Grid>
-				</ControlTemplate>
-			</Setter>
-		</Style>
-
-		<!-- Transitions et valeur par défaut sur l’icône -->
-		<Style Selector="CheckBox.animated /template/ ContentControl#Icon">
-			<Setter Property="Opacity" Value="1" />
-			<Setter Property="Transitions">
-				<Transitions>
-					<DoubleTransition Property="Opacity"
-									  Duration="0:0:0.20" />
-				</Transitions>
-			</Setter>
-		</Style>
-
-		<!-- État NON coché : croix -->
-		<Style Selector="CheckBox.animated:not(:checked) /template/ ContentControl#Icon">
-			<Setter Property="ContentTemplate" Value="{DynamicResource CrossIconTemplate}" />
-		</Style>
-
-		<!-- État coché : check -->
-		<Style Selector="CheckBox.animated:checked /template/ ContentControl#Icon">
-			<Setter Property="ContentTemplate" Value="{DynamicResource CheckIconTemplate}" />
-		</Style>
-
-		<!-- Bouton personnalisé -->
-		<Style Selector="Button.raised">
-			<!--<Setter Property="FontFamily" Value="avares://PizthieR/Font/Montserrat Light 300.ttf#Montserrat Light" /> -->
-			<Setter Property="Padding" Value="10,4" />
-			<Setter Property="CornerRadius" Value="8" />
-			<Setter Property="Background" Value="#4F5758" />
-			<Setter Property="Foreground" Value="White" />
-			<Setter Property="FontSize" Value="18" />
-			<Setter Property="BorderBrush" Value="#DADADA" />
-			<Setter Property="BorderThickness" Value="1" />
-		</Style>
-
-		<Style Selector="Button.raised:pressed">
-			<Setter Property="Background" Value="#2FBB77" />
-		</Style>
-
-		<Style Selector="TextBlock.header">
-			<!--<Setter Property="FontFamily" Value="avares://PizthieR/Font/Montserrat Light 300.ttf#Montserrat Light" /> -->
-		</Style>
 	</Application.Styles>
-
-	<Application.Resources>
-		<!-- Icône check en vectoriel -->
-		<DataTemplate x:Key="CheckIconTemplate">
-			<Grid Width="40" Height="40">
-				<Border CornerRadius="4"
-						BorderBrush="#2FBB77"
-						BorderThickness="2"
-						Background="Transparent" />
-				<Path Stroke="#2FBB77"
-					  StrokeThickness="3"
-					  StrokeJoin="Round"
-					  StrokeLineCap="Round"
-					  Data="M 8 20 L 18 30 L 32 10" />
-			</Grid>
-		</DataTemplate>
-
-		<DataTemplate x:Key="CrossIconTemplate">
-			<Grid Width="40" Height="40">
-				<Border CornerRadius="4"
-						BorderBrush="#4F5758"
-						BorderThickness="2"
-						Background="Transparent" />
-				<Path Stroke="#4F5758"
-					  StrokeThickness="3"
-					  StrokeJoin="Round"
-					  StrokeLineCap="Round"
-					  Data="M 10 10 L 30 30 M 30 10 L 10 30" />
-			</Grid>
-		</DataTemplate>
-	</Application.Resources>
 </Application>
