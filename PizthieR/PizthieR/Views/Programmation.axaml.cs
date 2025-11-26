@@ -5,7 +5,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Threading;
-using MsBox.Avalonia.Enums;
+
 using PizthieR.Controller;
 
 namespace PizthieR;
