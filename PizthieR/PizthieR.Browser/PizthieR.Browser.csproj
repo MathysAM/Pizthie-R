@@ -10,7 +10,7 @@
   <ItemGroup>
     <PackageReference Include="Avalonia.Browser" />
     <PackageReference Include="Material.Icons.Avalonia" />
-    <PackageReference Include="MessageBox.Avalonia" />
+  
   </ItemGroup>
 
   <ItemGroup>
