@@ -9,6 +9,13 @@
 
 	<ItemGroup>
 		<PackageReference Include="Avalonia.Browser" />
+		<!-- Force le package natif WASM (même si déjà transitif) -->
+		<PackageReference Include="SkiaSharp.NativeAssets.WebAssembly" Version="2.88.9" />
+	</ItemGroup>
+
+	<!-- Force l’inclusion des binaires natifs dans le bundle -->
+	<ItemGroup>
+		<WasmNativeAsset Include="$(NuGetPackageRoot)skiasharp.nativeassets.webassembly/2.88.9/runtimes/browser-wasm/native/**" />
 	</ItemGroup>
 
 	<ItemGroup>
