@@ -36,65 +36,32 @@ jobs:
       - name: Set publish path
         run: echo "PUBLISH_WWWROOT=PizthieR/PizthieR.Browser/bin/Release/net8.0-browser/publish/wwwroot" >> $GITHUB_ENV
 
+      - name: Verify publish folder exists
+        shell: bash
+        run: |
+          set -e
+          echo "PUBLISH_WWWROOT=$PUBLISH_WWWROOT"
+          test -d "$PUBLISH_WWWROOT" || (echo "ERROR: publish wwwroot not found" && exit 1)
+          ls -la "$PUBLISH_WWWROOT"
+
+      - name: Disable Jekyll
+        run: touch "$PUBLISH_WWWROOT/.nojekyll"
+
       # ✅ CRITIQUE : Avalonia cherche avalonia.js dans _framework
       - name: Fix Avalonia JS location
+        shell: bash
         run: |
-          echo "Copy avalonia.js into _framework..."
+          set -e
           cp "$PUBLISH_WWWROOT/avalonia.js" "$PUBLISH_WWWROOT/_framework/avalonia.js"
           if [ -f "$PUBLISH_WWWROOT/avalonia.js.map" ]; then
             cp "$PUBLISH_WWWROOT/avalonia.js.map" "$PUBLISH_WWWROOT/_framework/avalonia.js.map"
           fi
 
-      - name: Disable Jekyll
-        run: touch "$PUBLISH_WWWROOT/.nojekyll"
-
-      - name: Check Avalonia JS presence
-        run: |
-          echo "===== Check avalonia.js ====="
-          ls -la "$PUBLISH_WWWROOT/_framework" | grep -i avalonia || true
-
-      - name: Check Skia native asset
-        run: |
-          echo "===== List _framework entries matching skia ====="
-          ls -la "$PUBLISH_WWWROOT/_framework" | grep -i skia || true
-
-     # ✅ FIX PROPRE : garder SkiaSharp.wasm (managé) et AJOUTER libSkiaSharp.wasm (natif)
-      - name: Add libSkiaSharp.wasm and register in blazor.boot.json
-        run: |
-          set -e
-          FW="$PUBLISH_WWWROOT/_framework"
-          BOOT="$FW/blazor.boot.json"
-
-          echo "===== Sanity checks ====="
-          test -f "$BOOT" || (echo "ERROR: blazor.boot.json not found at $BOOT" && exit 1)
-
-          echo "Files matching skia BEFORE:"
-          ls -la "$FW" | grep -i skia || true
-
-          # 1) Si SkiaSharp.wasm existe, on le COPIE en libSkiaSharp.wasm (on ne renomme pas)
-          if [ -f "$FW/SkiaSharp.wasm" ]; then
-            echo "Copy SkiaSharp.wasm -> libSkiaSharp.wasm (keep original)"
-            cp -f "$FW/SkiaSharp.wasm" "$FW/libSkiaSharp.wasm"
-          else
-            echo "ERROR: SkiaSharp.wasm not found in _framework (can't create libSkiaSharp.wasm)"
-            exit 1
-          fi
-
-          # 2) Calcule le hash attendu par blazor.boot.json (sha256-BASE64)
-          HASH="sha256-$(openssl dgst -sha256 -binary "$FW/libSkiaSharp.wasm" | openssl base64 -A)"
-          echo "Computed libSkiaSharp.wasm hash: $HASH"
-
-          # 3) Patch JSON : ajoute l’entrée dans resources.wasmNative sans toucher au reste
-          #    (jq est dispo sur ubuntu-latest)
-          tmp="$(mktemp)"
-          jq --arg h "$HASH" '.resources.wasmNative["libSkiaSharp.wasm"] = $h' "$BOOT" > "$tmp"
-          mv "$tmp" "$BOOT"
-
-          echo "Files matching skia AFTER:"
-          ls -la "$FW" | grep -i skia || true
-
-          echo "===== Boot entries (skia) ====="
-          grep -n "SkiaSharp\.wasm\|libSkiaSharp\.wasm" "$BOOT" || true
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          name: github-pages      # <-- IMPORTANT : le nom attendu par deploy-pages
+          path: ${{ env.PUBLISH_WWWROOT }}
 
   deploy:
     needs: build
