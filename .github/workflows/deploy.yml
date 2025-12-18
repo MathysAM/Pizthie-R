@@ -1,51 +1,42 @@
 name: Deploy Avalonia WASM to GitHub Pages
 
-# 1) Donne les permissions nécessaires au GITHUB_TOKEN
-permissions:
-  contents: write   # autorise l’écriture dans le dépôt
-  pages: write      # autorise l’utilisation de l’API Pages
-
 on:
   push:
     branches: [ main ]
 
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
+
 jobs:
-  build-and-deploy:
+  build:
     runs-on: ubuntu-latest
-
     steps:
-      # 2) Checkout du code
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
-      # 3) Debug de l’arborescence pour vérifier les chemins
-      - name: Debug folder structure
-        run: |
-          echo "===== ROOT ====="
-          ls -R .
-
-      # 4) Installation de .NET 8
       - name: Setup .NET 8
-        uses: actions/setup-dotnet@v3
+        uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: '8.0.x'
+          dotnet-version: "8.0.x"
 
-      # 5) Installation du workload WebAssembly
       - name: Install WASM workload
         run: dotnet workload install wasm-tools
 
-      # 6) Restore et publication du projet Browser
       - name: Restore & Publish Avalonia.Browser
         run: |
           dotnet restore PizthieR/PizthieR.Browser/PizthieR.Browser.csproj
-          dotnet publish  PizthieR/PizthieR.Browser/PizthieR.Browser.csproj \
+          dotnet publish PizthieR/PizthieR.Browser/PizthieR.Browser.csproj \
             -c Release -o output --framework net8.0-browser
 
-       # 7) Désactive Jekyll pour que _framework soit servi
       - name: Disable Jekyll
         run: touch output/wwwroot/.nojekyll
 
-      # 8) Vérification du contenu généré
       - name: Check generated files
         run: |
           echo "===== wwwroot ====="
@@ -53,12 +44,18 @@ jobs:
           echo "===== _framework ====="
           ls -la output/wwwroot/_framework | head -n 50
 
-
-      # 7) Déploiement sur la branche gh-pages
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_branch: gh-pages
-          publish_dir: ./output/wwwroot
-          force_orphan: true
+          path: output/wwwroot
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
