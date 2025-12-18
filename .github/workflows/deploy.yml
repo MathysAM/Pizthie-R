@@ -34,6 +34,12 @@ jobs:
           dotnet publish PizthieR/PizthieR.Browser/PizthieR.Browser.csproj \
             -c Release -o output --framework net8.0-browser
 
+
+      - name: Fix Avalonia JS location
+        run: |
+          cp output/wwwroot/avalonia.js output/wwwroot/_framework/avalonia.js
+          cp output/wwwroot/avalonia.js.map output/wwwroot/_framework/avalonia.js.map || true
+
       - name: Disable Jekyll
         run: touch output/wwwroot/.nojekyll
 
