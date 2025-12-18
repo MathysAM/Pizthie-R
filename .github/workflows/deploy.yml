@@ -29,38 +29,40 @@ jobs:
       - name: Install WASM workload
         run: dotnet workload install wasm-tools
 
-      # Publish sans -o output (chemin standard bin/.../publish)
       - name: Restore & Publish Avalonia.Browser
         run: |
           dotnet restore PizthieR/PizthieR.Browser/PizthieR.Browser.csproj
           dotnet publish PizthieR/PizthieR.Browser/PizthieR.Browser.csproj \
             -c Release -f net8.0-browser
 
-      # Définition du chemin wwwroot publié
       - name: Set publish path
         run: |
           echo "PUBLISH_WWWROOT=PizthieR/PizthieR.Browser/bin/Release/net8.0-browser/publish/wwwroot" >> $GITHUB_ENV
 
-      # Désactive Jekyll (obligatoire pour _framework)
+      - name: Verify publish path exists
+        run: |
+          echo "PUBLISH_WWWROOT=$PUBLISH_WWWROOT"
+          test -d "$PUBLISH_WWWROOT" || (echo "ERROR: publish wwwroot not found" && ls -la PizthieR/PizthieR.Browser/bin/Release/net8.0-browser/publish && exit 1)
+          test -d "$PUBLISH_WWWROOT/_framework" || (echo "ERROR: _framework not found" && ls -la "$PUBLISH_WWWROOT" && exit 1)
+
       - name: Disable Jekyll
         run: |
           touch "$PUBLISH_WWWROOT/.nojekyll"
 
-      # 🔍 Vérification explicite de Skia (CRITIQUE)
       - name: Check Skia native asset
         run: |
-          echo "===== Search libSkiaSharp in _framework ====="
+          echo "===== Search libSkiaSharp in publish (wwwroot) ====="
+          find "$PUBLISH_WWWROOT" -maxdepth 3 -type f \( -iname "*libskiasharp*" -o -iname "*skia*" \) -print || true
+          echo "===== List _framework entries matching skia ====="
           ls -la "$PUBLISH_WWWROOT/_framework" | grep -i skia || true
 
-      # Vérification générale des fichiers générés
       - name: Check generated files
         run: |
           echo "===== wwwroot ====="
           ls -la "$PUBLISH_WWWROOT"
-          echo "===== _framework ====="
-          ls -la "$PUBLISH_WWWROOT/_framework" | head -n 80
+          echo "===== _framework (head) ====="
+          ls -la "$PUBLISH_WWWROOT/_framework" | head -n 120
 
-      # Upload vers GitHub Pages
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
