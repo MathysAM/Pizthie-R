@@ -1,4 +1,4 @@
-name: Deploy Avalonia WASM to GitHub Pages
+﻿name: Deploy Avalonia WASM to GitHub Pages
 
 on:
   push:
@@ -16,6 +16,7 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -28,25 +29,30 @@ jobs:
       - name: Install WASM workload
         run: dotnet workload install wasm-tools
 
-      # Publish SANS -o output (sortie standard bin/.../publish)
+      # Publish sans -o output (chemin standard bin/.../publish)
       - name: Restore & Publish Avalonia.Browser
         run: |
           dotnet restore PizthieR/PizthieR.Browser/PizthieR.Browser.csproj
           dotnet publish PizthieR/PizthieR.Browser/PizthieR.Browser.csproj \
             -c Release -f net8.0-browser
 
-      # Chemin standard du publish
+      # Définition du chemin wwwroot publié
       - name: Set publish path
-        run: echo "PUBLISH_WWWROOT=PizthieR/PizthieR.Browser/bin/Release/net8.0-browser/publish/wwwroot" >> $GITHUB_ENV
-
-      - name: Fix Avalonia JS location
         run: |
-          cp "$PUBLISH_WWWROOT/avalonia.js" "$PUBLISH_WWWROOT/_framework/avalonia.js"
-          cp "$PUBLISH_WWWROOT/avalonia.js.map" "$PUBLISH_WWWROOT/_framework/avalonia.js.map" || true
+          echo "PUBLISH_WWWROOT=PizthieR/PizthieR.Browser/bin/Release/net8.0-browser/publish/wwwroot" >> $GITHUB_ENV
 
+      # Désactive Jekyll (obligatoire pour _framework)
       - name: Disable Jekyll
-        run: touch "$PUBLISH_WWWROOT/.nojekyll"
+        run: |
+          touch "$PUBLISH_WWWROOT/.nojekyll"
 
+      # 🔍 Vérification explicite de Skia (CRITIQUE)
+      - name: Check Skia native asset
+        run: |
+          echo "===== Search libSkiaSharp in _framework ====="
+          ls -la "$PUBLISH_WWWROOT/_framework" | grep -i skia || true
+
+      # Vérification générale des fichiers générés
       - name: Check generated files
         run: |
           echo "===== wwwroot ====="
@@ -54,6 +60,7 @@ jobs:
           echo "===== _framework ====="
           ls -la "$PUBLISH_WWWROOT/_framework" | head -n 80
 
+      # Upload vers GitHub Pages
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
@@ -65,6 +72,7 @@ jobs:
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
+
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
