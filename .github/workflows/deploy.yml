@@ -41,6 +41,19 @@ jobs:
           dotnet publish  PizthieR/PizthieR.Browser/PizthieR.Browser.csproj \
             -c Release -o output --framework net8.0-browser
 
+       # 7) Désactive Jekyll pour que _framework soit servi
+      - name: Disable Jekyll
+        run: touch output/wwwroot/.nojekyll
+
+      # 8) Vérification du contenu généré
+      - name: Check generated files
+        run: |
+          echo "===== wwwroot ====="
+          ls -la output/wwwroot
+          echo "===== _framework ====="
+          ls -la output/wwwroot/_framework | head -n 50
+
+
       # 7) Déploiement sur la branche gh-pages
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
