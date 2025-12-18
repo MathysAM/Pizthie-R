@@ -17,5 +17,6 @@
 		<PackageVersion Include="CommunityToolkit.Mvvm" Version="8.4.0" />
 		<PackageVersion Include="MQTTnet" Version="4.3.7.1207" />
 		<PackageVersion Include="Xamarin.AndroidX.Core.SplashScreen" Version="1.0.1.15" />
+		<PackageVersion Include="SkiaSharp.NativeAssets.WebAssembly" Version="2.88.9" />
 	</ItemGroup>
 </Project>
