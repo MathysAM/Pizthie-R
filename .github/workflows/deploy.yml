@@ -16,7 +16,6 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -32,36 +31,32 @@ jobs:
       - name: Restore & Publish Avalonia.Browser
         run: |
           dotnet restore PizthieR/PizthieR.Browser/PizthieR.Browser.csproj
-          dotnet publish PizthieR/PizthieR.Browser/PizthieR.Browser.csproj \
-            -c Release -f net8.0-browser
+          dotnet publish PizthieR/PizthieR.Browser/PizthieR.Browser.csproj -c Release -f net8.0-browser
 
       - name: Set publish path
-        run: |
-          echo "PUBLISH_WWWROOT=PizthieR/PizthieR.Browser/bin/Release/net8.0-browser/publish/wwwroot" >> $GITHUB_ENV
+        run: echo "PUBLISH_WWWROOT=PizthieR/PizthieR.Browser/bin/Release/net8.0-browser/publish/wwwroot" >> $GITHUB_ENV
 
-      - name: Verify publish path exists
+      # ✅ CRITIQUE : Avalonia cherche avalonia.js dans _framework
+      - name: Fix Avalonia JS location
         run: |
-          echo "PUBLISH_WWWROOT=$PUBLISH_WWWROOT"
-          test -d "$PUBLISH_WWWROOT" || (echo "ERROR: publish wwwroot not found" && ls -la PizthieR/PizthieR.Browser/bin/Release/net8.0-browser/publish && exit 1)
-          test -d "$PUBLISH_WWWROOT/_framework" || (echo "ERROR: _framework not found" && ls -la "$PUBLISH_WWWROOT" && exit 1)
+          echo "Copy avalonia.js into _framework..."
+          cp "$PUBLISH_WWWROOT/avalonia.js" "$PUBLISH_WWWROOT/_framework/avalonia.js"
+          if [ -f "$PUBLISH_WWWROOT/avalonia.js.map" ]; then
+            cp "$PUBLISH_WWWROOT/avalonia.js.map" "$PUBLISH_WWWROOT/_framework/avalonia.js.map"
+          fi
 
       - name: Disable Jekyll
+        run: touch "$PUBLISH_WWWROOT/.nojekyll"
+
+      - name: Check Avalonia JS presence
         run: |
-          touch "$PUBLISH_WWWROOT/.nojekyll"
+          echo "===== Check avalonia.js ====="
+          ls -la "$PUBLISH_WWWROOT/_framework" | grep -i avalonia || true
 
       - name: Check Skia native asset
         run: |
-          echo "===== Search libSkiaSharp in publish (wwwroot) ====="
-          find "$PUBLISH_WWWROOT" -maxdepth 3 -type f \( -iname "*libskiasharp*" -o -iname "*skia*" \) -print || true
           echo "===== List _framework entries matching skia ====="
           ls -la "$PUBLISH_WWWROOT/_framework" | grep -i skia || true
-
-      - name: Check generated files
-        run: |
-          echo "===== wwwroot ====="
-          ls -la "$PUBLISH_WWWROOT"
-          echo "===== _framework (head) ====="
-          ls -la "$PUBLISH_WWWROOT/_framework" | head -n 120
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
@@ -74,7 +69,6 @@ jobs:
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
-
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
