@@ -28,32 +28,36 @@ jobs:
       - name: Install WASM workload
         run: dotnet workload install wasm-tools
 
+      # Publish SANS -o output (sortie standard bin/.../publish)
       - name: Restore & Publish Avalonia.Browser
         run: |
           dotnet restore PizthieR/PizthieR.Browser/PizthieR.Browser.csproj
           dotnet publish PizthieR/PizthieR.Browser/PizthieR.Browser.csproj \
-            -c Release -o output --framework net8.0-browser
+            -c Release -f net8.0-browser
 
+      # Chemin standard du publish
+      - name: Set publish path
+        run: echo "PUBLISH_WWWROOT=PizthieR/PizthieR.Browser/bin/Release/net8.0-browser/publish/wwwroot" >> $GITHUB_ENV
 
       - name: Fix Avalonia JS location
         run: |
-          cp output/wwwroot/avalonia.js output/wwwroot/_framework/avalonia.js
-          cp output/wwwroot/avalonia.js.map output/wwwroot/_framework/avalonia.js.map || true
+          cp "$PUBLISH_WWWROOT/avalonia.js" "$PUBLISH_WWWROOT/_framework/avalonia.js"
+          cp "$PUBLISH_WWWROOT/avalonia.js.map" "$PUBLISH_WWWROOT/_framework/avalonia.js.map" || true
 
       - name: Disable Jekyll
-        run: touch output/wwwroot/.nojekyll
+        run: touch "$PUBLISH_WWWROOT/.nojekyll"
 
       - name: Check generated files
         run: |
           echo "===== wwwroot ====="
-          ls -la output/wwwroot
+          ls -la "$PUBLISH_WWWROOT"
           echo "===== _framework ====="
-          ls -la output/wwwroot/_framework | head -n 50
+          ls -la "$PUBLISH_WWWROOT/_framework" | head -n 80
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: output/wwwroot
+          path: ${{ env.PUBLISH_WWWROOT }}
 
   deploy:
     needs: build
