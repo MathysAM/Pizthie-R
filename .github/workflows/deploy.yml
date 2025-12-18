@@ -58,48 +58,43 @@ jobs:
           echo "===== List _framework entries matching skia ====="
           ls -la "$PUBLISH_WWWROOT/_framework" | grep -i skia || true
 
-      # ✅ CORRECTIF : SkiaSharp cherche libSkiaSharp (pas SkiaSharp.wasm)
-      - name: Fix SkiaSharp native module name (libSkiaSharp)
+     # ✅ FIX PROPRE : garder SkiaSharp.wasm (managé) et AJOUTER libSkiaSharp.wasm (natif)
+      - name: Add libSkiaSharp.wasm and register in blazor.boot.json
         run: |
           set -e
           FW="$PUBLISH_WWWROOT/_framework"
           BOOT="$FW/blazor.boot.json"
 
-          echo "===== Before fix ====="
+          echo "===== Sanity checks ====="
+          test -f "$BOOT" || (echo "ERROR: blazor.boot.json not found at $BOOT" && exit 1)
+
+          echo "Files matching skia BEFORE:"
           ls -la "$FW" | grep -i skia || true
 
-          if [ -f "$FW/SkiaSharp.wasm" ] && [ ! -f "$FW/libSkiaSharp.wasm" ]; then
-            echo "Renaming SkiaSharp.wasm -> libSkiaSharp.wasm"
-            mv "$FW/SkiaSharp.wasm" "$FW/libSkiaSharp.wasm"
-
-            if [ -f "$FW/SkiaSharp.wasm.br" ]; then
-              mv "$FW/SkiaSharp.wasm.br" "$FW/libSkiaSharp.wasm.br"
-            fi
-
-            if [ -f "$FW/SkiaSharp.wasm.gz" ]; then
-              mv "$FW/SkiaSharp.wasm.gz" "$FW/libSkiaSharp.wasm.gz"
-            fi
-
-            if [ -f "$BOOT" ]; then
-              echo "Patching blazor.boot.json (SkiaSharp.wasm -> libSkiaSharp.wasm)"
-              sed -i 's/SkiaSharp\.wasm/libSkiaSharp.wasm/g' "$BOOT"
-            else
-              echo "ERROR: blazor.boot.json not found at $BOOT"
-              exit 1
-            fi
+          # 1) Si SkiaSharp.wasm existe, on le COPIE en libSkiaSharp.wasm (on ne renomme pas)
+          if [ -f "$FW/SkiaSharp.wasm" ]; then
+            echo "Copy SkiaSharp.wasm -> libSkiaSharp.wasm (keep original)"
+            cp -f "$FW/SkiaSharp.wasm" "$FW/libSkiaSharp.wasm"
           else
-            echo "No rename needed (either libSkiaSharp already exists or SkiaSharp.wasm missing)."
+            echo "ERROR: SkiaSharp.wasm not found in _framework (can't create libSkiaSharp.wasm)"
+            exit 1
           fi
 
-          echo "===== After fix ====="
-          ls -la "$FW" | grep -i skia || true
-          echo "===== Boot json check ====="
-          grep -n "SkiaSharp\.wasm\|libSkiaSharp\.wasm" "$BOOT" || true
+          # 2) Calcule le hash attendu par blazor.boot.json (sha256-BASE64)
+          HASH="sha256-$(openssl dgst -sha256 -binary "$FW/libSkiaSharp.wasm" | openssl base64 -A)"
+          echo "Computed libSkiaSharp.wasm hash: $HASH"
 
-      - name: Upload Pages artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: ${{ env.PUBLISH_WWWROOT }}
+          # 3) Patch JSON : ajoute l’entrée dans resources.wasmNative sans toucher au reste
+          #    (jq est dispo sur ubuntu-latest)
+          tmp="$(mktemp)"
+          jq --arg h "$HASH" '.resources.wasmNative["libSkiaSharp.wasm"] = $h' "$BOOT" > "$tmp"
+          mv "$tmp" "$BOOT"
+
+          echo "Files matching skia AFTER:"
+          ls -la "$FW" | grep -i skia || true
+
+          echo "===== Boot entries (skia) ====="
+          grep -n "SkiaSharp\.wasm\|libSkiaSharp\.wasm" "$BOOT" || true
 
   deploy:
     needs: build
