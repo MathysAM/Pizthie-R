@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>PizthieR.Browser</title>
+    <meta charset="UTF-8">
+
+    <!-- IMPORTANT : verrouille le zoom et évite l’auto-zoom iOS sur focus -->
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+    <meta name="format-detection" content="telephone=no">
+    <base href="./"> <!-- AJOUT ICI -->
+    <!-- Début du manifest PWA -->
+    <link rel="manifest" href="manifest.json" />
+    <meta name="theme-color" content="#007ACC" />
+    <!-- Fin du manifest PWA -->
+    <link rel="stylesheet" href="./app.css" />
+    <style>
+        /* iOS : ne pas ré-agrandir automatiquement le texte */
+        html {
+            -webkit-text-size-adjust: 100%;
+        }
+
+        /* Clé : toutes les entrées ont une police ≥ 16px pour empêcher le focus-zoom iOS */
+        input, textarea, select, button {
+            font-size: 16px !important;
+        }
+
+        /* Au cas où l’overlay Avalonia utilise des ids/classes spécifiques */
+        #avalonia-input, .avalonia-input, .avalonia-textbox, .av-textbox {
+            font-size: 16px !important;
+        }
+
+        /* Évite le double-tap zoom sur mobile */
+        body {
+            touch-action: manipulation;
+        }
+    </style>
+</head>
+
+
+<body style="margin: 0; overflow: hidden">
+    <div id="out">
+        <div id="splash"
+             style="display:flex; align-items:center; justify-content:center;
+              height:100vh; background:#b22222; color:white; font-family:sans-serif;">
+            <h1>🍕 Pizza Thierry</h1>
+        </div>
+    </div>
+    <!-- Script : verrouille le viewport pendant le focus (ceinture & bretelles) -->
+    <script>
+        (function () {
+            var vp = document.querySelector('meta[name=viewport]');
+            if (!vp) return;
+
+            function lockZoom() {
+                vp.setAttribute('content',
+                    'width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover');
+            }
+            function unlockZoom() {
+                // Si tu veux réautoriser le pinch après blur, dé-commente :
+                // vp.setAttribute('content', 'width=device-width, initial-scale=1, viewport-fit=cover');
+            }
+
+            document.addEventListener('focusin', lockZoom);
+            document.addEventListener('focusout', unlockZoom);
+        })();
+    </script>
+    <script type='module' src="./main.js"></script>
+</body>
+
+</html>
