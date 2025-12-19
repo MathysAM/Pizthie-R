@@ -7,7 +7,7 @@ permissions:
 
 on:
   push:
-    branches: [ main ]
+    branches: [ AppFonctionnel ]
 
 jobs:
   build-and-deploy:
