@@ -35,8 +35,17 @@ jobs:
           dotnet publish PizthieR/PizthieR.Browser/PizthieR.Browser.csproj \
             -c Release \
             -f net8.0-browser \
-            -o publish
+            -o publish \
+            /p:BlazorEnableCompression=false \
+            /p:CompressionEnabled=false
 
+
+      - name: Remove precompressed assets for GitHub Pages
+        run: |
+          find publish/wwwroot -type f \( -name "*.br" -o -name "*.gz" \) -delete
+
+
+      
       # 5) Workaround : Avalonia cherche avalonia.js dans _framework
       - name: Ensure avalonia.js is available under _framework
         run: |
