@@ -21,7 +21,8 @@
   <ItemGroup>
     <PackageReference Include="Avalonia.Browser" />
     <!-- Fournit libSkiaSharp pour WebAssembly -->
-    <PackageReference Include="SkiaSharp.NativeAssets.WebAssembly" />
+     <PackageReference Include="SkiaSharp" />
+     <PackageReference Include="SkiaSharp.NativeAssets.WebAssembly" />
   </ItemGroup>
 
   <ItemGroup>
