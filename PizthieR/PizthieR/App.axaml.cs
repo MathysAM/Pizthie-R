@@ -6,6 +6,7 @@ using System.Linq;
 using Avalonia.Markup.Xaml;
 
 using PizthieR.Views;
+using Avalonia.Controls;
 
 namespace PizthieR;
 
@@ -28,8 +29,16 @@ public partial class App : Application
         }
         else if (ApplicationLifetime is ISingleViewApplicationLifetime singleViewPlatform)
         {
-            singleViewPlatform.MainView = new MainView();
-            
+            //singleViewPlatform.MainView = new MainView();
+
+            singleViewPlatform.MainView = new TextBlock
+            {
+                Text = "Hello WASM",
+                FontSize = 32,
+                HorizontalAlignment = Avalonia.Layout.HorizontalAlignment.Center,
+                VerticalAlignment = Avalonia.Layout.VerticalAlignment.Center
+            };
+
         }
 
         base.OnFrameworkInitializationCompleted();
