@@ -1,51 +1,58 @@
 name: Deploy Avalonia WASM to GitHub Pages
 
-# 1) Donne les permissions nécessaires au GITHUB_TOKEN
 permissions:
-  contents: write   # autorise l’écriture dans le dépôt
-  pages: write      # autorise l’utilisation de l’API Pages
+  contents: write
+  pages: write
 
 on:
   push:
-    branches: [ NouveauTest ]
+    branches:
+      - NouveauTest
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
-      # 2) Checkout du code
-      - name: Checkout code
-        uses: actions/checkout@v3
+      # 1) Récupération du code
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-      # 3) Debug de l’arborescence pour vérifier les chemins
-      - name: Debug folder structure
-        run: |
-          echo "===== ROOT ====="
-          ls -R .
-
-      # 4) Installation de .NET 8
+      # 2) Installation .NET 8
       - name: Setup .NET 8
-        uses: actions/setup-dotnet@v3
+        uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: '8.0.x'
+          dotnet-version: 8.0.x
 
-      # 5) Installation du workload WebAssembly
-      - name: Install WASM workload
+      # 3) Installation du workload WASM
+      - name: Install WASM tools
         run: dotnet workload install wasm-tools
 
-      # 6) Restore et publication du projet Browser
-      - name: Restore & Publish Avalonia.Browser
+      # 4) Restore + Publish Avalonia Browser
+      - name: Publish Avalonia Browser (WASM)
         run: |
           dotnet restore PizthieR/PizthieR.Browser/PizthieR.Browser.csproj
-          dotnet publish  PizthieR/PizthieR.Browser/PizthieR.Browser.csproj \
-            -c Release -o output --framework net8.0-browser
+          dotnet publish PizthieR/PizthieR.Browser/PizthieR.Browser.csproj \
+            -c Release \
+            -f net8.0-browser \
+            -o publish
 
-      # 7) Déploiement sur la branche gh-pages
+      # 5) Vérification explicite du contenu publié (critique)
+      - name: Verify published files
+        run: |
+          echo "==== publish ===="
+          ls -la publish
+          echo "==== publish/wwwroot ===="
+          ls -la publish/wwwroot
+          echo "==== publish/wwwroot/_framework ===="
+          ls -la publish/wwwroot/_framework
+
+      # 6) Déploiement GitHub Pages (Jekyll désactivé)
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_branch: gh-pages
-          publish_dir: ./output/wwwroot
+          publish_dir: publish/wwwroot
           force_orphan: true
+          enable_jekyll: false
