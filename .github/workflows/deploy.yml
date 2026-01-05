@@ -14,17 +14,17 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 1) Récupération du code
+      # 1) Checkout du dépôt
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # 2) Installation .NET 8
+      # 2) Installation de .NET 8
       - name: Setup .NET 8
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: 8.0.x
 
-      # 3) Installation du workload WASM
+      # 3) Installation du workload WebAssembly
       - name: Install WASM tools
         run: dotnet workload install wasm-tools
 
@@ -37,26 +37,23 @@ jobs:
             -f net8.0-browser \
             -o publish
 
-      # 5) Vérification explicite du contenu publié (critique)
-      - name: Verify published output (fail if missing)
+      # 5) Workaround : Avalonia cherche avalonia.js dans _framework
+      - name: Ensure avalonia.js is available under _framework
         run: |
           set -e
-          echo "Listing publish/wwwroot:"
-          ls -la publish/wwwroot
-
-          echo "Listing publish/wwwroot/_framework:"
-          ls -la publish/wwwroot/_framework || true
-
-          if [ ! -f "publish/wwwroot/_framework/avalonia.js" ]; then
-            echo "ERROR: publish/wwwroot/_framework/avalonia.js is missing"
-            echo "Files in _framework are:"
-            ls -la publish/wwwroot/_framework || true
-            exit 1
+          cp -f publish/wwwroot/avalonia.js publish/wwwroot/_framework/avalonia.js
+          if [ -f publish/wwwroot/avalonia.js.map ]; then
+            cp -f publish/wwwroot/avalonia.js.map publish/wwwroot/_framework/avalonia.js.map
           fi
 
-          echo "OK: avalonia.js found."
+      # 6) Vérification explicite (doit exister)
+      - name: Verify published output
+        run: |
+          set -e
+          test -f publish/wwwroot/_framework/avalonia.js
+          echo "OK: publish/wwwroot/_framework/avalonia.js exists"
 
-      # 6) Déploiement GitHub Pages (Jekyll désactivé)
+      # 7) Déploiement sur GitHub Pages (Jekyll désactivé)
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
