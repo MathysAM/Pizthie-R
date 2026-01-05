@@ -42,7 +42,10 @@ jobs:
 
       - name: Remove precompressed assets for GitHub Pages
         run: |
-          find publish/wwwroot -type f \( -name "*.br" -o -name "*.gz" \) -delete
+          set -e
+          echo "Deleting .br and .gz files (GitHub Pages doesn't send Content-Encoding)..."
+          find publish/wwwroot -type f \( -name "*.br" -o -name "*.gz" \) -print -delete
+          echo "Done."
 
 
       
