@@ -1,22 +1,27 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.WebAssembly">
-   <PropertyGroup>
+  <PropertyGroup>
     <TargetFramework>net8.0-browser</TargetFramework>
     <OutputType>Exe</OutputType>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <Nullable>enable</Nullable>
 
-    <!-- IMPORTANT pour GitHub Pages : désactive les threads WASM (COOP/COEP impossibles sur Pages) -->
+    <!-- GitHub Pages : pas de threads -->
     <WasmEnableThreads>false</WasmEnableThreads>
-	   
-	<!-- On empêche la génération de .br/.gz -->
+
+    <!-- IMPORTANT : force la résolution des assets runtime WASM -->
+    <RuntimeIdentifier>browser-wasm</RuntimeIdentifier>
+    <SelfContained>true</SelfContained>
+
+    <!-- Désactive la génération .br/.gz si tu veux -->
     <BlazorEnableCompression>false</BlazorEnableCompression>
 
-    <!-- Garde le trimming désactivé (plus stable pour Avalonia/Skia en WASM) -->
     <PublishTrimmed>false</PublishTrimmed>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Avalonia.Browser" />
+    <!-- Fournit libSkiaSharp pour WebAssembly -->
+    <PackageReference Include="SkiaSharp.NativeAssets.WebAssembly" />
   </ItemGroup>
 
   <ItemGroup>
