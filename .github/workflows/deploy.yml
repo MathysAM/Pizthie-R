@@ -38,14 +38,23 @@ jobs:
             -o publish
 
       # 5) Vérification explicite du contenu publié (critique)
-      - name: Verify published files
+      - name: Verify published output (fail if missing)
         run: |
-          echo "==== publish ===="
-          ls -la publish
-          echo "==== publish/wwwroot ===="
+          set -e
+          echo "Listing publish/wwwroot:"
           ls -la publish/wwwroot
-          echo "==== publish/wwwroot/_framework ===="
-          ls -la publish/wwwroot/_framework
+
+          echo "Listing publish/wwwroot/_framework:"
+          ls -la publish/wwwroot/_framework || true
+
+          if [ ! -f "publish/wwwroot/_framework/avalonia.js" ]; then
+            echo "ERROR: publish/wwwroot/_framework/avalonia.js is missing"
+            echo "Files in _framework are:"
+            ls -la publish/wwwroot/_framework || true
+            exit 1
+          fi
+
+          echo "OK: avalonia.js found."
 
       # 6) Déploiement GitHub Pages (Jekyll désactivé)
       - name: Deploy to GitHub Pages
