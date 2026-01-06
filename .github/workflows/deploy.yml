@@ -48,6 +48,22 @@ jobs:
           ls -la ~/.nuget/packages/skiasharp.nativeassets.webassembly/2.88.9 || true
           echo "=== Find any libSkiaSharp files in the package ==="
 
+
+      
+      - name: Inspect Skia native lib folder
+        run: |
+          set -e
+          echo "=== List lib folder ==="
+          ls -la ~/.nuget/packages/skiasharp.nativeassets.webassembly/2.88.9/lib
+          echo "=== Recursive list ==="
+          find ~/.nuget/packages/skiasharp.nativeassets.webassembly/2.88.9/lib -type f -print
+   
+    
+    
+    
+
+
+
       # 6) Build
       - name: Build
         run: dotnet build -c Release --no-restore PizthieR/PizthieR.Browser/PizthieR.Browser.csproj
