@@ -14,6 +14,7 @@
 	<ItemGroup>
 		<PackageReference Include="Avalonia.Browser" />
 		<!-- SkiaSharp.NativeAssets.WebAssembly est déjà centralisé dans Directory.Packages.props -->
+		<PackageReference Include="SkiaSharp.NativeAssets.WebAssembly" />
 	</ItemGroup>
 
 	<ItemGroup>
