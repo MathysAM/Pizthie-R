@@ -1,30 +1,22 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.WebAssembly">
-  <PropertyGroup>
-    <TargetFramework>net8.0-browser</TargetFramework>
-    <OutputType>Exe</OutputType>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <Nullable>enable</Nullable>
+	<PropertyGroup>
+		<TargetFramework>net8.0-browser</TargetFramework>
+		<OutputType>Exe</OutputType>
+		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+		<Nullable>enable</Nullable>
+		<WasmEnableThreads>false</WasmEnableThreads>
+		<RuntimeIdentifier>browser-wasm</RuntimeIdentifier>
+		<SelfContained>true</SelfContained>
+		<BlazorEnableCompression>false</BlazorEnableCompression>
+		<PublishTrimmed>false</PublishTrimmed>
+	</PropertyGroup>
 
-    <!-- GitHub Pages : pas de threads -->
-    <WasmEnableThreads>false</WasmEnableThreads>
+	<ItemGroup>
+		<PackageReference Include="Avalonia.Browser" />
+		<!-- SkiaSharp.NativeAssets.WebAssembly est déjà centralisé dans Directory.Packages.props -->
+	</ItemGroup>
 
-    <!-- IMPORTANT : force la résolution des assets runtime WASM -->
-    <RuntimeIdentifier>browser-wasm</RuntimeIdentifier>
-    <SelfContained>true</SelfContained>
-
-    <!-- Désactive la génération .br/.gz si tu veux -->
-    <BlazorEnableCompression>false</BlazorEnableCompression>
-
-    <PublishTrimmed>false</PublishTrimmed>
-  </PropertyGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Avalonia.Browser" />
-    <!-- Fournit libSkiaSharp pour WebAssembly -->
-    
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\PizthieR\PizthieR.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\PizthieR\PizthieR.csproj" />
+	</ItemGroup>
 </Project>
