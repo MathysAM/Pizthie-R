@@ -14,21 +14,17 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 1) Checkout du dépôt
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # 2) Installation de .NET 8
       - name: Setup .NET 8
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: 8.0.x
 
-      # 3) Installation du workload WebAssembly
       - name: Install WASM tools
         run: dotnet workload install wasm-tools
 
-      # 4) Restore + Publish Avalonia Browser
       - name: Publish Avalonia Browser (WASM)
         run: |
           dotnet restore PizthieR/PizthieR.Browser/PizthieR.Browser.csproj
@@ -39,17 +35,38 @@ jobs:
             /p:BlazorEnableCompression=false \
             /p:CompressionEnabled=false
 
+      - name: Disable Jekyll
+        run: touch publish/wwwroot/.nojekyll
 
-      - name: Remove precompressed assets for GitHub Pages
+      - name: Remove precompressed assets safely (only if uncompressed exists)
         run: |
           set -e
-          echo "Deleting .br and .gz files (GitHub Pages doesn't send Content-Encoding)..."
-          find publish/wwwroot -type f \( -name "*.br" -o -name "*.gz" \) -print -delete
+          echo "Deleting .br/.gz ONLY when the uncompressed file exists..."
+
+          shopt -s nullglob
+
+          for f in $(find publish/wwwroot -type f -name "*.br"); do
+            base="${f%.br}"
+            if [ -f "$base" ]; then
+              echo "DELETE: $f (uncompressed exists: $base)"
+              rm -f "$f"
+            else
+              echo "KEEP:   $f (no uncompressed version)"
+            fi
+          done
+
+          for f in $(find publish/wwwroot -type f -name "*.gz"); do
+            base="${f%.gz}"
+            if [ -f "$base" ]; then
+              echo "DELETE: $f (uncompressed exists: $base)"
+              rm -f "$f"
+            else
+              echo "KEEP:   $f (no uncompressed version)"
+            fi
+          done
+
           echo "Done."
 
-
-      
-      # 5) Workaround : Avalonia cherche avalonia.js dans _framework
       - name: Ensure avalonia.js is available under _framework
         run: |
           set -e
@@ -58,14 +75,12 @@ jobs:
             cp -f publish/wwwroot/avalonia.js.map publish/wwwroot/_framework/avalonia.js.map
           fi
 
-      # 6) Vérification explicite (doit exister)
       - name: Verify published output
         run: |
           set -e
           test -f publish/wwwroot/_framework/avalonia.js
           echo "OK: publish/wwwroot/_framework/avalonia.js exists"
 
-      # 7) Déploiement sur GitHub Pages (Jekyll désactivé)
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
