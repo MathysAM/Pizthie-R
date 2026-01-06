@@ -27,7 +27,8 @@ jobs:
       # Installe / restaure les workloads requis par les projets
       - name: Restore workloads
         run: |
-          dotnet workload restore
+          dotnet workload restore --project PizthieR/PizthieR.Browser/PizthieR.Browser.csproj
+   
           dotnet workload install wasm-tools
 
       - name: Clean
