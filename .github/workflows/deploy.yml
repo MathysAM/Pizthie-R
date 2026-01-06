@@ -8,26 +8,42 @@ on:
   push:
     branches:
       - NouveauTest
+  workflow_dispatch:
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
+      # 1) Checkout
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      # 2) .NET 8
       - name: Setup .NET 8
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: 8.0.x
 
+      # 3) Workload WASM
       - name: Install WASM tools
         run: dotnet workload install wasm-tools
 
+      # 4) Clean (optionnel mais utile)
+      - name: Clean
+        run: dotnet clean
+
+      # 5) Restore (durci pour éviter les incohérences)
+      - name: Restore (force, no-cache)
+        run: dotnet restore --force --no-cache PizthieR/PizthieR.Browser/PizthieR.Browser.csproj
+
+      # 6) Build
+      - name: Build
+        run: dotnet build -c Release --no-restore PizthieR/PizthieR.Browser/PizthieR.Browser.csproj
+
+      # 7) Publish
       - name: Publish Avalonia Browser (WASM)
         run: |
-          dotnet restore PizthieR/PizthieR.Browser/PizthieR.Browser.csproj
           dotnet publish PizthieR/PizthieR.Browser/PizthieR.Browser.csproj \
             -c Release \
             -f net8.0-browser \
@@ -35,9 +51,27 @@ jobs:
             /p:BlazorEnableCompression=false \
             /p:CompressionEnabled=false
 
+      # 8) Empêche Jekyll de toucher _framework
       - name: Disable Jekyll
         run: touch publish/wwwroot/.nojekyll
 
+      # 9) Preuve: lister ce qui est réellement publié
+      - name: Inspect _framework output (Skia proof)
+        run: |
+          set -e
+          echo "=== List _framework (first 200 lines) ==="
+          ls -la publish/wwwroot/_framework | head -n 200
+
+          echo "=== grep skia ==="
+          ls -la publish/wwwroot/_framework | grep -i skia || true
+
+          echo "=== grep libskia ==="
+          ls -la publish/wwwroot/_framework | grep -i libskia || true
+
+          echo "=== find anything with skia in wwwroot ==="
+          find publish/wwwroot -maxdepth 4 -type f -iname "*skia*" -print || true
+
+      # 10) Suppression SAFE des .br/.gz (uniquement si version non compressée existe)
       - name: Remove precompressed assets safely (only if uncompressed exists)
         run: |
           set -e
@@ -67,20 +101,25 @@ jobs:
 
           echo "Done."
 
+      # 11) Workaround : Avalonia cherche avalonia.js dans _framework
       - name: Ensure avalonia.js is available under _framework
         run: |
           set -e
+          mkdir -p publish/wwwroot/_framework
           cp -f publish/wwwroot/avalonia.js publish/wwwroot/_framework/avalonia.js
           if [ -f publish/wwwroot/avalonia.js.map ]; then
             cp -f publish/wwwroot/avalonia.js.map publish/wwwroot/_framework/avalonia.js.map
           fi
 
+      # 12) Vérifs minimales
       - name: Verify published output
         run: |
           set -e
           test -f publish/wwwroot/_framework/avalonia.js
-          echo "OK: publish/wwwroot/_framework/avalonia.js exists"
+          test -f publish/wwwroot/_framework/dotnet.native.wasm
+          echo "OK: required framework files exist"
 
+      # 13) Deploy gh-pages
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
