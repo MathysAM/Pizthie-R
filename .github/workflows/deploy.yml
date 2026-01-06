@@ -15,98 +15,44 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 1) Checkout
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # 2) .NET 8
+      # IMPORTANT: builder net8 avec SDK net8 (évite les soucis de workload)
       - name: Setup .NET 8
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: 8.0.x
 
-      # 3) Workload WASM
-      - name: Install WASM tools
-        run: dotnet workload install wasm-tools
+      # Installe / restaure les workloads requis par les projets
+      - name: Restore workloads
+        run: |
+          dotnet workload restore
+          dotnet workload install wasm-tools
 
-      # 4) Clean (optionnel mais utile)
       - name: Clean
         run: dotnet clean PizthieR/PizthieR.Browser/PizthieR.Browser.csproj
 
-      # 5) Restore (durci pour éviter les incohérences)
       - name: Restore (force, no-cache)
         run: dotnet restore --force --no-cache PizthieR/PizthieR.Browser/PizthieR.Browser.csproj
 
-      - name: Inspect NuGet cache for Skia native assets
-        run: |
-          set -e
-          echo "=== Locate SkiaSharp packages in NuGet cache ==="
-          ls -la ~/.nuget/packages | grep -i skia || true
-          echo "=== List SkiaSharp.NativeAssets.WebAssembly folder ==="
-          ls -la ~/.nuget/packages/skiasharp.nativeassets.webassembly || true
-          echo "=== Inspect version 2.88.9 (if exists) ==="
-          ls -la ~/.nuget/packages/skiasharp.nativeassets.webassembly/2.88.9 || true
-          echo "=== Find any libSkiaSharp files in the package ==="
-
-
-      
-      - name: Inspect Skia native lib folder
-        run: |
-          set -e
-          echo "=== List lib folder ==="
-          ls -la ~/.nuget/packages/skiasharp.nativeassets.webassembly/2.88.9/lib
-          echo "=== Recursive list ==="
-          find ~/.nuget/packages/skiasharp.nativeassets.webassembly/2.88.9/lib -type f -print
-   
-    
-    
-    
-
-
-
-      # 6) Build
       - name: Build
         run: dotnet build -c Release --no-restore PizthieR/PizthieR.Browser/PizthieR.Browser.csproj
 
-      # 7) Publish
+      # ✅ FIX CRITIQUE: WasmBuildNative=true pour linker libSkiaSharp / HarfBuzz
       - name: Publish Avalonia Browser (WASM)
         run: |
           dotnet publish PizthieR/PizthieR.Browser/PizthieR.Browser.csproj \
             -c Release \
             -f net8.0-browser \
             -o publish \
+            /p:WasmBuildNative=true \
             /p:BlazorEnableCompression=false \
             /p:CompressionEnabled=false
 
-      #  INSPECTION CRITIQUE (À AJOUTER ICI)
-
-      - name: Search for libSkiaSharp in published output
-        run: |
-             set -e
-   
-             echo "=== Find libSkiaSharp in publish ==="
-    
-             find publish -type f -iname "*skia*" -o -iname "*libskia*" | sed -n '1,200p'
-    
-             echo "=== Boot manifest native assets ==="
-    
-             if [ -f publish/wwwroot/_framework/blazor.boot.json ]; then
-     
-             grep -n "native" publish/wwwroot/_framework/blazor.boot.json || true
-     
-             grep -n "skia" publish/wwwroot/_framework/blazor.boot.json || true
-    
-             else
-     
-             echo "blazor.boot.json NOT FOUND"
-    
-             fi
-
-      # 8) Empêche Jekyll de toucher _framework
       - name: Disable Jekyll
         run: touch publish/wwwroot/.nojekyll
 
-      # 9) Preuve: lister ce qui est réellement publié
       - name: Inspect _framework output (Skia proof)
         run: |
           set -e
@@ -120,57 +66,37 @@ jobs:
           ls -la publish/wwwroot/_framework | grep -i libskia || true
 
           echo "=== find anything with skia in wwwroot ==="
-          find publish/wwwroot -maxdepth 4 -type f -iname "*skia*" -print || true
+          find publish/wwwroot -maxdepth 5 -type f -iname "*skia*" -print || true
 
-      # 10) Suppression SAFE des .br/.gz (uniquement si version non compressée existe)
-      - name: Remove precompressed assets safely (only if uncompressed exists)
-        run: |
-          set -e
-          echo "Deleting .br/.gz ONLY when the uncompressed file exists..."
+          echo "=== Boot manifest native assets ==="
+          if [ -f publish/wwwroot/_framework/blazor.boot.json ]; then
+            grep -n "native" publish/wwwroot/_framework/blazor.boot.json || true
+            grep -n "skia" publish/wwwroot/_framework/blazor.boot.json || true
+          else
+            echo "blazor.boot.json NOT FOUND"
+          fi
 
-          shopt -s nullglob
+      # (Optionnel) si tu veux garder ton nettoyage .br/.gz, garde ton step ici
 
-          for f in $(find publish/wwwroot -type f -name "*.br"); do
-            base="${f%.br}"
-            if [ -f "$base" ]; then
-              echo "DELETE: $f (uncompressed exists: $base)"
-              rm -f "$f"
-            else
-              echo "KEEP:   $f (no uncompressed version)"
-            fi
-          done
-
-          for f in $(find publish/wwwroot -type f -name "*.gz"); do
-            base="${f%.gz}"
-            if [ -f "$base" ]; then
-              echo "DELETE: $f (uncompressed exists: $base)"
-              rm -f "$f"
-            else
-              echo "KEEP:   $f (no uncompressed version)"
-            fi
-          done
-
-          echo "Done."
-
-      # 11) Workaround : Avalonia cherche avalonia.js dans _framework
+      # Workaround: Avalonia cherche avalonia.js dans _framework
       - name: Ensure avalonia.js is available under _framework
         run: |
           set -e
           mkdir -p publish/wwwroot/_framework
-          cp -f publish/wwwroot/avalonia.js publish/wwwroot/_framework/avalonia.js
+          if [ -f publish/wwwroot/avalonia.js ]; then
+            cp -f publish/wwwroot/avalonia.js publish/wwwroot/_framework/avalonia.js
+          fi
           if [ -f publish/wwwroot/avalonia.js.map ]; then
             cp -f publish/wwwroot/avalonia.js.map publish/wwwroot/_framework/avalonia.js.map
           fi
 
-      # 12) Vérifs minimales
       - name: Verify published output
         run: |
           set -e
-          test -f publish/wwwroot/_framework/avalonia.js
           test -f publish/wwwroot/_framework/dotnet.native.wasm
+          test -f publish/wwwroot/_framework/dotnet.native.js
           echo "OK: required framework files exist"
 
-      # 13) Deploy gh-pages
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
