@@ -37,6 +37,17 @@ jobs:
       - name: Restore (force, no-cache)
         run: dotnet restore --force --no-cache PizthieR/PizthieR.Browser/PizthieR.Browser.csproj
 
+      - name: Inspect NuGet cache for Skia native assets
+        run: |
+          set -e
+          echo "=== Locate SkiaSharp packages in NuGet cache ==="
+          ls -la ~/.nuget/packages | grep -i skia || true
+          echo "=== List SkiaSharp.NativeAssets.WebAssembly folder ==="
+          ls -la ~/.nuget/packages/skiasharp.nativeassets.webassembly || true
+          echo "=== Inspect version 2.88.9 (if exists) ==="
+          ls -la ~/.nuget/packages/skiasharp.nativeassets.webassembly/2.88.9 || true
+          echo "=== Find any libSkiaSharp files in the package ==="
+
       # 6) Build
       - name: Build
         run: dotnet build -c Release --no-restore PizthieR/PizthieR.Browser/PizthieR.Browser.csproj
