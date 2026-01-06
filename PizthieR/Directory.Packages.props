@@ -1,25 +1,22 @@
 <Project>
-	<PropertyGroup>
-		<ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
-	</PropertyGroup>
-
-	<ItemGroup>
-		<!-- Avalonia packages -->
-		<PackageVersion Include="Avalonia" Version="11.3.0" />
-		<PackageVersion Include="Avalonia.Themes.Fluent" Version="11.3.0" />
-		<PackageVersion Include="Avalonia.Fonts.Inter" Version="11.3.0" />
-		<PackageVersion Include="Avalonia.Diagnostics" Version="11.3.0" />
-		<PackageVersion Include="Avalonia.Desktop" Version="11.3.0" />
-		<PackageVersion Include="Avalonia.iOS" Version="11.3.0" />
-		<PackageVersion Include="Avalonia.Browser" Version="11.3.0" />
-		<PackageVersion Include="Avalonia.Android" Version="11.3.0" />
-
-		<PackageVersion Include="CommunityToolkit.Mvvm" Version="8.4.0" />
-		<PackageVersion Include="MQTTnet" Version="4.3.7.1207" />
-		<PackageVersion Include="Xamarin.AndroidX.Core.SplashScreen" Version="1.0.1.15" />
-
-		<!-- SkiaSharp (needed on WASM: libSkiaSharp) -->
-		<PackageVersion Include="SkiaSharp" Version="2.88.9" />
-		<PackageVersion Include="SkiaSharp.NativeAssets.WebAssembly" Version="2.88.9" />
-	</ItemGroup>
+  <PropertyGroup>
+    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+  </PropertyGroup>
+  <ItemGroup>
+    <!-- Avalonia packages -->
+    <PackageVersion Include="Avalonia" Version="11.3.0" />
+    <PackageVersion Include="Avalonia.Themes.Fluent" Version="11.3.0" />
+    <PackageVersion Include="Avalonia.Fonts.Inter" Version="11.3.0" />
+    <PackageVersion Include="Avalonia.Diagnostics" Version="11.3.0" />
+    <PackageVersion Include="Avalonia.Desktop" Version="11.3.0" />
+    <PackageVersion Include="Avalonia.iOS" Version="11.3.0" />
+    <PackageVersion Include="Avalonia.Browser" Version="11.3.0" />
+    <PackageVersion Include="Avalonia.Android" Version="11.3.0" />
+    <PackageVersion Include="CommunityToolkit.Mvvm" Version="8.4.0" />
+    <PackageVersion Include="MQTTnet" Version="4.3.7.1207" />
+    <PackageVersion Include="Xamarin.AndroidX.Core.SplashScreen" Version="1.0.1.15" />
+    <!-- SkiaSharp (needed on WASM: libSkiaSharp) -->
+    <PackageVersion Include="SkiaSharp" Version="2.88.8" />
+    <PackageVersion Include="SkiaSharp.NativeAssets.WebAssembly" Version="2.88.8" />
+  </ItemGroup>
 </Project>

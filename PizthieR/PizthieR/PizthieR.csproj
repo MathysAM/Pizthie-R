@@ -21,7 +21,6 @@
     </PackageReference>
     <PackageReference Include="CommunityToolkit.Mvvm" />
     <PackageReference Include="MQTTnet" />
-    <PackageReference Include="SkiaSharp" />
-    <PackageReference Include="SkiaSharp.NativeAssets.WebAssembly" />
+    
   </ItemGroup>
 </Project>
