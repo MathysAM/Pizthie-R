@@ -31,7 +31,7 @@ jobs:
 
       # 4) Clean (optionnel mais utile)
       - name: Clean
-        run: dotnet clean
+        run: dotnet clean PizthieR/PizthieR.Browser/PizthieR.Browser.csproj
 
       # 5) Restore (durci pour éviter les incohérences)
       - name: Restore (force, no-cache)
