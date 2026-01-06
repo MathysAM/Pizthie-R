@@ -78,6 +78,30 @@ jobs:
             /p:BlazorEnableCompression=false \
             /p:CompressionEnabled=false
 
+      #  INSPECTION CRITIQUE (À AJOUTER ICI)
+
+      - name: Search for libSkiaSharp in published output
+        run: |
+             set -e
+   
+             echo "=== Find libSkiaSharp in publish ==="
+    
+             find publish -type f -iname "*skia*" -o -iname "*libskia*" | sed -n '1,200p'
+    
+             echo "=== Boot manifest native assets ==="
+    
+             if [ -f publish/wwwroot/_framework/blazor.boot.json ]; then
+     
+             grep -n "native" publish/wwwroot/_framework/blazor.boot.json || true
+     
+             grep -n "skia" publish/wwwroot/_framework/blazor.boot.json || true
+    
+             else
+     
+             echo "blazor.boot.json NOT FOUND"
+    
+             fi
+
       # 8) Empêche Jekyll de toucher _framework
       - name: Disable Jekyll
         run: touch publish/wwwroot/.nojekyll
