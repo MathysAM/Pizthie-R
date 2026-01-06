@@ -9,6 +9,7 @@
 		<SelfContained>true</SelfContained>
 		<BlazorEnableCompression>false</BlazorEnableCompression>
 		<PublishTrimmed>false</PublishTrimmed>
+		<WasmBuildNative>true</WasmBuildNative>
 	</PropertyGroup>
 
 	<ItemGroup>
