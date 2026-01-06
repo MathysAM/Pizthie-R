@@ -16,7 +16,7 @@
     <PackageVersion Include="MQTTnet" Version="4.3.7.1207" />
     <PackageVersion Include="Xamarin.AndroidX.Core.SplashScreen" Version="1.0.1.15" />
     <!-- SkiaSharp (needed on WASM: libSkiaSharp) -->
-    <PackageVersion Include="SkiaSharp" Version="2.88.6" />
-    <PackageVersion Include="SkiaSharp.NativeAssets.WebAssembly" Version="2.88.6" />
+    <PackageVersion Include="SkiaSharp" Version="2.88.9" />
+    <PackageVersion Include="SkiaSharp.NativeAssets.WebAssembly" Version="2.88.9" />
   </ItemGroup>
 </Project>
