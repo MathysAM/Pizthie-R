@@ -19,7 +19,7 @@ public partial class Connection : UserControl
     bool IsConnected;
     MqttController mqttController;
     MainView mainView;
-    // Requis par le previewer Avalonia
+    // /Requis par le previewer Avalonia
    
     public Connection(MqttController mqttController, MainView mainView)
     {
