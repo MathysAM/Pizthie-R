@@ -19,13 +19,60 @@ if (splash) {
     splash.remove();
 }
 
-// Force Avalonia à remesurer la taille du canvas après retrait du splash.
-// Sans ça, le canvas peut rester à une largeur calculée pendant que le splash
-// occupait l'écran, laissant une bande noire à droite.
-function forceAvaloniaResize() {
-    window.dispatchEvent(new Event('resize'));
-}
-forceAvaloniaResize();
-requestAnimationFrame(forceAvaloniaResize);
-setTimeout(forceAvaloniaResize, 100);
-setTimeout(forceAvaloniaResize, 500);
+// =====================================================================
+// Fix bande noire à droite : forcer le canvas Avalonia à occuper 100%
+// du conteneur #out, et garder la synchronisation à chaque resize.
+// =====================================================================
+(function fixAvaloniaCanvasSize() {
+    const host = document.getElementById('out');
+    if (!host) return;
+
+    function syncCanvas() {
+        const dpr = window.devicePixelRatio || 1;
+        // En mode PWA standalone iOS, window.innerWidth/innerHeight est fiable
+        // et correspond au viewport visuel complet (avec viewport-fit=cover).
+        const w = window.innerWidth  || host.clientWidth;
+        const h = window.innerHeight || host.clientHeight;
+
+        // Force aussi #out à la bonne taille (au cas où)
+        host.style.width  = w + 'px';
+        host.style.height = h + 'px';
+
+        // Tous les <canvas> que Avalonia a posés dans #out
+        host.querySelectorAll('canvas').forEach((c) => {
+            // Taille CSS (affichage)
+            c.style.width  = w + 'px';
+            c.style.height = h + 'px';
+            c.style.position = 'absolute';
+            c.style.top  = '0';
+            c.style.left = '0';
+            // Taille intrinsèque (buffer de rendu, en pixels physiques)
+            const targetW = Math.round(w * dpr);
+            const targetH = Math.round(h * dpr);
+            if (c.width  !== targetW) c.width  = targetW;
+            if (c.height !== targetH) c.height = targetH;
+        });
+        // Notifie Avalonia pour qu'il refasse son layout
+        window.dispatchEvent(new Event('resize'));
+    }
+
+    // Première synchro + plusieurs essais (le canvas peut arriver après mount)
+    syncCanvas();
+    requestAnimationFrame(syncCanvas);
+    setTimeout(syncCanvas, 100);
+    setTimeout(syncCanvas, 500);
+    setTimeout(syncCanvas, 1500);
+
+    // Observe les changements de taille du conteneur (rotation, address bar iOS…)
+    if (typeof ResizeObserver !== 'undefined') {
+        new ResizeObserver(syncCanvas).observe(host);
+    }
+
+    // Observe l'ajout du canvas par Avalonia
+    if (typeof MutationObserver !== 'undefined') {
+        new MutationObserver(syncCanvas).observe(host, { childList: true, subtree: true });
+    }
+
+    window.addEventListener('resize', syncCanvas);
+    window.addEventListener('orientationchange', syncCanvas);
+})();

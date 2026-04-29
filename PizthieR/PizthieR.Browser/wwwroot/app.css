@@ -1,17 +1,30 @@
-﻿/* Assure que le canvas Avalonia remplit tout le viewport */
+﻿/* Assure que le canvas Avalonia remplit tout le viewport,
+   y compris en mode PWA standalone iOS (lancé depuis l'icône d'accueil). */
 html, body {
-    width: 100%;
-    height: 100%;
+    /* 100vw/100vh = viewport visuel complet, incluant les safe areas (avec viewport-fit=cover) */
+    width: 100vw;
+    height: 100vh;
+    /* Fallback dynamique pour iOS Safari/PWA (variable de viewport visible) */
+    height: 100dvh;
     margin: 0;
     padding: 0;
     overflow: hidden;
     background: #1C1C1E;
+    /* Empêche le scroll élastique iOS qui peut décaler le rendu */
+    position: fixed;
+    top: 0;
+    left: 0;
+    /* Évite tout dépassement horizontal */
+    overscroll-behavior: none;
 }
 
 #out {
-    width: 100%;
-    height: 100%;
+    width: 100vw;
+    height: 100vh;
+    height: 100dvh;
     position: relative;
+    /* Pas de padding lié aux safe-area : on veut que le canvas couvre TOUT,
+       y compris sous la barre de statut iOS (status-bar-style=black-translucent). */
 }
 
 /* HTML styles for the splash screen */
