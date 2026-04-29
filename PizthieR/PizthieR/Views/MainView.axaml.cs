@@ -36,7 +36,7 @@ namespace PizthieR.Views
             _pages.Add(_Programmation);
 
             // Page par défaut
-            Frame.Content = _pages[0];
+            FrameContainer.Child = _pages[0];
 
             // Onglets verrouillés jusqu'à la connexion
             BControl.IsEnabled = false;
@@ -53,7 +53,7 @@ namespace PizthieR.Views
             if (!newValue)
             {
                 _Connection.DeConnectionMqtt();
-                Frame.Content = _pages[0];
+                FrameContainer.Child = _pages[0];
                 SetActiveTab(0);
             }
         }
@@ -81,26 +81,26 @@ namespace PizthieR.Views
                 await _Programmation.UnsubscribeAllAsync();
 
                 // Retour page Connection si on se déconnecte
-                Frame.Content = _pages[0];
+                FrameContainer.Child = _pages[0];
                 SetActiveTab(0);
             }
         }
 
         private void ViewConnection_Click(object? sender, RoutedEventArgs e)
         {
-            Frame.Content = _pages[0];
+            FrameContainer.Child = _pages[0];
             SetActiveTab(0);
         }
 
         private void ViewControl_Click(object? sender, RoutedEventArgs e)
         {
-            Frame.Content = _pages[1];
+            FrameContainer.Child = _pages[1];
             SetActiveTab(1);
         }
 
         private void ViewProgrammation_Click(object? sender, RoutedEventArgs e)
         {
-            Frame.Content = _pages[2];
+            FrameContainer.Child = _pages[2];
             SetActiveTab(2);
         }
 

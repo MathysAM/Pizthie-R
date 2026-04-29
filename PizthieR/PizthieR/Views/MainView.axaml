@@ -20,9 +20,7 @@
 		</Border>
 
 		<!-- Zone de contenu -->
-		<ContentControl x:Name="Frame" Grid.Row="1"
-						HorizontalContentAlignment="Stretch"
-						VerticalContentAlignment="Stretch"/>
+		<Border x:Name="FrameContainer" Grid.Row="1"/>
 
 		<!-- Barre d'onglets en bas style CFF -->
 		<Border Grid.Row="2" Background="#2C2C2E" BorderBrush="#48484A" BorderThickness="0,0.5,0,0">
