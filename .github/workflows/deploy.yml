@@ -7,7 +7,7 @@ permissions:
 on:
   push:
     branches:
-      - NouveauTest
+      - Developpement
   workflow_dispatch:
 
 jobs:
