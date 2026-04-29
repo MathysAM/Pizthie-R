@@ -1,19 +1,25 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.WebAssembly">
-  <PropertyGroup>
-    <TargetFramework>net8.0-browser</TargetFramework>
-    <OutputType>Exe</OutputType>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <Nullable>enable</Nullable>
-    <PublishTrimmed>false</PublishTrimmed>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net8.0-browser</TargetFramework>
+		<OutputType>Exe</OutputType>
+		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+		<Nullable>enable</Nullable>
+		<WasmEnableThreads>false</WasmEnableThreads>
+		<RuntimeIdentifier>browser-wasm</RuntimeIdentifier>
+		<SelfContained>true</SelfContained>
+		<BlazorEnableCompression>false</BlazorEnableCompression>
+		<PublishTrimmed>false</PublishTrimmed>
+		<WasmBuildNative>true</WasmBuildNative>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Avalonia.Browser" />
-    <PackageReference Include="Material.Icons.Avalonia" />
-    <PackageReference Include="MessageBox.Avalonia" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Avalonia.Browser" />
+		<!-- SkiaSharp.NativeAssets.WebAssembly est déjà centralisé dans Directory.Packages.props -->
+		<PackageReference Include="SkiaSharp" />
+		<PackageReference Include="SkiaSharp.NativeAssets.WebAssembly" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\PizthieR\PizthieR.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\PizthieR\PizthieR.csproj" />
+	</ItemGroup>
 </Project>

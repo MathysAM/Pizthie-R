@@ -1,51 +1,108 @@
 name: Deploy Avalonia WASM to GitHub Pages
 
-# 1) Donne les permissions nécessaires au GITHUB_TOKEN
 permissions:
-  contents: write   # autorise l’écriture dans le dépôt
-  pages: write      # autorise l’utilisation de l’API Pages
+  contents: write
+  pages: write
 
 on:
   push:
-    branches: [ main ]
+    branches:
+      - NouveauTest
+  workflow_dispatch:
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
-      # 2) Checkout du code
-      - name: Checkout code
-        uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-      # 3) Debug de l’arborescence pour vérifier les chemins
-      - name: Debug folder structure
-        run: |
-          echo "===== ROOT ====="
-          ls -R .
-
-      # 4) Installation de .NET 8
+      # IMPORTANT: builder net8 avec SDK net8 (évite les soucis de workload)
       - name: Setup .NET 8
-        uses: actions/setup-dotnet@v3
+        uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: '8.0.x'
+          dotnet-version: 8.0.x
 
-      # 5) Installation du workload WebAssembly
-      - name: Install WASM workload
-        run: dotnet workload install wasm-tools
-
-      # 6) Restore et publication du projet Browser
-      - name: Restore & Publish Avalonia.Browser
+      # Installe / restaure les workloads requis par les projets
+      - name: Restore workloads
         run: |
-          dotnet restore PizthieR/PizthieR.Browser/PizthieR.Browser.csproj
-          dotnet publish  PizthieR/PizthieR.Browser/PizthieR.Browser.csproj \
-            -c Release -o output --framework net8.0-browser
+          dotnet workload restore --project PizthieR/PizthieR.Browser/PizthieR.Browser.csproj
+   
+          dotnet workload install wasm-tools
 
-      # 7) Déploiement sur la branche gh-pages
+      - name: Clean
+        run: dotnet clean PizthieR/PizthieR.Browser/PizthieR.Browser.csproj
+
+      - name: Restore (force, no-cache)
+        run: dotnet restore --force --no-cache PizthieR/PizthieR.Browser/PizthieR.Browser.csproj
+
+      - name: Build
+        run: dotnet build -c Release --no-restore PizthieR/PizthieR.Browser/PizthieR.Browser.csproj
+
+      # ✅ FIX CRITIQUE: WasmBuildNative=true pour linker libSkiaSharp / HarfBuzz
+      - name: Publish Avalonia Browser (WASM)
+        run: |
+          dotnet publish PizthieR/PizthieR.Browser/PizthieR.Browser.csproj \
+            -c Release \
+            -f net8.0-browser \
+            -o publish \
+            /p:WasmBuildNative=true \
+            /p:BlazorEnableCompression=false \
+            /p:CompressionEnabled=false
+
+      - name: Disable Jekyll
+        run: touch publish/wwwroot/.nojekyll
+
+      - name: Inspect _framework output (Skia proof)
+        run: |
+          set -e
+          echo "=== List _framework (first 200 lines) ==="
+          ls -la publish/wwwroot/_framework | head -n 200
+
+          echo "=== grep skia ==="
+          ls -la publish/wwwroot/_framework | grep -i skia || true
+
+          echo "=== grep libskia ==="
+          ls -la publish/wwwroot/_framework | grep -i libskia || true
+
+          echo "=== find anything with skia in wwwroot ==="
+          find publish/wwwroot -maxdepth 5 -type f -iname "*skia*" -print || true
+
+          echo "=== Boot manifest native assets ==="
+          if [ -f publish/wwwroot/_framework/blazor.boot.json ]; then
+            grep -n "native" publish/wwwroot/_framework/blazor.boot.json || true
+            grep -n "skia" publish/wwwroot/_framework/blazor.boot.json || true
+          else
+            echo "blazor.boot.json NOT FOUND"
+          fi
+
+      # (Optionnel) si tu veux garder ton nettoyage .br/.gz, garde ton step ici
+
+      # Workaround: Avalonia cherche avalonia.js dans _framework
+      - name: Ensure avalonia.js is available under _framework
+        run: |
+          set -e
+          mkdir -p publish/wwwroot/_framework
+          if [ -f publish/wwwroot/avalonia.js ]; then
+            cp -f publish/wwwroot/avalonia.js publish/wwwroot/_framework/avalonia.js
+          fi
+          if [ -f publish/wwwroot/avalonia.js.map ]; then
+            cp -f publish/wwwroot/avalonia.js.map publish/wwwroot/_framework/avalonia.js.map
+          fi
+
+      - name: Verify published output
+        run: |
+          set -e
+          test -f publish/wwwroot/_framework/dotnet.native.wasm
+          test -f publish/wwwroot/_framework/dotnet.native.js
+          echo "OK: required framework files exist"
+
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_branch: gh-pages
-          publish_dir: ./output/wwwroot
+          publish_dir: publish/wwwroot
           force_orphan: true
+          enable_jekyll: false
