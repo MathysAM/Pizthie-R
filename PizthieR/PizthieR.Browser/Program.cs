@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.Versioning;
 using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Browser;
@@ -10,14 +11,20 @@ internal sealed partial class Program
     {
         try
         {
+            Console.WriteLine("Starting Avalonia Browser...");
+
             await BuildAvaloniaApp()
                 .WithInterFont()
                 .StartBrowserAppAsync("out");
+
+            Console.WriteLine("Avalonia Browser started OK.");
         }
         catch (Exception ex)
         {
-            Console.Error.WriteLine("=== Avalonia startup failed ===");
-            Console.Error.WriteLine(ex.ToString()); // IMPORTANT: imprime inner exceptions
+            // IMPORTANT: ToString() contient InnerException + stacktrace
+            Console.Error.WriteLine("=== AVALONIA START FAILED ===");
+            Console.Error.WriteLine(ex.ToString());
+            Console.Error.WriteLine("=== END ===");
             throw;
         }
     }

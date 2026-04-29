@@ -1,75 +1,108 @@
-﻿name: Deploy Avalonia WASM to GitHub Pages
+name: Deploy Avalonia WASM to GitHub Pages
+
+permissions:
+  contents: write
+  pages: write
 
 on:
   push:
-    branches: [ main ]
-
-permissions:
-  contents: read
-  pages: write
-  id-token: write
-
-concurrency:
-  group: "pages"
-  cancel-in-progress: true
+    branches:
+      - NouveauTest
+  workflow_dispatch:
 
 jobs:
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout code
+      - name: Checkout repository
         uses: actions/checkout@v4
 
+      # IMPORTANT: builder net8 avec SDK net8 (évite les soucis de workload)
       - name: Setup .NET 8
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: "8.0.x"
+          dotnet-version: 8.0.x
 
-      - name: Install WASM workload
-        run: dotnet workload install wasm-tools
-
-      - name: Restore & Publish Avalonia.Browser
+      # Installe / restaure les workloads requis par les projets
+      - name: Restore workloads
         run: |
-          dotnet restore PizthieR/PizthieR.Browser/PizthieR.Browser.csproj
-          dotnet publish PizthieR/PizthieR.Browser/PizthieR.Browser.csproj -c Release -f net8.0-browser
+          dotnet workload restore --project PizthieR/PizthieR.Browser/PizthieR.Browser.csproj
+   
+          dotnet workload install wasm-tools
 
-      - name: Set publish path
-        run: echo "PUBLISH_WWWROOT=PizthieR/PizthieR.Browser/bin/Release/net8.0-browser/publish/wwwroot" >> $GITHUB_ENV
+      - name: Clean
+        run: dotnet clean PizthieR/PizthieR.Browser/PizthieR.Browser.csproj
 
-      - name: Verify publish folder exists
-        shell: bash
+      - name: Restore (force, no-cache)
+        run: dotnet restore --force --no-cache PizthieR/PizthieR.Browser/PizthieR.Browser.csproj
+
+      - name: Build
+        run: dotnet build -c Release --no-restore PizthieR/PizthieR.Browser/PizthieR.Browser.csproj
+
+      # ✅ FIX CRITIQUE: WasmBuildNative=true pour linker libSkiaSharp / HarfBuzz
+      - name: Publish Avalonia Browser (WASM)
         run: |
-          set -e
-          echo "PUBLISH_WWWROOT=$PUBLISH_WWWROOT"
-          test -d "$PUBLISH_WWWROOT" || (echo "ERROR: publish wwwroot not found" && exit 1)
-          ls -la "$PUBLISH_WWWROOT"
+          dotnet publish PizthieR/PizthieR.Browser/PizthieR.Browser.csproj \
+            -c Release \
+            -f net8.0-browser \
+            -o publish \
+            /p:WasmBuildNative=true \
+            /p:BlazorEnableCompression=false \
+            /p:CompressionEnabled=false
 
       - name: Disable Jekyll
-        run: touch "$PUBLISH_WWWROOT/.nojekyll"
+        run: touch publish/wwwroot/.nojekyll
 
-      # ✅ CRITIQUE : Avalonia cherche avalonia.js dans _framework
-      - name: Fix Avalonia JS location
-        shell: bash
+      - name: Inspect _framework output (Skia proof)
         run: |
           set -e
-          cp "$PUBLISH_WWWROOT/avalonia.js" "$PUBLISH_WWWROOT/_framework/avalonia.js"
-          if [ -f "$PUBLISH_WWWROOT/avalonia.js.map" ]; then
-            cp "$PUBLISH_WWWROOT/avalonia.js.map" "$PUBLISH_WWWROOT/_framework/avalonia.js.map"
+          echo "=== List _framework (first 200 lines) ==="
+          ls -la publish/wwwroot/_framework | head -n 200
+
+          echo "=== grep skia ==="
+          ls -la publish/wwwroot/_framework | grep -i skia || true
+
+          echo "=== grep libskia ==="
+          ls -la publish/wwwroot/_framework | grep -i libskia || true
+
+          echo "=== find anything with skia in wwwroot ==="
+          find publish/wwwroot -maxdepth 5 -type f -iname "*skia*" -print || true
+
+          echo "=== Boot manifest native assets ==="
+          if [ -f publish/wwwroot/_framework/blazor.boot.json ]; then
+            grep -n "native" publish/wwwroot/_framework/blazor.boot.json || true
+            grep -n "skia" publish/wwwroot/_framework/blazor.boot.json || true
+          else
+            echo "blazor.boot.json NOT FOUND"
           fi
 
-      - name: Upload Pages artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          name: github-pages      # <-- IMPORTANT : le nom attendu par deploy-pages
-          path: ${{ env.PUBLISH_WWWROOT }}
+      # (Optionnel) si tu veux garder ton nettoyage .br/.gz, garde ton step ici
 
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
+      # Workaround: Avalonia cherche avalonia.js dans _framework
+      - name: Ensure avalonia.js is available under _framework
+        run: |
+          set -e
+          mkdir -p publish/wwwroot/_framework
+          if [ -f publish/wwwroot/avalonia.js ]; then
+            cp -f publish/wwwroot/avalonia.js publish/wwwroot/_framework/avalonia.js
+          fi
+          if [ -f publish/wwwroot/avalonia.js.map ]; then
+            cp -f publish/wwwroot/avalonia.js.map publish/wwwroot/_framework/avalonia.js.map
+          fi
+
+      - name: Verify published output
+        run: |
+          set -e
+          test -f publish/wwwroot/_framework/dotnet.native.wasm
+          test -f publish/wwwroot/_framework/dotnet.native.js
+          echo "OK: required framework files exist"
+
       - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: gh-pages
+          publish_dir: publish/wwwroot
+          force_orphan: true
+          enable_jekyll: false
