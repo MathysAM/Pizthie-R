@@ -5,6 +5,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Media;
+using Avalonia.VisualTree;
 using MQTTnet;
 using PizthieR.Controller;
 
@@ -45,6 +46,29 @@ namespace PizthieR.Views
 
             // Surveillance santé MQTT
             _MqttController.pingHealthyChanged += pingHealthyChanged;
+
+            // Diagnostic taille côté Avalonia
+            this.AttachedToVisualTree += (_, _) => UpdateDiag();
+            this.PropertyChanged += (_, e) =>
+            {
+                if (e.Property == BoundsProperty) UpdateDiag();
+            };
+        }
+
+        private void UpdateDiag()
+        {
+            try
+            {
+                var b = this.Bounds;
+                string root = "n/a";
+                if (this.GetVisualRoot() is Avalonia.Controls.TopLevel tl)
+                {
+                    root = tl.ClientSize.Width.ToString("0") + "×" + tl.ClientSize.Height.ToString("0")
+                         + " scale=" + tl.RenderScaling.ToString("0.##");
+                }
+                DiagAvalonia.Text = $"AVA mainview:{b.Width:0}×{b.Height:0}  top:{root}";
+            }
+            catch { }
         }
 
         private void pingHealthyChanged(object sender, bool newValue)

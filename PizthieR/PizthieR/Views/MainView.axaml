@@ -8,15 +8,20 @@
 	d:DesignWidth="390"
 	d:DesignHeight="844">
 
-	<Grid RowDefinitions="Auto,*,Auto" Background="#1C1C1E">
+	<Grid RowDefinitions="Auto,*,Auto" Background="Magenta">
 
 		<!-- Header rouge style CFF -->
 		<Border Background="#CC0000" Padding="16,14">
-			<TextBlock Text="🍕  PIZZA THIERRY"
-					   FontSize="18" FontWeight="Bold"
-					   Foreground="White"
-					   HorizontalAlignment="Center"
-					   VerticalAlignment="Center"/>
+			<StackPanel>
+				<TextBlock Text="🍕  PIZZA THIERRY"
+						   FontSize="18" FontWeight="Bold"
+						   Foreground="White"
+						   HorizontalAlignment="Center"
+						   VerticalAlignment="Center"/>
+				<TextBlock x:Name="DiagAvalonia" Text="diag…"
+						   FontSize="10" Foreground="Yellow"
+						   HorizontalAlignment="Center"/>
+			</StackPanel>
 		</Border>
 
 		<!-- Zone de contenu -->
