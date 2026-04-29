@@ -18,3 +18,18 @@ const splash = document.getElementById("splash");
 if (splash) {
     splash.remove();
 }
+
+// Correction iOS standalone : window.innerWidth peut être incorrect au démarrage.
+// On force plusieurs resize pour que le canvas Avalonia se recalcule correctement.
+function forceResize() {
+    window.dispatchEvent(new Event('resize'));
+}
+forceResize();
+setTimeout(forceResize, 100);
+setTimeout(forceResize, 500);
+setTimeout(forceResize, 1000);
+
+// Sur iOS, réajuster quand l'orientation change
+window.addEventListener('orientationchange', function () {
+    setTimeout(forceResize, 300);
+});
