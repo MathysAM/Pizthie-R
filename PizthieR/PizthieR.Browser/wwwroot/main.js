@@ -29,10 +29,20 @@ if (splash) {
 
     function syncCanvas() {
         const dpr = window.devicePixelRatio || 1;
-        // En mode PWA standalone iOS, window.innerWidth/innerHeight est fiable
-        // et correspond au viewport visuel complet (avec viewport-fit=cover).
-        const w = window.innerWidth  || host.clientWidth;
-        const h = window.innerHeight || host.clientHeight;
+        // En mode PWA standalone iOS, window.innerWidth peut renvoyer une valeur
+        // tronquée par les safe-areas. On prend le MAX disponible pour couvrir l'écran complet.
+        const w = Math.max(
+            window.innerWidth || 0,
+            document.documentElement.clientWidth || 0,
+            host.clientWidth || 0,
+            screen.width || 0
+        );
+        const h = Math.max(
+            window.innerHeight || 0,
+            document.documentElement.clientHeight || 0,
+            host.clientHeight || 0,
+            screen.height || 0
+        );
 
         // Force aussi #out à la bonne taille (au cas où)
         host.style.width  = w + 'px';
