@@ -1,16 +1,18 @@
-﻿/* Assure que le canvas Avalonia remplit tout le viewport */
+﻿/* Assure que le canvas Avalonia remplit tout le viewport.
+   En mode PWA standalone iOS, 100vh inclut la zone sous la status bar
+   (grâce à apple-mobile-web-app-status-bar-style=black-translucent). */
 html, body {
     width: 100%;
-    height: 100%;
+    height: 100vh;
     margin: 0;
     padding: 0;
     overflow: hidden;
-    background: #1C1C1E;
+    background: #CC0000; /* Rouge sous la status bar pour matcher le header */
 }
 
 #out {
     width: 100%;
-    height: 100%;
+    height: 100vh;
     position: relative;
 }
 
