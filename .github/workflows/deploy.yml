@@ -7,7 +7,7 @@ permissions:
 on:
   push:
     branches:
-      - Developpement
+      - Modif-design
   workflow_dispatch:
 
 jobs:

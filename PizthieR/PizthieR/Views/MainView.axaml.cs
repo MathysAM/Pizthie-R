@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Controls.Primitives;
 using Avalonia.Interactivity;
+using Avalonia.Media;
 using MQTTnet;
-using PizthieR.Controller; // seul using côté MQTT
+using PizthieR.Controller;
 
 namespace PizthieR.Views
 {
@@ -38,9 +38,10 @@ namespace PizthieR.Views
             // Page par défaut
             Frame.Content = _pages[0];
 
-            // État initial : seules les pages nécessitant la connexion sont masquées
-            BControl.IsVisible = false;
-            BProgrammation.IsVisible = false;
+            // Onglets verrouillés jusqu'à la connexion
+            BControl.IsEnabled = false;
+            BProgrammation.IsEnabled = false;
+            SetActiveTab(0);
 
             // Surveillance santé MQTT
             _MqttController.pingHealthyChanged += pingHealthyChanged;
@@ -53,8 +54,7 @@ namespace PizthieR.Views
             {
                 _Connection.DeConnectionMqtt();
                 Frame.Content = _pages[0];
-                // Replie le menu si overlay pour un comportement propre
-                FermerPaneSiOverlay();
+                SetActiveTab(0);
             }
         }
 
@@ -66,56 +66,51 @@ namespace PizthieR.Views
         {
             if (value)
             {
-                BControl.IsVisible = true;
-                BProgrammation.IsVisible = true;
+                BControl.IsEnabled = true;
+                BProgrammation.IsEnabled = true;
 
                 _Control.Abonnement();
                 await _Programmation.SubscribeAllAsync();
             }
             else
             {
-                BControl.IsVisible = false;
-                BProgrammation.IsVisible = false;
+                BControl.IsEnabled = false;
+                BProgrammation.IsEnabled = false;
 
                 _Control.DesAbonnement();
                 await _Programmation.UnsubscribeAllAsync();
 
                 // Retour page Connection si on se déconnecte
                 Frame.Content = _pages[0];
+                SetActiveTab(0);
             }
         }
 
-        // Handlers de navigation (réutilisent tes pages existantes)
         private void ViewConnection_Click(object? sender, RoutedEventArgs e)
         {
             Frame.Content = _pages[0];
-            FermerPaneSiOverlay();
+            SetActiveTab(0);
         }
 
         private void ViewControl_Click(object? sender, RoutedEventArgs e)
         {
             Frame.Content = _pages[1];
-            FermerPaneSiOverlay();
+            SetActiveTab(1);
         }
 
         private void ViewProgrammation_Click(object? sender, RoutedEventArgs e)
         {
             Frame.Content = _pages[2];
-            FermerPaneSiOverlay();
+            SetActiveTab(2);
         }
 
-        // Ferme le volet et décoche le hamburger en mode Overlay
-        private void FermerPaneSiOverlay()
+        private void SetActiveTab(int index)
         {
-            if (AppSplitView is null) return;
-
-            if (AppSplitView.DisplayMode == SplitViewDisplayMode.Overlay)
-            {
-                AppSplitView.IsPaneOpen = false;
-
-                if (this.FindControl<ToggleButton>("HamburgerBtn") is { } btn)
-                    btn.IsChecked = false;
-            }
+            var active   = new Avalonia.Media.SolidColorBrush(Avalonia.Media.Color.Parse("#CC0000"));
+            var inactive = new Avalonia.Media.SolidColorBrush(Avalonia.Media.Color.Parse("#8E8E93"));
+            Bconnection.Foreground    = index == 0 ? active : inactive;
+            BControl.Foreground       = index == 1 ? active : inactive;
+            BProgrammation.Foreground = index == 2 ? active : inactive;
         }
     }
 }

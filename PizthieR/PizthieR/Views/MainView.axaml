@@ -1,69 +1,69 @@
 <UserControl
-    x:Class="PizthieR.Views.MainView"
-    xmlns="https://github.com/avaloniaui"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d"
-    d:DesignWidth="1000"
-    d:DesignHeight="600">
+	x:Class="PizthieR.Views.MainView"
+	xmlns="https://github.com/avaloniaui"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	mc:Ignorable="d"
+	d:DesignWidth="390"
+	d:DesignHeight="844">
 
-	<Grid RowDefinitions="Auto,*">
+	<Grid RowDefinitions="Auto,*,Auto" Background="#1C1C1E">
 
-		<!-- Barre supérieure -->
-		<Border Padding="8">
-			<Grid ColumnDefinitions="Auto,*,Auto">
-				<!-- Bouton hamburger -->
-				<ToggleButton x:Name="HamburgerBtn"
-							  Content="☰"
-							  Width="36" Height="36"
-							  HorizontalAlignment="Left"
-							  VerticalAlignment="Center"
-							  ToolTip.Tip="Menu"/>
-				<!-- Titre -->
-				<TextBlock Grid.Column="1"
-						   Text="PIZZA THIERRY"
-						   FontSize="18"
-						   VerticalAlignment="Center"/>
-			</Grid>
+		<!-- Header rouge style CFF -->
+		<Border Background="#CC0000" Padding="16,14">
+			<TextBlock Text="🍕  PIZZA THIERRY"
+					   FontSize="18" FontWeight="Bold"
+					   Foreground="White"
+					   HorizontalAlignment="Center"
+					   VerticalAlignment="Center"/>
 		</Border>
 
-		<!-- Zone principale avec menu repliable -->
-		<SplitView x:Name="AppSplitView"
-				   Grid.Row="1"
-				   IsPaneOpen="{Binding IsChecked, ElementName=HamburgerBtn}"
-				   DisplayMode="Overlay"
-				   CompactPaneLength="48"
-				   OpenPaneLength="240">
+		<!-- Zone de contenu -->
+		<ContentControl x:Name="Frame" Grid.Row="1"/>
 
-			<!-- PANE : Menu -->
-			<SplitView.Pane>
-				<Border Padding="8">
-					<StackPanel Spacing="8">
-						<Button Content="Connection"
-								Name="Bconnection"
-								FontSize="16"
-								HorizontalAlignment="Stretch"
-								Click="ViewConnection_Click"/>
-						<Button Content="Control"
-								Name="BControl"
-								FontSize="16"
-								HorizontalAlignment="Stretch"
-								Click="ViewControl_Click"/>
-						<Button Content="Programmation"
-								Name="BProgrammation"
-								FontSize="16"
-								HorizontalAlignment="Stretch"
-								Click="ViewProgrammation_Click"/>
+		<!-- Barre d'onglets en bas style CFF -->
+		<Border Grid.Row="2" Background="#2C2C2E" BorderBrush="#48484A" BorderThickness="0,0.5,0,0">
+			<Grid ColumnDefinitions="*,*,*">
+
+				<!-- Onglet Connexion -->
+				<Button x:Name="Bconnection" Grid.Column="0"
+						Background="Transparent" BorderThickness="0"
+						HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+						Padding="0,10" Click="ViewConnection_Click"
+						Foreground="#CC0000">
+					<StackPanel HorizontalAlignment="Center" Spacing="3">
+						<TextBlock Text="⚡" FontSize="20" HorizontalAlignment="Center"/>
+						<TextBlock Text="Connexion" FontSize="10" HorizontalAlignment="Center"/>
 					</StackPanel>
-				</Border>
-			</SplitView.Pane>
+				</Button>
 
-			<!-- CONTENU -->
-			<Border Margin="8" Padding="8">
-				<ContentControl x:Name="Frame"/>
-			</Border>
-		</SplitView>
+				<!-- Onglet Contrôle -->
+				<Button x:Name="BControl" Grid.Column="1"
+						Background="Transparent" BorderThickness="0"
+						HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+						Padding="0,10" Click="ViewControl_Click"
+						Foreground="#8E8E93">
+					<StackPanel HorizontalAlignment="Center" Spacing="3">
+						<TextBlock Text="🔥" FontSize="20" HorizontalAlignment="Center"/>
+						<TextBlock Text="Contrôle" FontSize="10" HorizontalAlignment="Center"/>
+					</StackPanel>
+				</Button>
+
+				<!-- Onglet Programmation -->
+				<Button x:Name="BProgrammation" Grid.Column="2"
+						Background="Transparent" BorderThickness="0"
+						HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+						Padding="0,10" Click="ViewProgrammation_Click"
+						Foreground="#8E8E93">
+					<StackPanel HorizontalAlignment="Center" Spacing="3">
+						<TextBlock Text="📋" FontSize="20" HorizontalAlignment="Center"/>
+						<TextBlock Text="Programme" FontSize="10" HorizontalAlignment="Center"/>
+					</StackPanel>
+				</Button>
+
+			</Grid>
+		</Border>
 
 	</Grid>
 </UserControl>
