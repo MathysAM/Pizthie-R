@@ -5,7 +5,6 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Media;
-using Avalonia.VisualTree;
 using MQTTnet;
 using PizthieR.Controller;
 
@@ -37,7 +36,7 @@ namespace PizthieR.Views
             _pages.Add(_Programmation);
 
             // Page par défaut
-            FrameContainer.Child = _pages[0];
+            Frame.Content = _pages[0];
 
             // Onglets verrouillés jusqu'à la connexion
             BControl.IsEnabled = false;
@@ -46,29 +45,6 @@ namespace PizthieR.Views
 
             // Surveillance santé MQTT
             _MqttController.pingHealthyChanged += pingHealthyChanged;
-
-            // Diagnostic taille côté Avalonia
-            this.AttachedToVisualTree += (_, _) => UpdateDiag();
-            this.PropertyChanged += (_, e) =>
-            {
-                if (e.Property == BoundsProperty) UpdateDiag();
-            };
-        }
-
-        private void UpdateDiag()
-        {
-            try
-            {
-                var b = this.Bounds;
-                string root = "n/a";
-                if (this.GetVisualRoot() is Avalonia.Controls.TopLevel tl)
-                {
-                    root = tl.ClientSize.Width.ToString("0") + "×" + tl.ClientSize.Height.ToString("0")
-                         + " scale=" + tl.RenderScaling.ToString("0.##");
-                }
-                DiagAvalonia.Text = $"AVA mainview:{b.Width:0}×{b.Height:0}  top:{root}";
-            }
-            catch { }
         }
 
         private void pingHealthyChanged(object sender, bool newValue)
@@ -77,7 +53,7 @@ namespace PizthieR.Views
             if (!newValue)
             {
                 _Connection.DeConnectionMqtt();
-                FrameContainer.Child = _pages[0];
+                Frame.Content = _pages[0];
                 SetActiveTab(0);
             }
         }
@@ -105,26 +81,26 @@ namespace PizthieR.Views
                 await _Programmation.UnsubscribeAllAsync();
 
                 // Retour page Connection si on se déconnecte
-                FrameContainer.Child = _pages[0];
+                Frame.Content = _pages[0];
                 SetActiveTab(0);
             }
         }
 
         private void ViewConnection_Click(object? sender, RoutedEventArgs e)
         {
-            FrameContainer.Child = _pages[0];
+            Frame.Content = _pages[0];
             SetActiveTab(0);
         }
 
         private void ViewControl_Click(object? sender, RoutedEventArgs e)
         {
-            FrameContainer.Child = _pages[1];
+            Frame.Content = _pages[1];
             SetActiveTab(1);
         }
 
         private void ViewProgrammation_Click(object? sender, RoutedEventArgs e)
         {
-            FrameContainer.Child = _pages[2];
+            Frame.Content = _pages[2];
             SetActiveTab(2);
         }
 
