@@ -1,4 +1,19 @@
-﻿/* HTML styles for the splash screen */
+﻿/* Assure que le canvas Avalonia remplit tout le viewport */
+html, body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background: #1C1C1E;
+}
+
+#out {
+    width: 100%;
+    height: 100%;
+}
+
+/* HTML styles for the splash screen */
 .avalonia-splash {
     position: absolute;
     height: 100%;
