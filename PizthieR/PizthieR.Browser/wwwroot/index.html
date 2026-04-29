@@ -14,12 +14,55 @@
     <!-- Début du manifest PWA -->
     <link rel="manifest" href="manifest.json" />
     <meta name="theme-color" content="#CC0000" />
+    <!-- iOS PWA : permet à l'app ajoutée à l'écran d'accueil de s'afficher en plein écran -->
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="Pizza Thierry" />
     <!-- Fin du manifest PWA -->
     <link rel="stylesheet" href="./app.css" />
     <style>
         /* iOS : ne pas ré-agrandir automatiquement le texte */
         html {
             -webkit-text-size-adjust: 100%;
+        }
+
+        /* Plein écran réel sur iOS standalone (gère la barre d'URL dynamique et le home indicator) */
+        html, body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100vh;
+            height: 100dvh; /* hauteur dynamique : prend en compte les barres iOS */
+            overflow: hidden;
+            background: #1e1e1e;
+            /* Couleur des safe-areas (encoche en haut, home indicator en bas) */
+            background-color: #CC0000;
+        }
+
+        /* Conteneur principal Avalonia : occupe 100% incluant les safe-areas */
+        #out {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            width: 100%;
+            height: 100%;
+            /* Padding pour respecter les safe-areas iOS (encoche, home indicator) */
+            padding-top: env(safe-area-inset-top);
+            padding-bottom: env(safe-area-inset-bottom);
+            padding-left: env(safe-area-inset-left);
+            padding-right: env(safe-area-inset-right);
+            box-sizing: border-box;
+            background: #1e1e1e;
+        }
+
+        /* Le canvas Avalonia doit remplir #out */
+        #out > canvas {
+            width: 100% !important;
+            height: 100% !important;
+            display: block;
         }
 
         /* Clé : toutes les entrées ont une police ≥ 16px pour empêcher le focus-zoom iOS */
@@ -40,11 +83,11 @@
 </head>
 
 
-<body style="margin: 0; overflow: hidden">
+<body>
     <div id="out">
         <div id="splash"
              style="display:flex; align-items:center; justify-content:center;
-              height:100vh; background:#b22222; color:white; font-family:sans-serif;">
+              width:100%; height:100%; background:#b22222; color:white; font-family:sans-serif;">
             <h1>🍕 Pizza Thierry</h1>
         </div>
     </div>

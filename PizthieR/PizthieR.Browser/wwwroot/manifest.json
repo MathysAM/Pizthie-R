@@ -3,8 +3,9 @@
   "short_name": "PizthieR",
   "start_url": ".",
   "display": "standalone",
+  "orientation": "portrait",
   "background_color": "#1e1e1e",
-  "theme_color": "#007ACC",
+  "theme_color": "#CC0000",
   "icons": [
     {
       "src": "PizzaThierryF.png",
