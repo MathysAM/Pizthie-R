@@ -10,98 +10,85 @@
 	Background="{StaticResource AppBackgroundBrush}"
 	Foreground="White">
 
-	<Grid RowDefinitions="Auto,Auto,*">
+	<!-- 3 lignes : en-tête (Auto) | contenu (*) | barre de nav inférieure (Auto) -->
+	<Grid RowDefinitions="Auto,*,Auto">
 
-		<!-- Barre supérieure rouge style CFF -->
+		<!-- En-tête rouge CFF — titre uniquement, sans hamburger -->
 		<Border Grid.Row="0"
 				Background="{StaticResource SbbRedBrush}"
-				Padding="12,14">
-			<Grid ColumnDefinitions="Auto,*,Auto">
-				<ToggleButton x:Name="HamburgerBtn"
-							  Content="☰"
-							  Width="40" Height="40"
-							  Foreground="White"
-							  Background="Transparent"
-							  BorderThickness="0"
-							  FontSize="20"
-							  HorizontalAlignment="Left"
-							  VerticalAlignment="Center"
-							  ToolTip.Tip="Menu"/>
-				<TextBlock Grid.Column="1"
+				Padding="16,14">
+			<Grid ColumnDefinitions="*,Auto">
+				<TextBlock Grid.Column="0"
 						   Text="PIZZA THIERRY"
 						   FontSize="18"
 						   FontWeight="SemiBold"
 						   Foreground="White"
 						   HorizontalAlignment="Center"
 						   VerticalAlignment="Center"/>
-				<TextBlock Grid.Column="2"
+				<TextBlock Grid.Column="1"
 						   Text="🍕"
 						   FontSize="22"
-						   VerticalAlignment="Center"
-						   Margin="0,0,4,0"/>
+						   VerticalAlignment="Center"/>
 			</Grid>
 		</Border>
 
-		<!-- Onglets pilules sous l'en-tête rouge -->
-		<Border Grid.Row="1"
-				Background="{StaticResource SbbRedBrush}"
-				Padding="12,0,12,14">
-			<Border Background="#B30000" CornerRadius="22" Padding="4">
-				<UniformGrid Columns="3">
-					<ToggleButton x:Name="TabConnection" Classes="pill" Content="Connexion"
-								  IsChecked="True" Click="ViewConnection_Click"/>
-					<ToggleButton x:Name="TabControl" Classes="pill" Content="Contrôle"
-								  Click="ViewControl_Click"/>
-					<ToggleButton x:Name="TabProgrammation" Classes="pill" Content="Programmation"
-								  Click="ViewProgrammation_Click"/>
-				</UniformGrid>
-			</Border>
+		<!-- Zone de contenu principale -->
+		<Border Grid.Row="1" Margin="8" Padding="8"
+				Background="{StaticResource AppBackgroundBrush}">
+			<ContentControl x:Name="Frame"/>
 		</Border>
 
-		<!-- Zone principale avec menu repliable -->
-		<SplitView x:Name="AppSplitView"
-				   Grid.Row="2"
-				   IsPaneOpen="{Binding IsChecked, ElementName=HamburgerBtn}"
-				   DisplayMode="Overlay"
-				   CompactPaneLength="0"
-				   OpenPaneLength="240"
-				   Background="{StaticResource AppBackgroundBrush}"
-				   PaneBackground="#111113">
+		<!-- Barre de navigation inférieure — style CFF -->
+		<Border Grid.Row="2"
+				Background="#111113"
+				BorderBrush="{StaticResource CardBorderBrush}"
+				BorderThickness="0,1,0,0"
+				Padding="0,6,0,6">
+			<Grid ColumnDefinitions="*,*,*">
 
-			<SplitView.Pane>
-				<Border Padding="12">
-					<StackPanel Spacing="10">
-						<TextBlock Text="Menu" Classes="muted" Margin="6,4,0,8"/>
-						<Button Content="Connexion"
-								Name="Bconnection"
-								Classes="ghost"
-								FontSize="15"
-								HorizontalAlignment="Stretch"
-								HorizontalContentAlignment="Left"
-								Click="ViewConnection_Click"/>
-						<Button Content="Contrôle"
-								Name="BControl"
-								Classes="ghost"
-								FontSize="15"
-								HorizontalAlignment="Stretch"
-								HorizontalContentAlignment="Left"
-								Click="ViewControl_Click"/>
-						<Button Content="Programmation"
-								Name="BProgrammation"
-								Classes="ghost"
-								FontSize="15"
-								HorizontalAlignment="Stretch"
-								HorizontalContentAlignment="Left"
-								Click="ViewProgrammation_Click"/>
+				<!-- Connexion -->
+				<Button x:Name="Bconnection"
+						Classes="navbtn active"
+						Grid.Column="0"
+						HorizontalAlignment="Stretch"
+						VerticalAlignment="Stretch"
+						Click="ViewConnection_Click">
+					<StackPanel Spacing="2" HorizontalAlignment="Center">
+						<TextBlock Text="⚡" FontSize="20" HorizontalAlignment="Center"/>
+						<TextBlock Text="Connexion" FontSize="11" HorizontalAlignment="Center"/>
 					</StackPanel>
-				</Border>
-			</SplitView.Pane>
+				</Button>
 
-			<!-- CONTENU -->
-			<Border Margin="12" Padding="0">
-				<ContentControl x:Name="Frame"/>
-			</Border>
-		</SplitView>
+				<!-- Contrôle -->
+				<Button x:Name="BControl"
+						Classes="navbtn"
+						Grid.Column="1"
+						HorizontalAlignment="Stretch"
+						VerticalAlignment="Stretch"
+						IsVisible="False"
+						Click="ViewControl_Click">
+					<StackPanel Spacing="2" HorizontalAlignment="Center">
+						<TextBlock Text="🌡" FontSize="20" HorizontalAlignment="Center"/>
+						<TextBlock Text="Contrôle" FontSize="11" HorizontalAlignment="Center"/>
+					</StackPanel>
+				</Button>
+
+				<!-- Programmation -->
+				<Button x:Name="BProgrammation"
+						Classes="navbtn"
+						Grid.Column="2"
+						HorizontalAlignment="Stretch"
+						VerticalAlignment="Stretch"
+						IsVisible="False"
+						Click="ViewProgrammation_Click">
+					<StackPanel Spacing="2" HorizontalAlignment="Center">
+						<TextBlock Text="📅" FontSize="20" HorizontalAlignment="Center"/>
+						<TextBlock Text="Planning" FontSize="11" HorizontalAlignment="Center"/>
+					</StackPanel>
+				</Button>
+
+			</Grid>
+		</Border>
 
 	</Grid>
 </UserControl>

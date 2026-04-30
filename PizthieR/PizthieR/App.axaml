@@ -107,5 +107,40 @@
             <Setter Property="FontSize" Value="16"/>
             <Setter Property="FontWeight" Value="SemiBold"/>
         </Style>
+
+        <!-- Bouton de navigation inférieure (bottom nav bar) -->
+        <Style Selector="Button.navbtn">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="#9A9A9E"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="CornerRadius" Value="0"/>
+            <Setter Property="Padding" Value="8,6"/>
+            <Setter Property="FontWeight" Value="Normal"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+        </Style>
+        <Style Selector="Button.navbtn /template/ ContentPresenter">
+            <Setter Property="Background" Value="Transparent"/>
+        </Style>
+        <Style Selector="Button.navbtn:pointerover /template/ ContentPresenter">
+            <Setter Property="Background" Value="#1AFFFFFF"/>
+            <Setter Property="Foreground" Value="White"/>
+        </Style>
+        <Style Selector="Button.navbtn:pressed /template/ ContentPresenter">
+            <Setter Property="Background" Value="#2AFFFFFF"/>
+            <Setter Property="Foreground" Value="White"/>
+        </Style>
+        <!-- Onglet actif : texte et icône blancs, indicateur rouge en haut -->
+        <Style Selector="Button.navbtn.active">
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+        </Style>
+        <Style Selector="Button.navbtn.active /template/ ContentPresenter">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderBrush" Value="#EB0000"/>
+            <Setter Property="BorderThickness" Value="0,3,0,0"/>
+        </Style>
+        <!-- TextBlock enfant d'un navbtn hérite la couleur du bouton via le template -->
     </Application.Styles>
 </Application>

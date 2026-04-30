@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Controls.Primitives;
 using Avalonia.Interactivity;
-using MQTTnet;
-using PizthieR.Controller; // seul using côté MQTT
+using PizthieR.Controller;
 
 namespace PizthieR.Views
 {
@@ -37,8 +34,9 @@ namespace PizthieR.Views
 
             // Page par défaut
             Frame.Content = _pages[0];
+            SetActiveNavButton(Bconnection);
 
-            // État initial : seules les pages nécessitant la connexion sont masquées
+            // État initial : boutons hors connexion masqués
             BControl.IsVisible = false;
             BProgrammation.IsVisible = false;
 
@@ -48,19 +46,16 @@ namespace PizthieR.Views
 
         private void pingHealthyChanged(object sender, bool newValue)
         {
-            // Si perte de santé/ping → déconnexion "sécurisée" + retour page Connection
             if (!newValue)
             {
                 _Connection.DeConnectionMqtt();
                 Frame.Content = _pages[0];
-                // Replie le menu si overlay pour un comportement propre
-                FermerPaneSiOverlay();
+                SetActiveNavButton(Bconnection);
             }
         }
 
         /// <summary>
-        /// Appelée par 'Connection' quand l’état change.
-        /// Gère visibilité des items + abonnements.
+        /// Appelée par 'Connection' quand l'état change.
         /// </summary>
         public async void IsConnected(bool value)
         {
@@ -80,42 +75,41 @@ namespace PizthieR.Views
                 _Control.DesAbonnement();
                 await _Programmation.UnsubscribeAllAsync();
 
-                // Retour page Connection si on se déconnecte
                 Frame.Content = _pages[0];
+                SetActiveNavButton(Bconnection);
             }
         }
 
-        // Handlers de navigation (réutilisent tes pages existantes)
+        // Handlers de navigation
         private void ViewConnection_Click(object? sender, RoutedEventArgs e)
         {
             Frame.Content = _pages[0];
-            FermerPaneSiOverlay();
+            SetActiveNavButton(Bconnection);
         }
 
         private void ViewControl_Click(object? sender, RoutedEventArgs e)
         {
             Frame.Content = _pages[1];
-            FermerPaneSiOverlay();
+            SetActiveNavButton(BControl);
         }
 
         private void ViewProgrammation_Click(object? sender, RoutedEventArgs e)
         {
             Frame.Content = _pages[2];
-            FermerPaneSiOverlay();
+            SetActiveNavButton(BProgrammation);
         }
 
-        // Ferme le volet et décoche le hamburger en mode Overlay
-        private void FermerPaneSiOverlay()
+        /// <summary>
+        /// Retire la classe "active" de tous les boutons de nav
+        /// et l'applique uniquement sur le bouton sélectionné.
+        /// </summary>
+        private void SetActiveNavButton(Button active)
         {
-            if (AppSplitView is null) return;
-
-            if (AppSplitView.DisplayMode == SplitViewDisplayMode.Overlay)
+            foreach (var btn in new[] { Bconnection, BControl, BProgrammation })
             {
-                AppSplitView.IsPaneOpen = false;
-
-                if (this.FindControl<ToggleButton>("HamburgerBtn") is { } btn)
-                    btn.IsChecked = false;
+                btn.Classes.Remove("active");
             }
+            active.Classes.Add("active");
         }
     }
 }
