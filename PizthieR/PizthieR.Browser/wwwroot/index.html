@@ -5,25 +5,6 @@
     <title>PizthieR.Browser</title>
     <meta charset="UTF-8">
 
-    <!--
-        iOS STANDALONE FIX (doit etre le premier script) :
-        En mode PWA (icone sur l'ecran d'accueil), iOS retourne un window.innerWidth incorrect.
-        Avalonia utilise cette valeur pour dimensionner son canvas => colonne noire a droite.
-        On override innerWidth/innerHeight avec screen.width/height avant le chargement WASM.
-    -->
-    <script>
-        (function () {
-            if (window.navigator.standalone) {
-                var realW = window.screen.width;
-                var realH = window.screen.height;
-                try {
-                    Object.defineProperty(window, 'innerWidth',  { get: function () { return realW; }, configurable: true });
-                    Object.defineProperty(window, 'innerHeight', { get: function () { return realH; }, configurable: true });
-                } catch (e) {}
-            }
-        })();
-    </script>
-
     <!-- Viewport : verrouille le zoom, couvre les encoches iOS -->
     <meta name="viewport"
           content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
@@ -34,43 +15,13 @@
     <link rel="manifest" href="manifest.json" />
     <meta name="theme-color" content="#CC0000" />
 
-    <!-- iOS PWA : plein ecran en mode standalone -->
-    <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-    <meta name="apple-mobile-web-app-title" content="Pizza Thierry" />
-
     <link rel="stylesheet" href="./app.css" />
     <style>
         html {
             -webkit-text-size-adjust: 100%;
         }
 
-        html, body {
-            margin: 0;
-            padding: 0;
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-            background: #1e1e1e;
-        }
-
-        #out {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            overflow: hidden;
-            background: #1e1e1e;
-        }
-
-        canvas {
-            width: 100vw !important;
-            height: 100vh !important;
-            display: block;
-        }
-
+        /* Cle : toutes les entrees ont une police >= 16px pour empecher le focus-zoom iOS */
         input, textarea, select, button {
             font-size: 16px !important;
         }
@@ -89,7 +40,7 @@
     <div id="out">
         <div id="splash"
              style="display:flex; align-items:center; justify-content:center;
-                    width:100%; height:100%; background:#b22222; color:white; font-family:sans-serif;">
+                    height:100vh; background:#b22222; color:white; font-family:sans-serif;">
             <h1>Pizza Thierry</h1>
         </div>
     </div>
