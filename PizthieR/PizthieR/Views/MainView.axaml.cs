@@ -18,7 +18,7 @@ namespace PizthieR.Views
         private readonly Control _Control;
         private readonly Programmation _Programmation;
 
-        // MQTT
+        // /MQTT
         private readonly MqttController _MqttController;
 
         public MainView()
