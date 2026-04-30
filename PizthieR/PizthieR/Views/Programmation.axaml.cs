@@ -60,8 +60,16 @@ public partial class Programmation : UserControl
             d.StopMinute.SelectionChanged += (_, __) => ValidateTime(idx);
         }
 
-        // Bouton "Enregistrer" → publish tous les jours
-        BtnSaveAll.Click += async (_, __) => await SaveAllAsync();
+        // Bouton "Enregistrer" → publish tous les jours + retour utilisateur
+        BtnSaveAll.Click += async (_, __) =>
+        {
+            BtnSaveAll.IsEnabled = false;
+            bool ok = await SaveAllAsync();
+            BtnSaveAll.IsEnabled = true;
+            await ShowToastAsync(
+                ok ? "✓  Programmation enregistrée" : "⚠  Échec de l'enregistrement",
+                ok);
+        };
 
         
     }
@@ -142,24 +150,44 @@ public partial class Programmation : UserControl
         }
     }
 
-    private async Task SaveAllAsync()
+    private async Task<bool> SaveAllAsync()
     {
-        for (int i = 0; i < _days.Count; i++)
+        try
         {
-            var d = _days[i];
-            bool isActive = d.Active.IsChecked == true;
+            for (int i = 0; i < _days.Count; i++)
+            {
+                var d = _days[i];
+                bool isActive = d.Active.IsChecked == true;
 
-            int sh = GetSelectedInt(d.StartHour);
-            int sm = GetSelectedInt(d.StartMinute);
-            int eh = GetSelectedInt(d.StopHour);
-            int em = GetSelectedInt(d.StopMinute);
+                int sh = GetSelectedInt(d.StartHour);
+                int sm = GetSelectedInt(d.StartMinute);
+                int eh = GetSelectedInt(d.StopHour);
+                int em = GetSelectedInt(d.StopMinute);
 
-            await _mqtt.PublishActive($"/Prog/{i}/Active", isActive ? "true" : "false");
-            await _mqtt.PublishActive($"/Prog/{i}/StartHour", sh.ToString());
-            await _mqtt.PublishActive($"/Prog/{i}/StartMinute", sm.ToString());
-            await _mqtt.PublishActive($"/Prog/{i}/StopHour", eh.ToString());
-            await _mqtt.PublishActive($"/Prog/{i}/StopMinute", em.ToString());
+                await _mqtt.PublishActive($"/Prog/{i}/Active", isActive ? "true" : "false");
+                await _mqtt.PublishActive($"/Prog/{i}/StartHour", sh.ToString());
+                await _mqtt.PublishActive($"/Prog/{i}/StartMinute", sm.ToString());
+                await _mqtt.PublishActive($"/Prog/{i}/StopHour", eh.ToString());
+                await _mqtt.PublishActive($"/Prog/{i}/StopMinute", em.ToString());
+            }
+            return true;
         }
+        catch
+        {
+            return false;
+        }
+    }
+
+    // Affiche une bandeau éphémère en bas de la page (succès = vert, erreur = rouge)
+    private async Task ShowToastAsync(string message, bool success)
+    {
+        ToastText.Text = message;
+        Toast.Background = new Avalonia.Media.SolidColorBrush(
+            success ? Avalonia.Media.Color.Parse("#1B7F3A")    // vert
+                    : Avalonia.Media.Color.Parse("#C62828"));  // rouge
+        Toast.IsVisible = true;
+        await Task.Delay(2000);
+        Toast.IsVisible = false;
     }
 
     // === Validation : durée ≥ 60 min, roulage minuit ===

@@ -215,5 +215,24 @@
 			</ScrollViewer>
 		</Border>
 
+		<!-- Toast de confirmation (overlay en bas de page) -->
+		<Border x:Name="Toast"
+				Grid.Row="1"
+				VerticalAlignment="Bottom"
+				HorizontalAlignment="Stretch"
+				Margin="8,0,8,12"
+				CornerRadius="12"
+				Padding="14,12"
+				IsVisible="False"
+				IsHitTestVisible="False"
+				BoxShadow="0 4 16 0 #80000000">
+			<TextBlock x:Name="ToastText"
+					   Text="✓  Enregistré"
+					   Foreground="White"
+					   FontWeight="SemiBold"
+					   FontSize="15"
+					   HorizontalAlignment="Center"/>
+		</Border>
+
 	</Grid>
 </UserControl>
