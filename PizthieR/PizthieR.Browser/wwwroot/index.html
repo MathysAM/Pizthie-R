@@ -21,6 +21,14 @@
             -webkit-text-size-adjust: 100%;
         }
 
+        /* CORRECTIF : supprime la marge par defaut du navigateur (cause des bandes blanches/noires en PWA) */
+        html, body {
+            margin: 0;
+            padding: 0;
+            background: #1e1e1e;
+            overflow: hidden;
+        }
+
         /* Cle : toutes les entrees ont une police >= 16px pour empecher le focus-zoom iOS */
         input, textarea, select, button {
             font-size: 16px !important;
