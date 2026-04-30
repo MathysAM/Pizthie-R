@@ -1,83 +1,92 @@
 <UserControl xmlns="https://github.com/avaloniaui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="PizthieR.Control">
-	<Grid>
-		<Grid.RowDefinitions> 
-			<RowDefinition Height="1*"/>
-			<RowDefinition Height="1*"/>
-			<RowDefinition Height="1*"/>
-			<RowDefinition Height="1*"/>
-			
-			
-			
-		</Grid.RowDefinitions>
+			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+			 mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+			 x:Class="PizthieR.Control"
+			 Background="Transparent"
+			 Foreground="White">
 
-		<Grid.ColumnDefinitions>
-			<ColumnDefinition Width="1*"/>
-			
-		</Grid.ColumnDefinitions>
-		
-		<Grid Grid.Row="0" Grid.Column="0">
-			<Grid.ColumnDefinitions>
-				<ColumnDefinition Width="1*"/>
-				<ColumnDefinition Width="1*"/>
-				<ColumnDefinition Width="1*"/>
-			</Grid.ColumnDefinitions>
-			
-			<Button Content="Start" Name="StartFour" Grid.Column="0" FontSize="18"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
-			<Button Content="Stop" Name="StopFour" Grid.Column="3" FontSize="18"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
-			
-		</Grid>
-		
-		<TextBox Text="Consigne température" Name="ConsigneTemperature" Grid.Row="2" Grid.Column="0" FontSize="18" IsVisible="False" />
-		<Button Content="Publier température" FontSize="18"  Name="PublierTemperature"  Grid.Row="3" Grid.Column="0" IsVisible="False" />
-		
-		<TextBox Text="Température max" Name="TemperatureMax"  FontSize="18"  Grid.Row="5" Grid.Column="0" IsVisible="False" />
-		<Button Content="Publier température max" FontSize="18"  Name="PublierTemperatureMax" Grid.Row="6" Grid.Column="0" IsVisible="False" />
-		<Grid Grid.Row="2" Grid.Column="0" IsVisible="False">
-			<Grid.ColumnDefinitions>
-				<ColumnDefinition Width="1*"/>
-				<ColumnDefinition Width="1*"/>
-			</Grid.ColumnDefinitions>
+	<ScrollViewer>
+		<StackPanel Spacing="14" Margin="4">
 
-			<TextBlock Text="Temperature :" FontSize="18"  Grid.Column="0" />
-			<TextBlock Text="Etat" FontSize="18"  Name="TemperatureActuelle" Grid.Column="1" />
+			<!-- Commandes Start / Stop -->
+			<Border Classes="card">
+				<StackPanel Spacing="12">
+					<TextBlock Text="Commandes du four" Classes="cardTitle"/>
+					<Grid ColumnDefinitions="*,*">
+						<Button Grid.Column="0" Content="▶  Start" Name="StartFour"
+								Classes="primary" FontSize="16"
+								HorizontalAlignment="Stretch" Margin="0,0,6,0"/>
+						<Button Grid.Column="1" Content="■  Stop" Name="StopFour"
+								Classes="ghost" FontSize="16"
+								HorizontalAlignment="Stretch" Margin="6,0,0,0"/>
+					</Grid>
+				</StackPanel>
+			</Border>
 
-		</Grid>
-		
-		<Grid Grid.Row="2" Grid.Column="0">
-			<Grid.ColumnDefinitions>
-				<ColumnDefinition Width="1*"/>
-				<ColumnDefinition Width="1*"/>
-			</Grid.ColumnDefinitions>
+			<!-- État du four -->
+			<Border Classes="card">
+				<StackPanel Spacing="10">
+					<TextBlock Text="État" Classes="cardTitle"/>
 
-			<TextBlock Text="Etat Four :" FontSize="18"   Grid.Column="0" />
-			<TextBlock Text="Etat" FontSize="18"  Name="Etatfour" Grid.Column="1" />
+					<Grid ColumnDefinitions="*,Auto">
+						<TextBlock Text="État Four" Classes="muted" Grid.Column="0"
+								   VerticalAlignment="Center"/>
+						<TextBlock Text="Etat" Name="Etatfour" Grid.Column="1"
+								   Foreground="White" FontSize="15" FontWeight="SemiBold"
+								   VerticalAlignment="Center"/>
+					</Grid>
 
-		</Grid>
-		<Grid Grid.Row="6" Grid.Column="0" IsVisible="False">
-			<Grid.ColumnDefinitions>
-				<ColumnDefinition Width="1*"/>
-				<ColumnDefinition Width="1*"/>
-			</Grid.ColumnDefinitions>
+					<Border Height="1" Background="{StaticResource CardBorderBrush}"/>
 
-			<TextBlock Text="Etat régule :" FontSize="18"  Grid.Column="0" />
-			<TextBlock Text="Etat" FontSize="18"  Name="EtatRegule" Grid.Column="1" />
+					<Grid ColumnDefinitions="*,Auto">
+						<TextBlock Text="Mode de fonctionnement" Classes="muted"
+								   TextWrapping="Wrap" Grid.Column="0"
+								   VerticalAlignment="Center"/>
+						<TextBlock Text="Etat" Name="ModeFonctionnement" Grid.Column="1"
+								   Foreground="White" FontSize="15" FontWeight="SemiBold"
+								   VerticalAlignment="Center"/>
+					</Grid>
+				</StackPanel>
+			</Border>
 
-		</Grid>
-		<Grid Grid.Row="4" Grid.Column="0">
-			<Grid.ColumnDefinitions>
-				<ColumnDefinition Width="1*"/>
-				<ColumnDefinition Width="1*"/>
-			</Grid.ColumnDefinitions>
+			<!-- Consigne température (cachée par défaut, conserve la logique existante) -->
+			<Border Classes="card" IsVisible="False">
+				<StackPanel Spacing="10">
+					<TextBlock Text="Consigne température" Classes="cardTitle"/>
+					<TextBox Text="Consigne température" Name="ConsigneTemperature"
+							 Classes="dark" FontSize="15"/>
+					<Button Content="Publier température" FontSize="15"
+							Classes="primary" Name="PublierTemperature"
+							HorizontalAlignment="Stretch"/>
+				</StackPanel>
+			</Border>
 
-			<TextBlock Text="Mode fonctionnement:" FontSize="18"  TextWrapping="Wrap" Grid.Column="0" />
-			<TextBlock Text="Etat" FontSize="18"  Name="ModeFonctionnement" Grid.Column="1" />
+			<!-- Température max (cachée par défaut) -->
+			<Border Classes="card" IsVisible="False">
+				<StackPanel Spacing="10">
+					<TextBlock Text="Température max" Classes="cardTitle"/>
+					<TextBox Text="Température max" Name="TemperatureMax"
+							 Classes="dark" FontSize="15"/>
+					<Button Content="Publier température max" FontSize="15"
+							Classes="primary" Name="PublierTemperatureMax"
+							HorizontalAlignment="Stretch"/>
 
-		</Grid>
-	</Grid>
-		
+					<Grid ColumnDefinitions="*,Auto" Margin="0,8,0,0">
+						<TextBlock Text="Température" Classes="muted" Grid.Column="0"/>
+						<TextBlock Text="Etat" Name="TemperatureActuelle" Grid.Column="1"
+								   Foreground="White" FontWeight="SemiBold"/>
+					</Grid>
+
+					<Grid ColumnDefinitions="*,Auto">
+						<TextBlock Text="État régule" Classes="muted" Grid.Column="0"/>
+						<TextBlock Text="Etat" Name="EtatRegule" Grid.Column="1"
+								   Foreground="White" FontWeight="SemiBold"/>
+					</Grid>
+				</StackPanel>
+			</Border>
+
+		</StackPanel>
+	</ScrollViewer>
 </UserControl>

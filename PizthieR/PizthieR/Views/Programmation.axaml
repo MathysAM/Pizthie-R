@@ -1,49 +1,36 @@
 <UserControl
-    x:Class="PizthieR.Programmation"
-    xmlns="https://github.com/avaloniaui"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d" d:DesignWidth="1000" d:DesignHeight="720">
+	x:Class="PizthieR.Programmation"
+	xmlns="https://github.com/avaloniaui"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	mc:Ignorable="d" d:DesignWidth="1000" d:DesignHeight="720"
+	Background="Transparent"
+	Foreground="White">
 
-	<Grid >
-		<Grid.RowDefinitions>
-			<RowDefinition Height="2*"/>
-			<RowDefinition Height="10*"/>
-			
+	<Grid RowDefinitions="Auto,*">
 
+		<!-- En-tête : titre + bouton enregistrer -->
+		<Border Grid.Row="0" Classes="card" Margin="0,0,0,12">
+			<Grid ColumnDefinitions="*,Auto">
+				<StackPanel Grid.Column="0" Spacing="2" VerticalAlignment="Center">
+					<TextBlock Text="Programmation hebdomadaire" Classes="cardTitle"/>
+					<TextBlock Text="Définissez les plages horaires d'activation du four"
+							   Classes="muted"/>
+				</StackPanel>
+				<Button x:Name="BtnSaveAll"
+						Grid.Column="1"
+						Content="Enregistrer"
+						Classes="primary"
+						FontSize="15"
+						VerticalAlignment="Center"/>
+			</Grid>
+		</Border>
 
-		</Grid.RowDefinitions>
-		<Grid.ColumnDefinitions>
-			<ColumnDefinition Width="1*"/>
-			
-		</Grid.ColumnDefinitions>
-		<Grid Grid.Row="0" Grid.Column="0">
-			<Grid.RowDefinitions>
-				<RowDefinition Height="2*"/>
-				<RowDefinition Height="1*"/>
-
-
-
-			</Grid.RowDefinitions>
-			<Grid.ColumnDefinitions>
-				<ColumnDefinition Width="1*"/>
-				
-				<ColumnDefinition Width="2*"/>
-			</Grid.ColumnDefinitions>
-			
-			<Button x:Name="BtnSaveAll" Content="Enregistrer" Grid.Row="0" FontSize="18" Grid.Column="0" 	 VerticalAlignment="Stretch" HorizontalAlignment="Stretch" />
-		</Grid>
-		
-	
-									  
-		<!-- Zone de programmation (sur 3 colonnes, en bas) -->
-		<Border Grid.Row="1" Grid.ColumnSpan="3"
-				Padding="8" BorderThickness="1" BorderBrush="#404040" CornerRadius="8">
+		<!-- Zone de programmation -->
+		<Border Grid.Row="1" Classes="card" Padding="12">
 			<ScrollViewer>
 				<StackPanel Spacing="10">
-
-					
 
 					<!-- Lundi (0) -->
 					<Border BorderBrush="#404040" BorderThickness="1" CornerRadius="8" Padding="8">
