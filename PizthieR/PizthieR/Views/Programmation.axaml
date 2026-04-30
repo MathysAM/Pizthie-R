@@ -10,226 +10,207 @@
 
 	<Grid RowDefinitions="Auto,*">
 
-		<!-- En-tête : titre + bouton enregistrer -->
+		<!-- En-tête : titre + bouton enregistrer pleine largeur (mobile-friendly) -->
 		<Border Grid.Row="0" Classes="card" Margin="0,0,0,12">
-			<Grid ColumnDefinitions="*,Auto">
-				<StackPanel Grid.Column="0" Spacing="2" VerticalAlignment="Center">
-					<TextBlock Text="Programmation hebdomadaire" Classes="cardTitle"/>
-					<TextBlock Text="Définissez les plages horaires d'activation du four"
-							   Classes="muted"/>
-				</StackPanel>
+			<StackPanel Spacing="10">
+				<TextBlock Text="Planning hebdomadaire" Classes="cardTitle"/>
+				<TextBlock Text="Définissez les plages d'activation du four"
+						   Classes="muted" TextWrapping="Wrap"/>
 				<Button x:Name="BtnSaveAll"
-						Grid.Column="1"
 						Content="Enregistrer"
 						Classes="primary"
 						FontSize="15"
-						VerticalAlignment="Center"/>
-			</Grid>
+						HorizontalAlignment="Stretch"/>
+			</StackPanel>
 		</Border>
 
 		<!-- Zone de programmation -->
-		<Border Grid.Row="1" Classes="card" Padding="12">
-			<ScrollViewer>
+		<Border Grid.Row="1" Classes="card" Padding="10">
+			<ScrollViewer HorizontalScrollBarVisibility="Disabled">
 				<StackPanel Spacing="10">
 
 					<!-- Lundi (0) -->
-					<Border BorderBrush="#404040" BorderThickness="1" CornerRadius="8" Padding="8">
-						<StackPanel Spacing="8">
-							<StackPanel Orientation="Horizontal" Spacing="8">
-								<CheckBox x:Name="Active0"/>
-								<TextBlock Text="Lundi" FontWeight="SemiBold"/>
+					<Border BorderBrush="#3A3A3C" BorderThickness="1" CornerRadius="12" Padding="12" Background="#1F1F22">
+						<StackPanel Spacing="10">
+							<StackPanel Orientation="Horizontal" Spacing="10" VerticalAlignment="Center">
+								<CheckBox x:Name="Active0" VerticalAlignment="Center"/>
+								<TextBlock Text="Lundi" FontSize="15" FontWeight="SemiBold" VerticalAlignment="Center"/>
 							</StackPanel>
-							<Grid ColumnDefinitions="*,*,*,*">
-								<StackPanel Grid.Column="0" Spacing="4">
-									<TextBlock Text="Heure de démarrage"/>
-									<ComboBox x:Name="StartHour0"/>
-								</StackPanel>
-								<StackPanel Grid.Column="1" Spacing="4" Margin="8,0,0,0">
-									<TextBlock Text="Minute de démarrage"/>
-									<ComboBox x:Name="StartMinute0"/>
-								</StackPanel>
-								<StackPanel Grid.Column="2" Spacing="4" Margin="8,0,0,0">
-									<TextBlock Text="Heure d'arrêt"/>
-									<ComboBox x:Name="StopHour0"/>
-								</StackPanel>
-								<StackPanel Grid.Column="3" Spacing="4" Margin="8,0,0,0">
-									<TextBlock Text="Minute d'arrêt"/>
-									<ComboBox x:Name="StopMinute0"/>
-								</StackPanel>
+							<Grid ColumnDefinitions="*,8,*" RowDefinitions="Auto,Auto">
+								<TextBlock Grid.Row="0" Grid.Column="0" Text="▶  Démarrage" Classes="muted"/>
+								<TextBlock Grid.Row="0" Grid.Column="2" Text="⏹  Arrêt" Classes="muted"/>
+								<Grid Grid.Row="1" Grid.Column="0" ColumnDefinitions="*,Auto,*" Margin="0,4,0,0">
+									<ComboBox x:Name="StartHour0" Grid.Column="0" HorizontalAlignment="Stretch"/>
+									<TextBlock Grid.Column="1" Text=":" FontSize="16" FontWeight="Bold"
+											   VerticalAlignment="Center" Margin="6,0"/>
+									<ComboBox x:Name="StartMinute0" Grid.Column="2" HorizontalAlignment="Stretch"/>
+								</Grid>
+								<Grid Grid.Row="1" Grid.Column="2" ColumnDefinitions="*,Auto,*" Margin="0,4,0,0">
+									<ComboBox x:Name="StopHour0" Grid.Column="0" HorizontalAlignment="Stretch"/>
+									<TextBlock Grid.Column="1" Text=":" FontSize="16" FontWeight="Bold"
+											   VerticalAlignment="Center" Margin="6,0"/>
+									<ComboBox x:Name="StopMinute0" Grid.Column="2" HorizontalAlignment="Stretch"/>
+								</Grid>
 							</Grid>
 						</StackPanel>
 					</Border>
 
 					<!-- Mardi (1) -->
-					<Border BorderBrush="#404040" BorderThickness="1" CornerRadius="8" Padding="8">
-						<StackPanel Spacing="8">
-							<StackPanel Orientation="Horizontal" Spacing="8">
-								<CheckBox x:Name="Active1"/>
-								<TextBlock Text="Mardi" FontWeight="SemiBold"/>
+					<Border BorderBrush="#3A3A3C" BorderThickness="1" CornerRadius="12" Padding="12" Background="#1F1F22">
+						<StackPanel Spacing="10">
+							<StackPanel Orientation="Horizontal" Spacing="10" VerticalAlignment="Center">
+								<CheckBox x:Name="Active1" VerticalAlignment="Center"/>
+								<TextBlock Text="Mardi" FontSize="15" FontWeight="SemiBold" VerticalAlignment="Center"/>
 							</StackPanel>
-							<Grid ColumnDefinitions="*,*,*,*">
-								<StackPanel Grid.Column="0" Spacing="4">
-									<TextBlock Text="Heure de démarrage"/>
-									<ComboBox x:Name="StartHour1"/>
-								</StackPanel>
-								<StackPanel Grid.Column="1" Spacing="4" Margin="8,0,0,0">
-									<TextBlock Text="Minute de démarrage"/>
-									<ComboBox x:Name="StartMinute1"/>
-								</StackPanel>
-								<StackPanel Grid.Column="2" Spacing="4" Margin="8,0,0,0">
-									<TextBlock Text="Heure d'arrêt"/>
-									<ComboBox x:Name="StopHour1"/>
-								</StackPanel>
-								<StackPanel Grid.Column="3" Spacing="4" Margin="8,0,0,0">
-									<TextBlock Text="Minute d'arrêt"/>
-									<ComboBox x:Name="StopMinute1"/>
-								</StackPanel>
+							<Grid ColumnDefinitions="*,8,*" RowDefinitions="Auto,Auto">
+								<TextBlock Grid.Row="0" Grid.Column="0" Text="▶  Démarrage" Classes="muted"/>
+								<TextBlock Grid.Row="0" Grid.Column="2" Text="⏹  Arrêt" Classes="muted"/>
+								<Grid Grid.Row="1" Grid.Column="0" ColumnDefinitions="*,Auto,*" Margin="0,4,0,0">
+									<ComboBox x:Name="StartHour1" Grid.Column="0" HorizontalAlignment="Stretch"/>
+									<TextBlock Grid.Column="1" Text=":" FontSize="16" FontWeight="Bold"
+											   VerticalAlignment="Center" Margin="6,0"/>
+									<ComboBox x:Name="StartMinute1" Grid.Column="2" HorizontalAlignment="Stretch"/>
+								</Grid>
+								<Grid Grid.Row="1" Grid.Column="2" ColumnDefinitions="*,Auto,*" Margin="0,4,0,0">
+									<ComboBox x:Name="StopHour1" Grid.Column="0" HorizontalAlignment="Stretch"/>
+									<TextBlock Grid.Column="1" Text=":" FontSize="16" FontWeight="Bold"
+											   VerticalAlignment="Center" Margin="6,0"/>
+									<ComboBox x:Name="StopMinute1" Grid.Column="2" HorizontalAlignment="Stretch"/>
+								</Grid>
 							</Grid>
 						</StackPanel>
 					</Border>
 
 					<!-- Mercredi (2) -->
-					<Border BorderBrush="#404040" BorderThickness="1" CornerRadius="8" Padding="8">
-						<StackPanel Spacing="8">
-							<StackPanel Orientation="Horizontal" Spacing="8">
-								<CheckBox x:Name="Active2"/>
-								<TextBlock Text="Mercredi" FontWeight="SemiBold"/>
+					<Border BorderBrush="#3A3A3C" BorderThickness="1" CornerRadius="12" Padding="12" Background="#1F1F22">
+						<StackPanel Spacing="10">
+							<StackPanel Orientation="Horizontal" Spacing="10" VerticalAlignment="Center">
+								<CheckBox x:Name="Active2" VerticalAlignment="Center"/>
+								<TextBlock Text="Mercredi" FontSize="15" FontWeight="SemiBold" VerticalAlignment="Center"/>
 							</StackPanel>
-							<Grid ColumnDefinitions="*,*,*,*">
-								<StackPanel Grid.Column="0" Spacing="4">
-									<TextBlock Text="Heure de démarrage"/>
-									<ComboBox x:Name="StartHour2"/>
-								</StackPanel>
-								<StackPanel Grid.Column="1" Spacing="4" Margin="8,0,0,0">
-									<TextBlock Text="Minute de démarrage"/>
-									<ComboBox x:Name="StartMinute2"/>
-								</StackPanel>
-								<StackPanel Grid.Column="2" Spacing="4" Margin="8,0,0,0">
-									<TextBlock Text="Heure d'arrêt"/>
-									<ComboBox x:Name="StopHour2"/>
-								</StackPanel>
-								<StackPanel Grid.Column="3" Spacing="4" Margin="8,0,0,0">
-									<TextBlock Text="Minute d'arrêt"/>
-									<ComboBox x:Name="StopMinute2"/>
-								</StackPanel>
+							<Grid ColumnDefinitions="*,8,*" RowDefinitions="Auto,Auto">
+								<TextBlock Grid.Row="0" Grid.Column="0" Text="▶  Démarrage" Classes="muted"/>
+								<TextBlock Grid.Row="0" Grid.Column="2" Text="⏹  Arrêt" Classes="muted"/>
+								<Grid Grid.Row="1" Grid.Column="0" ColumnDefinitions="*,Auto,*" Margin="0,4,0,0">
+									<ComboBox x:Name="StartHour2" Grid.Column="0" HorizontalAlignment="Stretch"/>
+									<TextBlock Grid.Column="1" Text=":" FontSize="16" FontWeight="Bold"
+											   VerticalAlignment="Center" Margin="6,0"/>
+									<ComboBox x:Name="StartMinute2" Grid.Column="2" HorizontalAlignment="Stretch"/>
+								</Grid>
+								<Grid Grid.Row="1" Grid.Column="2" ColumnDefinitions="*,Auto,*" Margin="0,4,0,0">
+									<ComboBox x:Name="StopHour2" Grid.Column="0" HorizontalAlignment="Stretch"/>
+									<TextBlock Grid.Column="1" Text=":" FontSize="16" FontWeight="Bold"
+											   VerticalAlignment="Center" Margin="6,0"/>
+									<ComboBox x:Name="StopMinute2" Grid.Column="2" HorizontalAlignment="Stretch"/>
+								</Grid>
 							</Grid>
 						</StackPanel>
 					</Border>
 
 					<!-- Jeudi (3) -->
-					<Border BorderBrush="#404040" BorderThickness="1" CornerRadius="8" Padding="8">
-						<StackPanel Spacing="8">
-							<StackPanel Orientation="Horizontal" Spacing="8">
-								<CheckBox x:Name="Active3"/>
-								<TextBlock Text="Jeudi" FontWeight="SemiBold"/>
+					<Border BorderBrush="#3A3A3C" BorderThickness="1" CornerRadius="12" Padding="12" Background="#1F1F22">
+						<StackPanel Spacing="10">
+							<StackPanel Orientation="Horizontal" Spacing="10" VerticalAlignment="Center">
+								<CheckBox x:Name="Active3" VerticalAlignment="Center"/>
+								<TextBlock Text="Jeudi" FontSize="15" FontWeight="SemiBold" VerticalAlignment="Center"/>
 							</StackPanel>
-							<Grid ColumnDefinitions="*,*,*,*">
-								<StackPanel Grid.Column="0" Spacing="4">
-									<TextBlock Text="Heure de démarrage"/>
-									<ComboBox x:Name="StartHour3"/>
-								</StackPanel>
-								<StackPanel Grid.Column="1" Spacing="4" Margin="8,0,0,0">
-									<TextBlock Text="Minute de démarrage"/>
-									<ComboBox x:Name="StartMinute3"/>
-								</StackPanel>
-								<StackPanel Grid.Column="2" Spacing="4" Margin="8,0,0,0">
-									<TextBlock Text="Heure d'arrêt"/>
-									<ComboBox x:Name="StopHour3"/>
-								</StackPanel>
-								<StackPanel Grid.Column="3" Spacing="4" Margin="8,0,0,0">
-									<TextBlock Text="Minute d'arrêt"/>
-									<ComboBox x:Name="StopMinute3"/>
-								</StackPanel>
+							<Grid ColumnDefinitions="*,8,*" RowDefinitions="Auto,Auto">
+								<TextBlock Grid.Row="0" Grid.Column="0" Text="▶  Démarrage" Classes="muted"/>
+								<TextBlock Grid.Row="0" Grid.Column="2" Text="⏹  Arrêt" Classes="muted"/>
+								<Grid Grid.Row="1" Grid.Column="0" ColumnDefinitions="*,Auto,*" Margin="0,4,0,0">
+									<ComboBox x:Name="StartHour3" Grid.Column="0" HorizontalAlignment="Stretch"/>
+									<TextBlock Grid.Column="1" Text=":" FontSize="16" FontWeight="Bold"
+											   VerticalAlignment="Center" Margin="6,0"/>
+									<ComboBox x:Name="StartMinute3" Grid.Column="2" HorizontalAlignment="Stretch"/>
+								</Grid>
+								<Grid Grid.Row="1" Grid.Column="2" ColumnDefinitions="*,Auto,*" Margin="0,4,0,0">
+									<ComboBox x:Name="StopHour3" Grid.Column="0" HorizontalAlignment="Stretch"/>
+									<TextBlock Grid.Column="1" Text=":" FontSize="16" FontWeight="Bold"
+											   VerticalAlignment="Center" Margin="6,0"/>
+									<ComboBox x:Name="StopMinute3" Grid.Column="2" HorizontalAlignment="Stretch"/>
+								</Grid>
 							</Grid>
 						</StackPanel>
 					</Border>
 
 					<!-- Vendredi (4) -->
-					<Border BorderBrush="#404040" BorderThickness="1" CornerRadius="8" Padding="8">
-						<StackPanel Spacing="8">
-							<StackPanel Orientation="Horizontal" Spacing="8">
-								<CheckBox x:Name="Active4"/>
-								<TextBlock Text="Vendredi" FontWeight="SemiBold"/>
+					<Border BorderBrush="#3A3A3C" BorderThickness="1" CornerRadius="12" Padding="12" Background="#1F1F22">
+						<StackPanel Spacing="10">
+							<StackPanel Orientation="Horizontal" Spacing="10" VerticalAlignment="Center">
+								<CheckBox x:Name="Active4" VerticalAlignment="Center"/>
+								<TextBlock Text="Vendredi" FontSize="15" FontWeight="SemiBold" VerticalAlignment="Center"/>
 							</StackPanel>
-							<Grid ColumnDefinitions="*,*,*,*">
-								<StackPanel Grid.Column="0" Spacing="4">
-									<TextBlock Text="Heure de démarrage"/>
-									<ComboBox x:Name="StartHour4"/>
-								</StackPanel>
-								<StackPanel Grid.Column="1" Spacing="4" Margin="8,0,0,0">
-									<TextBlock Text="Minute de démarrage"/>
-									<ComboBox x:Name="StartMinute4"/>
-								</StackPanel>
-								<StackPanel Grid.Column="2" Spacing="4" Margin="8,0,0,0">
-									<TextBlock Text="Heure d'arrêt"/>
-									<ComboBox x:Name="StopHour4"/>
-								</StackPanel>
-								<StackPanel Grid.Column="3" Spacing="4" Margin="8,0,0,0">
-									<TextBlock Text="Minute d'arrêt"/>
-									<ComboBox x:Name="StopMinute4"/>
-								</StackPanel>
+							<Grid ColumnDefinitions="*,8,*" RowDefinitions="Auto,Auto">
+								<TextBlock Grid.Row="0" Grid.Column="0" Text="▶  Démarrage" Classes="muted"/>
+								<TextBlock Grid.Row="0" Grid.Column="2" Text="⏹  Arrêt" Classes="muted"/>
+								<Grid Grid.Row="1" Grid.Column="0" ColumnDefinitions="*,Auto,*" Margin="0,4,0,0">
+									<ComboBox x:Name="StartHour4" Grid.Column="0" HorizontalAlignment="Stretch"/>
+									<TextBlock Grid.Column="1" Text=":" FontSize="16" FontWeight="Bold"
+											   VerticalAlignment="Center" Margin="6,0"/>
+									<ComboBox x:Name="StartMinute4" Grid.Column="2" HorizontalAlignment="Stretch"/>
+								</Grid>
+								<Grid Grid.Row="1" Grid.Column="2" ColumnDefinitions="*,Auto,*" Margin="0,4,0,0">
+									<ComboBox x:Name="StopHour4" Grid.Column="0" HorizontalAlignment="Stretch"/>
+									<TextBlock Grid.Column="1" Text=":" FontSize="16" FontWeight="Bold"
+											   VerticalAlignment="Center" Margin="6,0"/>
+									<ComboBox x:Name="StopMinute4" Grid.Column="2" HorizontalAlignment="Stretch"/>
+								</Grid>
 							</Grid>
 						</StackPanel>
 					</Border>
 
 					<!-- Samedi (5) -->
-					<Border BorderBrush="#404040" BorderThickness="1" CornerRadius="8" Padding="8">
-						<StackPanel Spacing="8">
-							<StackPanel Orientation="Horizontal" Spacing="8">
-								<CheckBox x:Name="Active5"/>
-								<TextBlock Text="Samedi" FontWeight="SemiBold"/>
+					<Border BorderBrush="#3A3A3C" BorderThickness="1" CornerRadius="12" Padding="12" Background="#1F1F22">
+						<StackPanel Spacing="10">
+							<StackPanel Orientation="Horizontal" Spacing="10" VerticalAlignment="Center">
+								<CheckBox x:Name="Active5" VerticalAlignment="Center"/>
+								<TextBlock Text="Samedi" FontSize="15" FontWeight="SemiBold" VerticalAlignment="Center"/>
 							</StackPanel>
-							<Grid ColumnDefinitions="*,*,*,*">
-								<StackPanel Grid.Column="0" Spacing="4">
-									<TextBlock Text="Heure de démarrage"/>
-									<ComboBox x:Name="StartHour5"/>
-								</StackPanel>
-								<StackPanel Grid.Column="1" Spacing="4" Margin="8,0,0,0">
-									<TextBlock Text="Minute de démarrage"/>
-									<ComboBox x:Name="StartMinute5"/>
-								</StackPanel>
-								<StackPanel Grid.Column="2" Spacing="4" Margin="8,0,0,0">
-									<TextBlock Text="Heure d'arrêt"/>
-									<ComboBox x:Name="StopHour5"/>
-								</StackPanel>
-								<StackPanel Grid.Column="3" Spacing="4" Margin="8,0,0,0">
-									<TextBlock Text="Minute d'arrêt"/>
-									<ComboBox x:Name="StopMinute5"/>
-								</StackPanel>
+							<Grid ColumnDefinitions="*,8,*" RowDefinitions="Auto,Auto">
+								<TextBlock Grid.Row="0" Grid.Column="0" Text="▶  Démarrage" Classes="muted"/>
+								<TextBlock Grid.Row="0" Grid.Column="2" Text="⏹  Arrêt" Classes="muted"/>
+								<Grid Grid.Row="1" Grid.Column="0" ColumnDefinitions="*,Auto,*" Margin="0,4,0,0">
+									<ComboBox x:Name="StartHour5" Grid.Column="0" HorizontalAlignment="Stretch"/>
+									<TextBlock Grid.Column="1" Text=":" FontSize="16" FontWeight="Bold"
+											   VerticalAlignment="Center" Margin="6,0"/>
+									<ComboBox x:Name="StartMinute5" Grid.Column="2" HorizontalAlignment="Stretch"/>
+								</Grid>
+								<Grid Grid.Row="1" Grid.Column="2" ColumnDefinitions="*,Auto,*" Margin="0,4,0,0">
+									<ComboBox x:Name="StopHour5" Grid.Column="0" HorizontalAlignment="Stretch"/>
+									<TextBlock Grid.Column="1" Text=":" FontSize="16" FontWeight="Bold"
+											   VerticalAlignment="Center" Margin="6,0"/>
+									<ComboBox x:Name="StopMinute5" Grid.Column="2" HorizontalAlignment="Stretch"/>
+								</Grid>
 							</Grid>
 						</StackPanel>
 					</Border>
 
 					<!-- Dimanche (6) -->
-					<Border BorderBrush="#404040" BorderThickness="1" CornerRadius="8" Padding="8">
-						<StackPanel Spacing="8">
-							<StackPanel Orientation="Horizontal" Spacing="8">
-								<CheckBox x:Name="Active6"/>
-								<TextBlock Text="Dimanche" FontWeight="SemiBold"/>
+					<Border BorderBrush="#3A3A3C" BorderThickness="1" CornerRadius="12" Padding="12" Background="#1F1F22">
+						<StackPanel Spacing="10">
+							<StackPanel Orientation="Horizontal" Spacing="10" VerticalAlignment="Center">
+								<CheckBox x:Name="Active6" VerticalAlignment="Center"/>
+								<TextBlock Text="Dimanche" FontSize="15" FontWeight="SemiBold" VerticalAlignment="Center"/>
 							</StackPanel>
-							<Grid ColumnDefinitions="*,*,*,*">
-								<StackPanel Grid.Column="0" Spacing="4">
-									<TextBlock Text="Heure de démarrage"/>
-									<ComboBox x:Name="StartHour6"/>
-								</StackPanel>
-								<StackPanel Grid.Column="1" Spacing="4" Margin="8,0,0,0">
-									<TextBlock Text="Minute de démarrage"/>
-									<ComboBox x:Name="StartMinute6"/>
-								</StackPanel>
-								<StackPanel Grid.Column="2" Spacing="4" Margin="8,0,0,0">
-									<TextBlock Text="Heure d'arrêt"/>
-									<ComboBox x:Name="StopHour6"/>
-								</StackPanel>
-								<StackPanel Grid.Column="3" Spacing="4" Margin="8,0,0,0">
-									<TextBlock Text="Minute d'arrêt"/>
-									<ComboBox x:Name="StopMinute6"/>
-								</StackPanel>
+							<Grid ColumnDefinitions="*,8,*" RowDefinitions="Auto,Auto">
+								<TextBlock Grid.Row="0" Grid.Column="0" Text="▶  Démarrage" Classes="muted"/>
+								<TextBlock Grid.Row="0" Grid.Column="2" Text="⏹  Arrêt" Classes="muted"/>
+								<Grid Grid.Row="1" Grid.Column="0" ColumnDefinitions="*,Auto,*" Margin="0,4,0,0">
+									<ComboBox x:Name="StartHour6" Grid.Column="0" HorizontalAlignment="Stretch"/>
+									<TextBlock Grid.Column="1" Text=":" FontSize="16" FontWeight="Bold"
+											   VerticalAlignment="Center" Margin="6,0"/>
+									<ComboBox x:Name="StartMinute6" Grid.Column="2" HorizontalAlignment="Stretch"/>
+								</Grid>
+								<Grid Grid.Row="1" Grid.Column="2" ColumnDefinitions="*,Auto,*" Margin="0,4,0,0">
+									<ComboBox x:Name="StopHour6" Grid.Column="0" HorizontalAlignment="Stretch"/>
+									<TextBlock Grid.Column="1" Text=":" FontSize="16" FontWeight="Bold"
+											   VerticalAlignment="Center" Margin="6,0"/>
+									<ComboBox x:Name="StopMinute6" Grid.Column="2" HorizontalAlignment="Stretch"/>
+								</Grid>
 							</Grid>
 						</StackPanel>
 					</Border>
 
-					
-						
 				</StackPanel>
 			</ScrollViewer>
 		</Border>
