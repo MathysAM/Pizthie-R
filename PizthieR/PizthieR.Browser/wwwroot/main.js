@@ -21,17 +21,30 @@ if (splash) {
 
 // Fix iOS standalone : force le canvas a la bonne taille exacte en pixels entiers
 if (window.navigator.standalone) {
-    setTimeout(function () {
+    const syncStandaloneCanvas = function () {
         const canvas = document.querySelector('#out canvas');
-        if (canvas) {
-            const w = Math.round(window.innerWidth  * window.devicePixelRatio);
-            const h = Math.round(window.innerHeight * window.devicePixelRatio);
-            if (canvas.width !== w || canvas.height !== h) {
-                canvas.width  = w;
-                canvas.height = h;
-                window.dispatchEvent(new Event('resize'));
-            }
+        if (!canvas) return;
+
+        const vv = window.visualViewport;
+        const cssWidth = Math.round(vv ? vv.width : window.innerWidth);
+        const cssHeight = Math.round(vv ? vv.height : window.innerHeight);
+        const dpr = window.devicePixelRatio || 1;
+
+        const pixelWidth = Math.round(cssWidth * dpr);
+        const pixelHeight = Math.round(cssHeight * dpr);
+
+        canvas.style.width = `${cssWidth}px`;
+        canvas.style.height = `${cssHeight}px`;
+
+        if (canvas.width !== pixelWidth || canvas.height !== pixelHeight) {
+            canvas.width = pixelWidth;
+            canvas.height = pixelHeight;
+            window.dispatchEvent(new Event('resize'));
         }
-    }, 300);
+    };
+
+    setTimeout(syncStandaloneCanvas, 300);
+    window.addEventListener('resize', syncStandaloneCanvas);
+    window.visualViewport?.addEventListener('resize', syncStandaloneCanvas);
 }
 
