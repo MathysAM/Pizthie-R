@@ -12,8 +12,10 @@
 
     <!-- Viewport : verrouille le zoom, couvre les encoches iOS -->
     <meta name="viewport"
-          content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+          content="width=device-width, height=device-height, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover, shrink-to-fit=no">
     <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <base href="/Pizthie-R/">
 
     <!-- Manifest PWA -->
@@ -43,6 +45,7 @@
             background: #1C1C1E;
             touch-action: manipulation;
         }
+
         #out {
             position: fixed;
             inset: 0;
@@ -71,7 +74,7 @@
             if (!vp) return;
             function lockZoom() {
                 vp.setAttribute('content',
-                    'width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover');
+                    'width=device-width, height=device-height, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover, shrink-to-fit=no');
             }
             document.addEventListener('focusin', lockZoom);
         })();
