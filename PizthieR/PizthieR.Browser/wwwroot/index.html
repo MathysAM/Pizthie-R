@@ -21,15 +21,7 @@
             -webkit-text-size-adjust: 100%;
         }
 
-        /* CORRECTIF : supprime la marge par defaut du navigateur (cause des bandes blanches/noires en PWA) */
-        html, body {
-            margin: 0;
-            padding: 0;
-            background: #1e1e1e;
-            overflow: hidden;
-        }
-
-        /* Cle : toutes les entrees ont une police >= 16px pour empecher le focus-zoom iOS */
+        /* Cle
         input, textarea, select, button {
             font-size: 16px !important;
         }
@@ -44,7 +36,7 @@
     </style>
 </head>
 
-<body>
+<body style="margin: 0; overflow: hidden">
     <div id="out">
         <div id="splash"
              style="display:flex; align-items:center; justify-content:center;
