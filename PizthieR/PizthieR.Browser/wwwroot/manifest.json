@@ -4,7 +4,7 @@
   "start_url": ".",
   "display": "standalone",
   "background_color": "#1e1e1e",
-  "theme_color": "#007ACC",
+  "theme_color": "#EB0000",
   "icons": [
     {
       "src": "PizzaThierryF.png",
