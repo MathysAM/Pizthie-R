@@ -7,7 +7,7 @@ permissions:
 on:
   push:
     branches:
-      - Developpement
+      - MODIFTEST
   workflow_dispatch:
 
 jobs:
