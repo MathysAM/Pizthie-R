@@ -255,7 +255,7 @@ public partial class Programmation : UserControl
         Toast.IsVisible = false;
     }
 
-    // === Validation : durée ≥ 60 min dans la plage autorisée ===
+    // /=== Validation : durée ≥ 60 min dans la plage autorisée ===
     private void ValidateTime(int index)
     {
         var d = _days[index];
