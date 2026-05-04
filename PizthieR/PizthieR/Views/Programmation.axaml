@@ -52,6 +52,31 @@
 									<ComboBox x:Name="StopMinute0" Grid.Column="2" HorizontalAlignment="Stretch"/>
 								</Grid>
 							</Grid>
+							<!-- Précuisson matin -->
+							<Border BorderBrush="#2C2C2E" BorderThickness="0,1,0,0" Margin="0,6,0,0" Padding="0,10,0,0">
+								<StackPanel Spacing="10">
+									<StackPanel Orientation="Horizontal" Spacing="10" VerticalAlignment="Center">
+										<CheckBox x:Name="ActiveMatin0" VerticalAlignment="Center"/>
+										<TextBlock Text="☀  Précuisson matin" FontSize="14" FontWeight="SemiBold" Foreground="#FFAA00" VerticalAlignment="Center"/>
+									</StackPanel>
+									<Grid ColumnDefinitions="*,8,*" RowDefinitions="Auto,Auto">
+										<TextBlock Grid.Row="0" Grid.Column="0" Text="▶  Démarrage" Classes="muted"/>
+										<TextBlock Grid.Row="0" Grid.Column="2" Text="⏹  Arrêt" Classes="muted"/>
+										<Grid Grid.Row="1" Grid.Column="0" ColumnDefinitions="*,Auto,*" Margin="0,4,0,0">
+											<ComboBox x:Name="StartHourMatin0" Grid.Column="0" HorizontalAlignment="Stretch"/>
+											<TextBlock Grid.Column="1" Text=":" FontSize="16" FontWeight="Bold"
+													   VerticalAlignment="Center" Margin="6,0"/>
+											<ComboBox x:Name="StartMinuteMatin0" Grid.Column="2" HorizontalAlignment="Stretch"/>
+										</Grid>
+										<Grid Grid.Row="1" Grid.Column="2" ColumnDefinitions="*,Auto,*" Margin="0,4,0,0">
+											<ComboBox x:Name="StopHourMatin0" Grid.Column="0" HorizontalAlignment="Stretch"/>
+											<TextBlock Grid.Column="1" Text=":" FontSize="16" FontWeight="Bold"
+													   VerticalAlignment="Center" Margin="6,0"/>
+											<ComboBox x:Name="StopMinuteMatin0" Grid.Column="2" HorizontalAlignment="Stretch"/>
+										</Grid>
+									</Grid>
+								</StackPanel>
+							</Border>
 						</StackPanel>
 					</Border>
 
@@ -78,6 +103,31 @@
 									<ComboBox x:Name="StopMinute1" Grid.Column="2" HorizontalAlignment="Stretch"/>
 								</Grid>
 							</Grid>
+							<!-- Précuisson matin -->
+							<Border BorderBrush="#2C2C2E" BorderThickness="0,1,0,0" Margin="0,6,0,0" Padding="0,10,0,0">
+								<StackPanel Spacing="10">
+									<StackPanel Orientation="Horizontal" Spacing="10" VerticalAlignment="Center">
+										<CheckBox x:Name="ActiveMatin1" VerticalAlignment="Center"/>
+										<TextBlock Text="☀  Précuisson matin" FontSize="14" FontWeight="SemiBold" Foreground="#FFAA00" VerticalAlignment="Center"/>
+									</StackPanel>
+									<Grid ColumnDefinitions="*,8,*" RowDefinitions="Auto,Auto">
+										<TextBlock Grid.Row="0" Grid.Column="0" Text="▶  Démarrage" Classes="muted"/>
+										<TextBlock Grid.Row="0" Grid.Column="2" Text="⏹  Arrêt" Classes="muted"/>
+										<Grid Grid.Row="1" Grid.Column="0" ColumnDefinitions="*,Auto,*" Margin="0,4,0,0">
+											<ComboBox x:Name="StartHourMatin1" Grid.Column="0" HorizontalAlignment="Stretch"/>
+											<TextBlock Grid.Column="1" Text=":" FontSize="16" FontWeight="Bold"
+													   VerticalAlignment="Center" Margin="6,0"/>
+											<ComboBox x:Name="StartMinuteMatin1" Grid.Column="2" HorizontalAlignment="Stretch"/>
+										</Grid>
+										<Grid Grid.Row="1" Grid.Column="2" ColumnDefinitions="*,Auto,*" Margin="0,4,0,0">
+											<ComboBox x:Name="StopHourMatin1" Grid.Column="0" HorizontalAlignment="Stretch"/>
+											<TextBlock Grid.Column="1" Text=":" FontSize="16" FontWeight="Bold"
+													   VerticalAlignment="Center" Margin="6,0"/>
+											<ComboBox x:Name="StopMinuteMatin1" Grid.Column="2" HorizontalAlignment="Stretch"/>
+										</Grid>
+									</Grid>
+								</StackPanel>
+							</Border>
 						</StackPanel>
 					</Border>
 
@@ -104,6 +154,31 @@
 									<ComboBox x:Name="StopMinute2" Grid.Column="2" HorizontalAlignment="Stretch"/>
 								</Grid>
 							</Grid>
+							<!-- Précuisson matin -->
+							<Border BorderBrush="#2C2C2E" BorderThickness="0,1,0,0" Margin="0,6,0,0" Padding="0,10,0,0">
+								<StackPanel Spacing="10">
+									<StackPanel Orientation="Horizontal" Spacing="10" VerticalAlignment="Center">
+										<CheckBox x:Name="ActiveMatin2" VerticalAlignment="Center"/>
+										<TextBlock Text="☀  Précuisson matin" FontSize="14" FontWeight="SemiBold" Foreground="#FFAA00" VerticalAlignment="Center"/>
+									</StackPanel>
+									<Grid ColumnDefinitions="*,8,*" RowDefinitions="Auto,Auto">
+										<TextBlock Grid.Row="0" Grid.Column="0" Text="▶  Démarrage" Classes="muted"/>
+										<TextBlock Grid.Row="0" Grid.Column="2" Text="⏹  Arrêt" Classes="muted"/>
+										<Grid Grid.Row="1" Grid.Column="0" ColumnDefinitions="*,Auto,*" Margin="0,4,0,0">
+											<ComboBox x:Name="StartHourMatin2" Grid.Column="0" HorizontalAlignment="Stretch"/>
+											<TextBlock Grid.Column="1" Text=":" FontSize="16" FontWeight="Bold"
+													   VerticalAlignment="Center" Margin="6,0"/>
+											<ComboBox x:Name="StartMinuteMatin2" Grid.Column="2" HorizontalAlignment="Stretch"/>
+										</Grid>
+										<Grid Grid.Row="1" Grid.Column="2" ColumnDefinitions="*,Auto,*" Margin="0,4,0,0">
+											<ComboBox x:Name="StopHourMatin2" Grid.Column="0" HorizontalAlignment="Stretch"/>
+											<TextBlock Grid.Column="1" Text=":" FontSize="16" FontWeight="Bold"
+													   VerticalAlignment="Center" Margin="6,0"/>
+											<ComboBox x:Name="StopMinuteMatin2" Grid.Column="2" HorizontalAlignment="Stretch"/>
+										</Grid>
+									</Grid>
+								</StackPanel>
+							</Border>
 						</StackPanel>
 					</Border>
 
@@ -130,6 +205,31 @@
 									<ComboBox x:Name="StopMinute3" Grid.Column="2" HorizontalAlignment="Stretch"/>
 								</Grid>
 							</Grid>
+							<!-- Précuisson matin -->
+							<Border BorderBrush="#2C2C2E" BorderThickness="0,1,0,0" Margin="0,6,0,0" Padding="0,10,0,0">
+								<StackPanel Spacing="10">
+									<StackPanel Orientation="Horizontal" Spacing="10" VerticalAlignment="Center">
+										<CheckBox x:Name="ActiveMatin3" VerticalAlignment="Center"/>
+										<TextBlock Text="☀  Précuisson matin" FontSize="14" FontWeight="SemiBold" Foreground="#FFAA00" VerticalAlignment="Center"/>
+									</StackPanel>
+									<Grid ColumnDefinitions="*,8,*" RowDefinitions="Auto,Auto">
+										<TextBlock Grid.Row="0" Grid.Column="0" Text="▶  Démarrage" Classes="muted"/>
+										<TextBlock Grid.Row="0" Grid.Column="2" Text="⏹  Arrêt" Classes="muted"/>
+										<Grid Grid.Row="1" Grid.Column="0" ColumnDefinitions="*,Auto,*" Margin="0,4,0,0">
+											<ComboBox x:Name="StartHourMatin3" Grid.Column="0" HorizontalAlignment="Stretch"/>
+											<TextBlock Grid.Column="1" Text=":" FontSize="16" FontWeight="Bold"
+													   VerticalAlignment="Center" Margin="6,0"/>
+											<ComboBox x:Name="StartMinuteMatin3" Grid.Column="2" HorizontalAlignment="Stretch"/>
+										</Grid>
+										<Grid Grid.Row="1" Grid.Column="2" ColumnDefinitions="*,Auto,*" Margin="0,4,0,0">
+											<ComboBox x:Name="StopHourMatin3" Grid.Column="0" HorizontalAlignment="Stretch"/>
+											<TextBlock Grid.Column="1" Text=":" FontSize="16" FontWeight="Bold"
+													   VerticalAlignment="Center" Margin="6,0"/>
+											<ComboBox x:Name="StopMinuteMatin3" Grid.Column="2" HorizontalAlignment="Stretch"/>
+										</Grid>
+									</Grid>
+								</StackPanel>
+							</Border>
 						</StackPanel>
 					</Border>
 
@@ -156,6 +256,31 @@
 									<ComboBox x:Name="StopMinute4" Grid.Column="2" HorizontalAlignment="Stretch"/>
 								</Grid>
 							</Grid>
+							<!-- Précuisson matin -->
+							<Border BorderBrush="#2C2C2E" BorderThickness="0,1,0,0" Margin="0,6,0,0" Padding="0,10,0,0">
+								<StackPanel Spacing="10">
+									<StackPanel Orientation="Horizontal" Spacing="10" VerticalAlignment="Center">
+										<CheckBox x:Name="ActiveMatin4" VerticalAlignment="Center"/>
+										<TextBlock Text="☀  Précuisson matin" FontSize="14" FontWeight="SemiBold" Foreground="#FFAA00" VerticalAlignment="Center"/>
+									</StackPanel>
+									<Grid ColumnDefinitions="*,8,*" RowDefinitions="Auto,Auto">
+										<TextBlock Grid.Row="0" Grid.Column="0" Text="▶  Démarrage" Classes="muted"/>
+										<TextBlock Grid.Row="0" Grid.Column="2" Text="⏹  Arrêt" Classes="muted"/>
+										<Grid Grid.Row="1" Grid.Column="0" ColumnDefinitions="*,Auto,*" Margin="0,4,0,0">
+											<ComboBox x:Name="StartHourMatin4" Grid.Column="0" HorizontalAlignment="Stretch"/>
+											<TextBlock Grid.Column="1" Text=":" FontSize="16" FontWeight="Bold"
+													   VerticalAlignment="Center" Margin="6,0"/>
+											<ComboBox x:Name="StartMinuteMatin4" Grid.Column="2" HorizontalAlignment="Stretch"/>
+										</Grid>
+										<Grid Grid.Row="1" Grid.Column="2" ColumnDefinitions="*,Auto,*" Margin="0,4,0,0">
+											<ComboBox x:Name="StopHourMatin4" Grid.Column="0" HorizontalAlignment="Stretch"/>
+											<TextBlock Grid.Column="1" Text=":" FontSize="16" FontWeight="Bold"
+													   VerticalAlignment="Center" Margin="6,0"/>
+											<ComboBox x:Name="StopMinuteMatin4" Grid.Column="2" HorizontalAlignment="Stretch"/>
+										</Grid>
+									</Grid>
+								</StackPanel>
+							</Border>
 						</StackPanel>
 					</Border>
 
@@ -182,6 +307,31 @@
 									<ComboBox x:Name="StopMinute5" Grid.Column="2" HorizontalAlignment="Stretch"/>
 								</Grid>
 							</Grid>
+							<!-- Précuisson matin -->
+							<Border BorderBrush="#2C2C2E" BorderThickness="0,1,0,0" Margin="0,6,0,0" Padding="0,10,0,0">
+								<StackPanel Spacing="10">
+									<StackPanel Orientation="Horizontal" Spacing="10" VerticalAlignment="Center">
+										<CheckBox x:Name="ActiveMatin5" VerticalAlignment="Center"/>
+										<TextBlock Text="☀  Précuisson matin" FontSize="14" FontWeight="SemiBold" Foreground="#FFAA00" VerticalAlignment="Center"/>
+									</StackPanel>
+									<Grid ColumnDefinitions="*,8,*" RowDefinitions="Auto,Auto">
+										<TextBlock Grid.Row="0" Grid.Column="0" Text="▶  Démarrage" Classes="muted"/>
+										<TextBlock Grid.Row="0" Grid.Column="2" Text="⏹  Arrêt" Classes="muted"/>
+										<Grid Grid.Row="1" Grid.Column="0" ColumnDefinitions="*,Auto,*" Margin="0,4,0,0">
+											<ComboBox x:Name="StartHourMatin5" Grid.Column="0" HorizontalAlignment="Stretch"/>
+											<TextBlock Grid.Column="1" Text=":" FontSize="16" FontWeight="Bold"
+													   VerticalAlignment="Center" Margin="6,0"/>
+											<ComboBox x:Name="StartMinuteMatin5" Grid.Column="2" HorizontalAlignment="Stretch"/>
+										</Grid>
+										<Grid Grid.Row="1" Grid.Column="2" ColumnDefinitions="*,Auto,*" Margin="0,4,0,0">
+											<ComboBox x:Name="StopHourMatin5" Grid.Column="0" HorizontalAlignment="Stretch"/>
+											<TextBlock Grid.Column="1" Text=":" FontSize="16" FontWeight="Bold"
+													   VerticalAlignment="Center" Margin="6,0"/>
+											<ComboBox x:Name="StopMinuteMatin5" Grid.Column="2" HorizontalAlignment="Stretch"/>
+										</Grid>
+									</Grid>
+								</StackPanel>
+							</Border>
 						</StackPanel>
 					</Border>
 
@@ -208,6 +358,31 @@
 									<ComboBox x:Name="StopMinute6" Grid.Column="2" HorizontalAlignment="Stretch"/>
 								</Grid>
 							</Grid>
+							<!-- Précuisson matin -->
+							<Border BorderBrush="#2C2C2E" BorderThickness="0,1,0,0" Margin="0,6,0,0" Padding="0,10,0,0">
+								<StackPanel Spacing="10">
+									<StackPanel Orientation="Horizontal" Spacing="10" VerticalAlignment="Center">
+										<CheckBox x:Name="ActiveMatin6" VerticalAlignment="Center"/>
+										<TextBlock Text="☀  Précuisson matin" FontSize="14" FontWeight="SemiBold" Foreground="#FFAA00" VerticalAlignment="Center"/>
+									</StackPanel>
+									<Grid ColumnDefinitions="*,8,*" RowDefinitions="Auto,Auto">
+										<TextBlock Grid.Row="0" Grid.Column="0" Text="▶  Démarrage" Classes="muted"/>
+										<TextBlock Grid.Row="0" Grid.Column="2" Text="⏹  Arrêt" Classes="muted"/>
+										<Grid Grid.Row="1" Grid.Column="0" ColumnDefinitions="*,Auto,*" Margin="0,4,0,0">
+											<ComboBox x:Name="StartHourMatin6" Grid.Column="0" HorizontalAlignment="Stretch"/>
+											<TextBlock Grid.Column="1" Text=":" FontSize="16" FontWeight="Bold"
+													   VerticalAlignment="Center" Margin="6,0"/>
+											<ComboBox x:Name="StartMinuteMatin6" Grid.Column="2" HorizontalAlignment="Stretch"/>
+										</Grid>
+										<Grid Grid.Row="1" Grid.Column="2" ColumnDefinitions="*,Auto,*" Margin="0,4,0,0">
+											<ComboBox x:Name="StopHourMatin6" Grid.Column="0" HorizontalAlignment="Stretch"/>
+											<TextBlock Grid.Column="1" Text=":" FontSize="16" FontWeight="Bold"
+													   VerticalAlignment="Center" Margin="6,0"/>
+											<ComboBox x:Name="StopMinuteMatin6" Grid.Column="2" HorizontalAlignment="Stretch"/>
+										</Grid>
+									</Grid>
+								</StackPanel>
+							</Border>
 						</StackPanel>
 					</Border>
 
